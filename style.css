@@ -17,20 +17,24 @@ section {
   padding: 20px;
 }
 
-/* Анимация для текста */
-.animated-text, .animated-subtext, .contact-section {
+/* Анимации выезда текста */
+.animated-text, .animated-subtext, .about-section, .contact-section {
   opacity: 0;
   transform: translateY(-50px);
   animation: slide-in 1.5s ease forwards;
 }
 
-/* Задержка для подзаголовка и контактов */
+/* Задержка для последовательного появления */
 .animated-subtext {
   animation-delay: 0.5s;
 }
 
-.contact-section {
+.about-section {
   animation-delay: 1s;
+}
+
+.contact-section {
+  animation-delay: 1.5s;
 }
 
 /* Описание анимации выезда */
@@ -41,6 +45,7 @@ section {
   }
 }
 
+/* Стили ссылок */
 a {
   color: #4a90e2;
   text-decoration: none;
@@ -48,4 +53,10 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+footer {
+  padding: 10px;
+  background-color: #333;
+  color: #fff;
 }
