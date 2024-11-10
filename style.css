@@ -1,4 +1,4 @@
-/* Общие стили */
+/* Основные стили */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -11,23 +11,23 @@ body {
   background: linear-gradient(45deg, #4a90e2, #00c6ff, #ff00d4, #ff5b00);
   background-size: 400% 400%;
   animation: gradientAnimation 10s ease infinite;
-  color: transparent; /* Убираем стандартный цвет текста */
+  color: transparent;
   transition: background-color 0.5s ease;
 }
 
-/* Параллакс эффект */
+/* Заголовок */
 header {
-  padding: 20px;
+  padding: 5vw;
   color: transparent;
   position: relative;
   z-index: 1;
-  font-size: 36px;
+  font-size: 8vw;
   font-weight: bold;
   background: linear-gradient(45deg, #ff00d4, #ff5b00, #4a90e2);
   background-size: 400% 400%;
   -webkit-background-clip: text;
   background-clip: text;
-  animation: gradientText 5s ease infinite; /* Анимация для текста */
+  animation: gradientText 5s ease infinite;
 }
 
 header::before {
@@ -42,71 +42,29 @@ header::before {
   transform: translateY(-10px);
 }
 
+/* Секции */
 section {
-  padding: 20px;
+  padding: 5vw;
   flex: 1;
 }
 
-/* Анимации выезда текста */
-.animated-text, .animated-subtext, .about-section, .contact-section {
-  opacity: 0;
-  transform: translateY(-50px);
-  animation: slide-in 1.5s ease forwards;
+h2 {
+  font-size: 5vw;
+  margin: 20px 0;
 }
 
-.animated-subtext {
-  animation-delay: 0.5s;
+ul {
+  list-style: none;
+  padding: 0;
 }
 
-.about-section {
-  animation-delay: 1s;
+ul li {
+  margin: 10px 0;
 }
 
-.contact-section {
-  animation-delay: 1.5s;
-}
-
-/* Описание анимации выезда */
-@keyframes slide-in {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Анимация для градиента */
-@keyframes gradientAnimation {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-/* Анимация для текста с градиентом */
-@keyframes gradientText {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-/* Стили ссылок */
 a {
   color: #4a90e2;
   text-decoration: none;
-  position: relative;
-  display: inline-block;
-  padding: 5px;
   transition: color 0.3s, transform 0.3s;
 }
 
@@ -116,7 +74,7 @@ a:hover {
 }
 
 footer {
-  padding: 10px;
+  padding: 5vw;
   background-color: #333;
   color: #fff;
   position: relative;
@@ -125,16 +83,16 @@ footer {
   text-align: center;
 }
 
-/* Плавающая ссылка на Telegram */
+/* Плавающая кнопка Telegram */
 .telegram-icon {
   position: fixed;
-  bottom: 30px;
-  right: 30px;
+  bottom: 5vw;
+  right: 5vw;
   background-color: #0088cc;
   color: white;
-  padding: 15px;
-  border-radius: 30px;
-  font-size: 14px;
+  padding: 2vw;
+  border-radius: 50%;
+  font-size: 2.5vw;
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
   transition: transform 0.3s ease, background-color 0.3s;
   display: flex;
@@ -147,6 +105,31 @@ footer {
   transform: scale(1.1);
 }
 
+/* Анимация текста */
+@keyframes gradientText {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 /* Адаптивность для мобильных устройств */
 @media (max-width: 768px) {
   body {
@@ -154,34 +137,44 @@ footer {
   }
 
   header {
-    font-size: 28px;
-    padding: 15px;
+    font-size: 12vw;
+    padding: 10vw;
   }
 
   section {
-    padding: 15px;
+    padding: 10vw;
   }
 
   footer {
-    padding: 10px;
+    padding: 10vw;
   }
 
   .telegram-icon {
-    bottom: 20px;
-    right: 20px;
-    font-size: 12px;
+    bottom: 5vw;
+    right: 5vw;
+    font-size: 6vw;
+    padding: 7vw;
   }
+}
 
-  /* Настройка для текста в header на мобильных устройствах */
-  header h1 {
-    font-size: 24px;
-    text-align: center;
-    padding: 10px;
-  }
-
-  /* Изменение градиента на мобильных устройствах */
+@media (max-width: 480px) {
   header {
-    background: linear-gradient(45deg, #ff00d4, #ff5b00, #4a90e2);
-    background-size: 400% 400%;
+    font-size: 14vw;
+    padding: 12vw;
+  }
+
+  section {
+    padding: 12vw;
+  }
+
+  footer {
+    padding: 12vw;
+  }
+
+  .telegram-icon {
+    bottom: 3vw;
+    right: 3vw;
+    font-size: 8vw;
+    padding: 10vw;
   }
 }
