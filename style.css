@@ -11,18 +11,23 @@ body {
   background: linear-gradient(45deg, #4a90e2, #00c6ff, #ff00d4, #ff5b00);
   background-size: 400% 400%;
   animation: gradientAnimation 10s ease infinite;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: transparent; /* Убираем стандартный цвет текста */
   transition: background-color 0.5s ease;
 }
 
 /* Параллакс эффект */
 header {
   padding: 20px;
-  color: white;
+  color: transparent;
   position: relative;
   z-index: 1;
+  font-size: 36px;
+  font-weight: bold;
+  background: linear-gradient(45deg, #ff00d4, #ff5b00, #4a90e2);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: gradientText 5s ease infinite; /* Анимация для текста */
 }
 
 header::before {
@@ -71,6 +76,19 @@ section {
 
 /* Анимация для градиента */
 @keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Анимация для текста с градиентом */
+@keyframes gradientText {
   0% {
     background-position: 0% 50%;
   }
