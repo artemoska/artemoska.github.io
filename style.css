@@ -5,6 +5,9 @@ body {
   background-color: #f4f4f9;
   color: #333;
   text-align: center;
+  min-height: 100vh; /* Гарантирует, что контент займет весь экран */
+  display: flex;
+  flex-direction: column;
 }
 
 header {
@@ -15,6 +18,7 @@ header {
 
 section {
   padding: 20px;
+  flex: 1; /* Это позволяет секциям занимать оставшееся пространство */
 }
 
 /* Анимации выезда текста */
@@ -55,8 +59,13 @@ a:hover {
   text-decoration: underline;
 }
 
+/* Фиксированный футер */
 footer {
   padding: 10px;
   background-color: #333;
   color: #fff;
+  position: relative; /* Фиксирует футер внизу только на коротких страницах */
+  bottom: 0;
+  width: 100%;
+  text-align: center;
 }
