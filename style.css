@@ -1,3 +1,4 @@
+/* Общие стили */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -9,12 +10,31 @@ body {
   flex-direction: column;
   background: linear-gradient(45deg, #4a90e2, #00c6ff, #ff00d4, #ff5b00);
   background-size: 400% 400%;
-  animation: gradientAnimation 10s ease infinite; /* Анимация плавного перехода */
+  animation: gradientAnimation 10s ease infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transition: background-color 0.5s ease;
 }
 
+/* Параллакс эффект */
 header {
   padding: 20px;
   color: white;
+  position: relative;
+  z-index: 1;
+}
+
+header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: -1;
+  transform: translateY(-10px);
 }
 
 section {
@@ -29,7 +49,6 @@ section {
   animation: slide-in 1.5s ease forwards;
 }
 
-/* Задержка для последовательного появления */
 .animated-subtext {
   animation-delay: 0.5s;
 }
@@ -67,13 +86,17 @@ section {
 a {
   color: #4a90e2;
   text-decoration: none;
+  position: relative;
+  display: inline-block;
+  padding: 5px;
+  transition: color 0.3s, transform 0.3s;
 }
 
 a:hover {
-  text-decoration: underline;
+  color: #ff00d4;
+  transform: scale(1.1);
 }
 
-/* Фиксированный футер */
 footer {
   padding: 10px;
   background-color: #333;
@@ -82,4 +105,51 @@ footer {
   bottom: 0;
   width: 100%;
   text-align: center;
+}
+
+/* Плавающая ссылка на Telegram */
+.telegram-icon {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #0088cc;
+  color: white;
+  padding: 15px;
+  border-radius: 30px;
+  font-size: 14px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, background-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.telegram-icon:hover {
+  background-color: #007bb5;
+  transform: scale(1.1);
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+  body {
+    background-size: 600% 600%;
+  }
+
+  header {
+    padding: 15px;
+  }
+
+  section {
+    padding: 15px;
+  }
+
+  footer {
+    padding: 10px;
+  }
+
+  .telegram-icon {
+    bottom: 20px;
+    right: 20px;
+    font-size: 12px;
+  }
 }
