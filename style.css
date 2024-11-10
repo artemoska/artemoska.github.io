@@ -2,23 +2,24 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f4f4f9;
   color: #333;
   text-align: center;
-  min-height: 100vh; /* Гарантирует, что контент займет весь экран */
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: linear-gradient(45deg, #4a90e2, #00c6ff, #ff00d4, #ff5b00);
+  background-size: 400% 400%;
+  animation: gradientAnimation 10s ease infinite; /* Анимация плавного перехода */
 }
 
 header {
   padding: 20px;
-  background-color: #4a90e2;
   color: white;
 }
 
 section {
   padding: 20px;
-  flex: 1; /* Это позволяет секциям занимать оставшееся пространство */
+  flex: 1;
 }
 
 /* Анимации выезда текста */
@@ -49,6 +50,19 @@ section {
   }
 }
 
+/* Анимация для градиента */
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 /* Стили ссылок */
 a {
   color: #4a90e2;
@@ -64,7 +78,7 @@ footer {
   padding: 10px;
   background-color: #333;
   color: #fff;
-  position: relative; /* Фиксирует футер внизу только на коротких страницах */
+  position: relative;
   bottom: 0;
   width: 100%;
   text-align: center;
