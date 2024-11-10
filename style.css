@@ -154,6 +154,7 @@ footer {
   }
 
   header {
+    font-size: 28px;
     padding: 15px;
   }
 
@@ -169,5 +170,18 @@ footer {
     bottom: 20px;
     right: 20px;
     font-size: 12px;
+  }
+
+  /* Настройка для текста в header на мобильных устройствах */
+  header h1 {
+    font-size: 24px;
+    text-align: center;
+    padding: 10px;
+  }
+
+  /* Изменение градиента на мобильных устройствах */
+  header {
+    background: linear-gradient(45deg, #ff00d4, #ff5b00, #4a90e2);
+    background-size: 400% 400%;
   }
 }
