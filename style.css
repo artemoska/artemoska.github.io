@@ -13,35 +13,39 @@ header {
   color: white;
 }
 
-h1, .intro, .contact, h2 {
+section {
+  padding: 20px;
+}
+
+/* Анимация для текста */
+.animated-text, .animated-subtext, .contact-section {
   opacity: 0;
-  transform: translateX(-100%);
-  animation: slide-in 1s ease-out forwards;
+  transform: translateY(-50px);
+  animation: slide-in 1.5s ease forwards;
 }
 
-h1 {
-  animation-delay: 0.2s;
+/* Задержка для подзаголовка и контактов */
+.animated-subtext {
+  animation-delay: 0.5s;
 }
 
-.intro {
-  animation-delay: 0.4s;
+.contact-section {
+  animation-delay: 1s;
 }
 
-h2 {
-  animation-delay: 0.6s;
-}
-
-.contact {
-  animation-delay: 0.8s;
-}
-
+/* Описание анимации выезда */
 @keyframes slide-in {
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0);
   }
 }
 
-section {
-  padding: 20px;
+a {
+  color: #4a90e2;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
