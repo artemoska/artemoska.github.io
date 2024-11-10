@@ -1,4 +1,4 @@
-/* Общие стили */
+/* Основные стили */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -11,38 +11,120 @@ body {
   background: linear-gradient(45deg, #4a90e2, #00c6ff, #ff00d4, #ff5b00);
   background-size: 400% 400%;
   animation: gradientAnimation 10s ease infinite;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  transition: background-color 0.5s ease;
 }
 
-/* Параллакс эффект */
+/* Заголовок */
 header {
   padding: 20px;
-  color: white;
   position: relative;
   z-index: 1;
 }
 
-header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.3);
-  z-index: -1;
-  transform: translateY(-10px);
+h1 {
+  font-size: 36px;
+  font-weight: bold;
+  color: transparent;
+  background: linear-gradient(45deg, #ff00d4, #ff5b00, #4a90e2);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: gradientText 5s ease infinite;
 }
 
+p.animated-subtext {
+  font-size: 18px;
+  color: #666;
+}
+
+/* Секции */
 section {
   padding: 20px;
   flex: 1;
 }
 
-/* Анимации выезда текста */
+h2 {
+  font-size: 24px;
+  margin: 20px 0;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+ul li {
+  margin: 10px 0;
+}
+
+a {
+  color: #4a90e2;
+  text-decoration: none;
+  transition: color 0.3s, transform 0.3s;
+}
+
+a:hover {
+  color: #ff00d4;
+  transform: scale(1.1);
+}
+
+footer {
+  padding: 10px;
+  background-color: #333;
+  color: #fff;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
+/* Плавающая кнопка Telegram */
+.telegram-icon {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #0088cc;
+  color: white;
+  padding: 15px;
+  border-radius: 30px;
+  font-size: 14px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, background-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.telegram-icon:hover {
+  background-color: #007bb5;
+  transform: scale(1.1);
+}
+
+/* Анимация текста */
+@keyframes gradientText {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Анимация выезда текста */
 .animated-text, .animated-subtext, .about-section, .contact-section {
   opacity: 0;
   transform: translateY(-50px);
@@ -66,90 +148,5 @@ section {
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-/* Анимация для градиента */
-@keyframes gradientAnimation {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-/* Стили ссылок */
-a {
-  color: #4a90e2;
-  text-decoration: none;
-  position: relative;
-  display: inline-block;
-  padding: 5px;
-  transition: color 0.3s, transform 0.3s;
-}
-
-a:hover {
-  color: #ff00d4;
-  transform: scale(1.1);
-}
-
-footer {
-  padding: 10px;
-  background-color: #333;
-  color: #fff;
-  position: relative;
-  bottom: 0;
-  width: 100%;
-  text-align: center;
-}
-
-/* Плавающая ссылка на Telegram */
-.telegram-icon {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  background-color: #0088cc;
-  color: white;
-  padding: 15px;
-  border-radius: 30px;
-  font-size: 14px;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease, background-color 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.telegram-icon:hover {
-  background-color: #007bb5;
-  transform: scale(1.1);
-}
-
-/* Адаптивность для мобильных устройств */
-@media (max-width: 768px) {
-  body {
-    background-size: 600% 600%;
-  }
-
-  header {
-    padding: 15px;
-  }
-
-  section {
-    padding: 15px;
-  }
-
-  footer {
-    padding: 10px;
-  }
-
-  .telegram-icon {
-    bottom: 20px;
-    right: 20px;
-    font-size: 12px;
   }
 }
