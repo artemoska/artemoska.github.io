@@ -11,6 +11,7 @@ body {
   background: linear-gradient(45deg, #4a90e2, #00c6ff, #ff00d4, #ff5b00);
   background-size: 400% 400%;
   animation: gradientAnimation 10s ease infinite;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Заголовок */
@@ -149,4 +150,19 @@ footer {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Стиль для черно-белого режима */
+.black-white-mode {
+  background-color: #fff;
+  color: #000;
+}
+
+.black-white-mode a {
+  color: #000;
+}
+
+.black-white-mode footer {
+  background-color: #000;
+  color: #fff;
 }
