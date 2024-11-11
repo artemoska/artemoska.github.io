@@ -1,9 +1,44 @@
-// Проверка прокрутки страницы для изменения темы
-window.addEventListener('scroll', () => {
-  // Проверяем, если пользователь прокрутил страницу более чем на 100 пикселей
-  if (window.scrollY > 100) {
-    document.body.classList.add('black-white-mode');  // Добавляем черно-белый стиль
-  } else {
-    document.body.classList.remove('black-white-mode');  // Убираем черно-белый стиль
+// Открытие и закрытие модального окна
+const themeButton = document.getElementById('theme-button');
+const themeModal = document.getElementById('theme-modal');
+const closeButton = document.querySelector('.close-button');
+
+themeButton.addEventListener('click', () => {
+  themeModal.style.display = 'flex';
+});
+
+closeButton.addEventListener('click', () => {
+  themeModal.style.display = 'none';
+});
+
+window.addEventListener('click', (event) => {
+  if (event.target === themeModal) {
+    themeModal.style.display = 'none';
+  }
+});
+
+// Переключение темы
+const lightThemeButton = document.getElementById('light-theme');
+const darkThemeButton = document.getElementById('dark-theme');
+
+lightThemeButton.addEventListener('click', () => {
+  document.body.classList.remove('dark-theme');
+  document.body.classList.add('light-theme');
+  localStorage.setItem('theme', 'light');
+  themeModal.style.display = 'none';
+});
+
+darkThemeButton.addEventListener('click', () => {
+  document.body.classList.remove('light-theme');
+  document.body.classList.add('dark-theme');
+  localStorage.setItem('theme', 'dark');
+  themeModal.style.display = 'none';
+});
+
+// Сохранение выбранной темы
+document.addEventListener('DOMContentLoaded', () => {
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme) {
+    document.body.classList.add(savedTheme === 'dark' ? 'dark-theme' : 'light-theme');
   }
 });
