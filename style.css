@@ -10,7 +10,7 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Переливающийся градиент */
+/* Градиент по умолчанию */
 body.gradient-theme {
   background: linear-gradient(135deg, #ff7e5f, #feb47b, #86a8e7, #91eae4);
   background-size: 400% 400%;
@@ -24,14 +24,19 @@ body.gradient-theme {
   100% { background-position: 0% 50%; }
 }
 
-/* Светлая и тёмная темы */
-body.light-theme {
-  background-color: #ffffff;
-  color: #333333;
+/* Серо-черно-белый градиент */
+body.gray-gradient {
+  background: linear-gradient(135deg, #333333, #555555, #777777, #999999);
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite;
+  color: #ffffff;
 }
 
-body.dark-theme {
-  background-color: #1e1e1e;
+/* Радужный градиент */
+body.rainbow-gradient {
+  background: linear-gradient(135deg, #ff0000, #ffa500, #ffff00, #008000, #0000ff, #4b0082, #ee82ee);
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite;
   color: #ffffff;
 }
 
