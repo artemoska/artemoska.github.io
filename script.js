@@ -53,3 +53,20 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   }
 });
+
+// Буквы A R T E M O S K A
+const text = 'A R T E M O S K A';
+const container = document.getElementById('text-container');
+
+let index = 0;
+const interval = setInterval(() => {
+  if (index < text.length) {
+    const letter = document.createElement('span');
+    letter.textContent = text[index];
+    letter.classList.add('letter');
+    container.appendChild(letter);
+    index++;
+  } else {
+    clearInterval(interval);
+  }
+}, 300);
