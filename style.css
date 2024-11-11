@@ -78,6 +78,21 @@ body.rainbow-gradient {
   border: none;
   border-radius: 5px;
 }
+/* Анимация кнопки смены темы */
+#theme-button {
+  background: linear-gradient(135deg, #ff7e5f, #feb47b, #86a8e7, #91eae4);
+  background-size: 400% 400%;
+  color: #ffffff;
+  animation: gradientAnimation 15s ease infinite;
+  transition: color 0.3s ease, background-color 0.3s ease;
+  border: none;
+  border-radius: 5px;
+}
+
+/* Инверсия цвета при наведении */
+#theme-button:hover {
+  filter: invert(1);
+}
 
 /* Плавающая строка внизу */
 .telegram-icon {
