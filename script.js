@@ -3,12 +3,12 @@ const aboutSection = document.querySelector('.about-section');
 
 // Функция для проверки, достиг ли пользователь нижней части страницы
 function checkScrollEnd() {
-  // Получаем высоту документа и положение прокрутки
+  // Получаем высоту окна и прокрутки
   const scrollPosition = window.scrollY + window.innerHeight;
   const pageHeight = document.documentElement.scrollHeight;
 
-  // Проверяем, если прокрутка достигла или чуть превысила нижнюю часть страницы
-  if (scrollPosition >= pageHeight - 10) {
+  // Проверяем, если прокрутка достигла нижней части страницы
+  if (scrollPosition >= pageHeight - 100) {  // Увеличиваем погрешность до 100px
     aboutSection.classList.add('visible');
   }
 }
@@ -16,5 +16,5 @@ function checkScrollEnd() {
 // Следим за прокруткой страницы
 window.addEventListener('scroll', checkScrollEnd);
 
-// Проверяем при первоначальной загрузке, чтобы убедиться, что блок скрыт в начале
+// Проверка при первоначальной загрузке страницы
 checkScrollEnd();
