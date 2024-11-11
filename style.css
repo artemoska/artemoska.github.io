@@ -104,6 +104,8 @@ section {
   padding: 20px;
 }
 
+/* Остальной стиль остается прежним */
+
 .about-section {
   margin: 20px;
   opacity: 0;
