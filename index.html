@@ -28,10 +28,18 @@
     <p>&copy; 2024 Artemoska</p>
   </footer>
 
-  <!-- Плавающая ссылка на Telegram -->
-  <a href="https://t.me/rubeton" class="telegram-icon" target="_blank">
-    <span>Контакт в Telegram: @rubeton</span>
-  </a>
+  <!-- Кнопка смены темы -->
+  <button id="theme-button">Сменить тему</button>
+
+  <!-- Модальное окно выбора темы -->
+  <div id="theme-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <h2>Выберите тему</h2>
+      <button id="light-theme">Белая тема</button>
+      <button id="dark-theme">Тёмная тема</button>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
