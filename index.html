@@ -4,37 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Визитка - Artemoska</title>
-
-  <!-- Open Graph метатеги -->
-  <meta property="og:title" content="Визитка - Artemoska">
-  <meta property="og:description" content="Привет! Я Artemoska - разработчик, блогер и энтузиаст новых технологий.">
-  <meta property="og:image" content="images/preview-image.jpg">
-  <meta property="og:url" content="https://artemoska.ru/">
-  <meta property="og:type" content="website">
-
-  <!-- Иконки для разных устройств -->
-  <link rel="apple-touch-icon" sizes="57x57" href="images/apple-icon-57x57.png">
-  <link rel="apple-touch-icon" sizes="60x60" href="images/apple-icon-60x60.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="images/apple-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="76x76" href="images/apple-icon-76x76.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="images/apple-icon-114x114.png">
-  <link rel="apple-touch-icon" sizes="120x120" href="images/apple-icon-120x120.png">
-  <link rel="apple-touch-icon" sizes="144x144" href="images/apple-icon-144x144.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="images/apple-icon-152x152.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-icon-180x180.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-  <link rel="manifest" href="images/manifest.json">
-  <meta name="msapplication-TileColor" content="#ffffff">
-  <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png">
-  <meta name="theme-color" content="#ffffff">
-
   <link rel="stylesheet" href="style.css">
-  <script defer src="theme.js"></script> <!-- Подключение JavaScript для управления темой -->
 </head>
-<body class="gradient-background"> <!-- Добавлен класс для градиентного фона -->
+<body class="gradient-theme">
   <header>
     <h1 class="animated-text">Привет, я Artemoska!</h1>
     <p class="animated-subtext">Разработчик, блогер и энтузиаст новых технологий.</p>
@@ -56,21 +28,25 @@
     <p>&copy; 2024 Artemoska</p>
   </footer>
 
-  <!-- Плавающая ссылка на Telegram -->
+  <!-- Кнопка смены темы -->
+  <button id="theme-button">Сменить градиент</button>
+
+  <!-- Модальное окно выбора градиента -->
+  <div id="theme-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <h2>Выберите градиент</h2>
+      <button id="default-gradient">Переливающийся градиент</button>
+      <button id="gray-gradient">Серо-черно-белый</button>
+      <button id="rainbow-gradient">Радужный градиент</button>
+    </div>
+  </div>
+
+  <!-- Плавающая строка внизу -->
   <a href="https://t.me/rubeton" class="telegram-icon" target="_blank">
     <span>Контакт в Telegram: @rubeton</span>
   </a>
 
-  <!-- Кнопка для выбора темы -->
-  <button class="theme-button" onclick="toggleThemeMenu()">Выбор темы</button>
-
-  <!-- Окно выбора темы -->
-  <div id="theme-menu" class="theme-menu">
-    <h3>Выберите тему</h3>
-    <button onclick="setTheme('default')">Переливающийся градиент</button>
-    <button onclick="setTheme('grey')">Серо-черно-белый</button>
-    <button onclick="setTheme('rainbow')">Радужный</button>
-    <button onclick="closeThemeMenu()">Закрыть</button>
-  </div>
+  <script src="script.js"></script>
 </body>
 </html>
