@@ -1,0 +1,162 @@
+/* Общие стили */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+h1, h2, h3 {
+    font-family: 'Helvetica', sans-serif;
+    color: #2C3E50;
+}
+
+/* Хедер */
+header {
+    background: #2980B9;
+    color: white;
+    padding: 20px 0;
+}
+
+header h1 {
+    font-size: 2.5em;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+header nav ul li {
+    margin: 0 15px;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1em;
+}
+
+header nav ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Основные секции */
+main {
+    padding: 40px 0;
+}
+
+/* Вступление */
+.intro {
+    background: #ECF0F1;
+    padding: 40px 0;
+    text-align: center;
+}
+
+.intro h2 {
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+.intro p {
+    font-size: 1.1em;
+    margin-bottom: 20px;
+}
+
+.intro ul {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.intro ul li {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+}
+
+.intro .btn {
+    background: #2980B9;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 1.2em;
+    border-radius: 5px;
+}
+
+.intro .btn:hover {
+    background: #3498DB;
+}
+
+/* Особенности */
+.features {
+    padding: 40px 0;
+    background: #fff;
+    text-align: center;
+}
+
+.features .feature {
+    margin: 20px 0;
+}
+
+.features .feature h3 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+}
+
+/* Контактная форма */
+.contact {
+    padding: 40px 0;
+    background: #ECF0F1;
+    text-align: center;
+}
+
+.contact form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.contact form input, .contact form textarea {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #BDC3C7;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.contact form button {
+    padding: 12px 20px;
+    background: #2980B9;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+}
+
+.contact form button:hover {
+    background: #3498DB;
+}
+
+/* Футер */
+footer {
+    background: #2980B9;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 1em;
+}
