@@ -1,4 +1,4 @@
-/* Основные стили */
+/* Общие стили */
 body {
   display: flex;
   flex-direction: column;
@@ -10,25 +10,7 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Заголовок - самый крупный, не жирный */
-header h1 {
-  font-size: 3rem;
-  font-weight: normal;
-}
-
-/* Увеличенный и жирный текст для основного контента */
-body, .about-section, .contact-section, footer {
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
-/* Кнопки остаются без изменений */
-button, .telegram-icon {
-  font-weight: normal;
-  font-size: 1rem;
-}
-
-/* Стили для градиентов */
+/* Градиент по умолчанию */
 body.gradient-theme {
   background: linear-gradient(135deg, #ff7e5f, #feb47b, #86a8e7, #91eae4);
   background-size: 400% 400%;
@@ -86,7 +68,6 @@ body.rainbow-gradient {
   right: 20px;
 }
 
-/* Кнопка для смены темы с инверсией градиента */
 #theme-button {
   position: fixed;
   bottom: 60px;
@@ -96,16 +77,6 @@ body.rainbow-gradient {
   cursor: pointer;
   border: none;
   border-radius: 5px;
-  color: #fff;
-  background: linear-gradient(135deg, #91eae4, #86a8e7, #feb47b, #ff7e5f);
-  background-size: 400% 400%;
-  animation: inverseGradientAnimation 15s ease infinite;
-}
-
-@keyframes inverseGradientAnimation {
-  0% { background-position: 100% 50%; }
-  50% { background-position: 0% 50%; }
-  100% { background-position: 100% 50%; }
 }
 
 /* Плавающая строка внизу */
