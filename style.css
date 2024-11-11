@@ -1,4 +1,15 @@
 /* Общие стили */
+body, h1, h2, h3, h4, h5, h6, p, a {
+  font-weight: bold;
+  font-size: 1.2em; /* Увеличение размера шрифта */
+}
+
+button {
+  font-weight: normal;
+  font-size: 1em; /* Оригинальный размер шрифта для кнопок */
+}
+
+/* Остальные стили для body и других элементов */
 body {
   display: flex;
   flex-direction: column;
