@@ -1,9 +1,30 @@
-/* Основные стили */
+/* Общие стили */
 body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  margin: 0;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Темы */
+/* Переливающийся градиент */
+body.gradient-theme {
+  background: linear-gradient(135deg, #ff7e5f, #feb47b, #86a8e7, #91eae4);
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite;
+  color: #ffffff;
+}
+
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Светлая и тёмная темы */
 body.light-theme {
   background-color: #ffffff;
   color: #333333;
@@ -44,11 +65,25 @@ body.dark-theme {
 
 #theme-button {
   position: fixed;
-  bottom: 20px;
+  bottom: 60px;
   right: 20px;
   padding: 10px 15px;
   font-size: 16px;
   cursor: pointer;
   border: none;
   border-radius: 5px;
+}
+
+/* Плавающая строка внизу */
+.telegram-icon {
+  position: fixed;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  font-size: 16px;
+  text-decoration: none;
 }
