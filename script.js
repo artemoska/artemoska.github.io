@@ -45,28 +45,21 @@ rainbowGradientButton.addEventListener('click', () => {
 
 // Сохранение выбранного градиента
 document.addEventListener('DOMContentLoaded', () => {
-  const savedGradient = localStorage.getItem('gradient');
-  if (savedGradient) {
-    document.body.classList.add(
-      savedGradient === 'gray' ? 'gray-gradient' :
-      savedGradient === 'rainbow' ? 'rainbow-gradient' : 'gradient-theme'
-    );
+  const gradient = localStorage.getItem('gradient');
+  if (gradient) {
+    document.body.classList.add(gradient + '-gradient');
   }
 });
 
-// Буквы A R T E M O S K A
+// Динамическое добавление букв "A R T E M O S K A"
+const textContainer = document.getElementById('text-container');
 const text = 'A R T E M O S K A';
-const container = document.getElementById('text-container');
+const letters = text.split('');
 
-let index = 0;
-const interval = setInterval(() => {
-  if (index < text.length) {
-    const letter = document.createElement('span');
-    letter.textContent = text[index];
-    letter.classList.add('letter');
-    container.appendChild(letter);
-    index++;
-  } else {
-    clearInterval(interval);
-  }
-}, 300);
+letters.forEach((letter, index) => {
+  const letterElement = document.createElement('span');
+  letterElement.textContent = letter;
+  letterElement.classList.add('letter');
+  letterElement.style.animationDelay = `${index * 0.2}s`;
+  textContainer.appendChild(letterElement);
+});
