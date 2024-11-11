@@ -1,80 +1,73 @@
 /* Общие стили */
 body {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(45deg, #6e7c7c, #c8e0e4);
+  color: #fff;
   margin: 0;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  padding: 0;
 }
 
-/* Градиентный фон */
-body.gradient-theme {
-  background: linear-gradient(135deg, #ff7e5f, #feb47b, #86a8e7, #91eae4);
-  background-size: 400% 400%;
-  animation: gradientAnimation 15s ease infinite;
-  color: #ffffff;
+header {
+  text-align: center;
+  padding: 50px;
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
-@keyframes gradientAnimation {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+h1.animated-text {
+  font-size: 3em;
+  animation: textAnimation 3s ease-in-out;
 }
 
-/* Эффект волн */
-body.wave-background {
-  background: url('path/to/wave-pattern.png') repeat-x center bottom;
-  animation: wave-animation 5s ease-in-out infinite;
+p.animated-subtext {
+  font-size: 1.5em;
+  animation: textAnimation 4s ease-in-out;
 }
 
-@keyframes wave-animation {
-  0% { background-position: 0 0; }
-  100% { background-position: 100% 0; }
+@keyframes textAnimation {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Стиль для появления текста */
-.animated-text {
-  font-size: 2rem;
-  font-weight: normal;
-  color: #fff;
-  animation: fadeIn 2s ease-out forwards;
+section {
+  padding: 20px;
 }
 
-@keyframes fadeIn {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
+.about-section, .contact-section {
+  margin: 20px;
 }
 
-.letter {
-  display: inline-block;
-  opacity: 0;
-  animation: fadeInLetter 0.5s forwards;
-}
-
-@keyframes fadeInLetter {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-.text-container {
-  font-size: 2rem;
-  font-family: 'Arial', sans-serif;
-  color: #fff;
-  margin-top: 20px;
+footer {
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
 }
 
 .telegram-icon {
   position: fixed;
-  bottom: 10px;
-  left: 0;
-  right: 0;
-  text-align: center;
-  padding: 10px;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: #ffffff;
-  font-size: 16px;
+  bottom: 20px;
+  left: 20px;
+  background-color: #0078e7;
+  padding: 10px 15px;
+  border-radius: 25px;
+  color: #fff;
   text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.telegram-icon span {
+  margin-left: 5px;
+}
+
+.telegram-icon:hover {
+  background-color: #0060b5;
 }
