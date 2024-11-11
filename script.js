@@ -17,39 +17,39 @@ window.addEventListener('click', (event) => {
   }
 });
 
-// Переключение темы
-const gradientThemeButton = document.getElementById('gradient-theme');
-const lightThemeButton = document.getElementById('light-theme');
-const darkThemeButton = document.getElementById('dark-theme');
+// Переключение градиента
+const defaultGradientButton = document.getElementById('default-gradient');
+const grayGradientButton = document.getElementById('gray-gradient');
+const rainbowGradientButton = document.getElementById('rainbow-gradient');
 
-gradientThemeButton.addEventListener('click', () => {
-  document.body.classList.remove('light-theme', 'dark-theme');
+defaultGradientButton.addEventListener('click', () => {
+  document.body.classList.remove('gray-gradient', 'rainbow-gradient');
   document.body.classList.add('gradient-theme');
-  localStorage.setItem('theme', 'gradient');
+  localStorage.setItem('gradient', 'default');
   themeModal.style.display = 'none';
 });
 
-lightThemeButton.addEventListener('click', () => {
-  document.body.classList.remove('gradient-theme', 'dark-theme');
-  document.body.classList.add('light-theme');
-  localStorage.setItem('theme', 'light');
+grayGradientButton.addEventListener('click', () => {
+  document.body.classList.remove('gradient-theme', 'rainbow-gradient');
+  document.body.classList.add('gray-gradient');
+  localStorage.setItem('gradient', 'gray');
   themeModal.style.display = 'none';
 });
 
-darkThemeButton.addEventListener('click', () => {
-  document.body.classList.remove('gradient-theme', 'light-theme');
-  document.body.classList.add('dark-theme');
-  localStorage.setItem('theme', 'dark');
+rainbowGradientButton.addEventListener('click', () => {
+  document.body.classList.remove('gradient-theme', 'gray-gradient');
+  document.body.classList.add('rainbow-gradient');
+  localStorage.setItem('gradient', 'rainbow');
   themeModal.style.display = 'none';
 });
 
-// Сохранение выбранной темы
+// Сохранение выбранного градиента
 document.addEventListener('DOMContentLoaded', () => {
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme) {
+  const savedGradient = localStorage.getItem('gradient');
+  if (savedGradient) {
     document.body.classList.add(
-      savedTheme === 'dark' ? 'dark-theme' :
-      savedTheme === 'light' ? 'light-theme' : 'gradient-theme'
+      savedGradient === 'gray' ? 'gray-gradient' :
+      savedGradient === 'rainbow' ? 'rainbow-gradient' : 'gradient-theme'
     );
   }
 });
