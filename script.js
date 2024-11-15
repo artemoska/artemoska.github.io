@@ -1,20 +1,33 @@
-// Получаем элемент "Обо мне"
 const aboutSection = document.querySelector('.about-section');
+let observerAdded = false;
 
-// Функция для проверки, достиг ли пользователь нижней части страницы
-function checkScrollEnd() {
-  // Получаем высоту окна и прокрутки
-  const scrollPosition = window.scrollY + window.innerHeight;
-  const pageHeight = document.documentElement.scrollHeight;
+function isAtPageEnd() {
+  return (
+    window.scrollY + window.innerHeight >=
+    (document.body.scrollHeight || document.documentElement.scrollHeight)
+  );
+}
 
-  // Проверяем, если прокрутка достигла нижней части страницы
-  if (scrollPosition >= pageHeight - 100) {  // Увеличиваем погрешность до 100px
-    aboutSection.classList.add('visible');
+function addVisibleClassIfNeeded() {
+  if (isAtPageEnd()) {
+    if (!observerAdded) {
+      aboutSection.classList.add('visible');
+      window.removeEventListener('scroll', addVisibleClassIfNeeded);
+      observerAdded = true;
+    }
   }
 }
 
-// Следим за прокруткой страницы
-window.addEventListener('scroll', checkScrollEnd);
+addVisibleClassIfNeeded();
 
-// Проверка при первоначальной загрузке страницы
-checkScrollEnd();
+document.addEventListener("DOMContentLoaded", function () {
+  window.addEventListener("scroll", debounce(addVisibleClassIfNeeded, 150));
+});
+
+function debounce(func, delay) {
+  let timeout;
+  return function (...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), delay);
+  };
+}
