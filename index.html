@@ -1,68 +1,67 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Визитка - Artemoska</title>
-  <link rel="stylesheet" href="style.css">
-
-  <!-- Open Graph метатеги -->
-  <meta property="og:title" content="Artemoska - Разработчик и блогер" />
-  <meta property="og:description" content="Разработчик, блогер и энтузиаст новых технологий. Создаю уникальные приложения и игры." />
-  <meta property="og:image" content="https://artemoska.ru/preview-image.jpg" />
-  <meta property="og:url" content="https://artemoska.ru" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Artemoska" />
-
-  <!-- Twitter Card метатеги -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Визитка - Artemoska">
-  <meta name="twitter:description" content="Привет! Я Artemoska - разработчик, блогер и энтузиаст новых технологий.">
-  <meta name="twitter:image" content="images/preview-image.jpg">
-
-  <!-- Иконки для устройства -->
-  <link rel="icon" type="image/png" sizes="192x192" href="images/android-icon-192x192.png">
-  <meta name="theme-color" content="#ffffff">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Киберпанк Сайт</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="gradient-theme">
-  <header>
-    <div class="animated-text-container">
-      <span class="animated-letter">A</span>
-      <span class="animated-letter">R</span>
-      <span class="animated-letter">T</span>
-      <span class="animated-letter">E</span>
-      <span class="animated-letter">M</span>
-      <span class="animated-letter">O</span>
-      <span class="animated-letter">S</span>
-      <span class="animated-letter">K</span>
-      <span class="animated-letter">A</span>
-    </div>
-    <h1 class="header-text">Привет, я Artemoska!</h1>
-    <p class="animated-subtext">Разработчик, блогер и энтузиаст новых технологий.</p>
-  </header>
-  
-  <!-- Секция "Обо мне" -->
-  <section class="about-section" id="about">
-    <h2>Обо мне</h2>
-    <p>Я занимаюсь разработкой и созданием уникальных приложений и игр. Люблю экспериментировать с кодом и делиться знаниями с другими. Увлекаюсь видео-контентом на YouTube, а также активно участвую в социальных сетях, таких как Telegram и VK.</p>
-  </section>
-
-  <section class="contact-section">
-    <h2>Контакты</h2>
-    <p>Telegram: <a href="https://t.me/artemoska" target="_blank">@artemoska</a> / <a href="https://t.me/tonxui" target="_blank">@tonxui</a></p>
-    <p>VK: <a href="https://vk.com/artemoska" target="_blank">@artemoska</a></p>
-    <p>YouTube: <a href="https://youtube.com/@artemoska" target="_blank">Мой YouTube канал</a></p>
-    <li><a href="https://rubeton.artemoska.ru">Rubeton Admin</a></li>
-  </section>
-
-  <footer>
-    <p>&copy; 2024 Artemoska. Все права защищены.</p>
-  </footer>
-
-  <a href="https://t.me/rubeton" class="telegram-icon" target="_blank">
-    <span>Контакт в Telegram: @rubeton</span>
-  </a>
-
-  <script src="script.js"></script>
+<body>
+    <header class="header">
+        <h1>Добро пожаловать в мир Киберпанка!</h1>
+    </header>
+    
+    <main class="content">
+        <section id="game1" class="game">
+            <h2>Игра 1: Угадай число</h2>
+            <p>Угадайте число от 1 до 100:</p>
+            <input type="number" id="guessInput" placeholder="Введите число">
+            <button onclick="guessNumber()">Угадать</button>
+            <p id="result"></p>
+        </section>
+        
+        <section id="game2" class="game">
+            <h2>Игра 2: Найди слово</h2>
+            <p>Найдите все слова в сетке:</p>
+            <div id="wordGrid">
+                <span>K</span><span>I</span><span>B</span><span>E</span><span>R</span><span>P</span><span>A</span><span>N</span><span>K</span>
+                <br>
+                <span>H</span><span>A</span><span>C</span><span>K</span><span>E</span><span>R</span><span>S</span><span>T</span><span>Y</span><span>L</span><span>E</span>
+                <br>
+                <span>M</span><span>O</span><span>D</span><span>U</span><span>L</span><span>E</span><span>S</span><span>X</span><span>Z</span><span>V</span><span>Q</span>
+                <br>
+                <span>W</span><span>I</span><span>F</span><span>I</span><span>N</span><span>J</span><span>E</span><span>C</span><span>T</span><span>I</span><span>O</span><span>N</span>
+                <br>
+                <span>G</span><span>R</span><span>I</span><span>D</span><span>H</span><span>U</span><span>B</span><span>S</span><span>P</span><span>A</span><span>C</span><span>E</span>
+                <br>
+                <span>D</span><span>R</span><span>O</span><span>N</span><span>E</span><span>S</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span>
+                <br>
+                <span>T</span><span>E</span><span>C</span><span>H</span><span>N</span><span>O</span><span>L</span><span>O</span><span>G</span><span>Y</span><span>X</span><span>Y</span><span>Z</span>
+                <br>
+                <span>M</span><span>E</span><span>T</span><span>R</span><span>O</span><span>P</span><span>O</span><span>L</span><span>I</span><span>S</span><span>W</span><span>X</span><span>Y</span>
+                <br>
+                <span>B</span><span>I</span><span>O</span><span>T</span><span>E</span><span>C</span><span>H</span><span>I</span><span>K</span><span>S</span><span>T</span><span>Y</span><span>L</span><span>E</span>
+                <br>
+                <span>S</span><span>M</span><span>A</span><span>R</span><span>T</span><span>P</span><span>H</span><span>O</span><span>N</span><span>E</span><span>S</span><span>X</span><span>Y</span><span>Z</span>
+                <br>
+                <span>V</span><span>I</span><span>R</span><span>T</span><span>U</span><span>A</span><span>L</span><span>R</span><span>E</span><span>A</span><span>L</span><span>I</span><span>T</span><span>Y</span>
+                <br>
+            </div>
+            <p>Слова для поиска: HACKERSTYLE, WIFI, GRIDHUBS, TECHNOLOGY, METROPOLIS, BIOTECH, SMARTPHONES, VIRTUALREALITY.</p>
+        </section>
+        
+        <section id="game3" class="game">
+            <h2>Игра 3: Пазл</h2>
+            <canvas id="puzzleCanvas" width="300" height="200"></canvas>
+            <button onclick="shufflePuzzle()">Перемешать пазл</button>
+            <button onclick="solvePuzzle()">Решить пазл</button>
+        </section>
+    </main>
+    
+    <footer class="footer">
+        <p>© 2023 Ваш Киберпанк Сайт</p>
+    </footer>
+    
+    <script src="script.js"></script>
 </body>
 </html>
