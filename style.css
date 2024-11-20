@@ -1,108 +1,153 @@
-/* Основные стили */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
+/* Общие стили */
 body {
-    font-family: 'Orbitron', sans-serif;
-    background-color: #000;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(45deg, #6e7c7c, #c8e0e4);
+  color: #fff;
+  margin: 0;
+  padding: 0;
 }
 
-.header {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 36px;
+header {
+  position: relative;
+  text-align: center;
+  padding: 50px;
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
-.content {
-    max-width: 800px;
-    width: 90%;
-    margin: auto;
-    text-align: left;
+.animated-text-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
 }
 
-.game {
-    border: 4px solid #00ffa6;
-    border-radius: 10px;
-    overflow: hidden;
-    position: relative;
-    z-index: 1;
-    transition: all .3s ease-in-out;
-    cursor: pointer;
-    min-height: 150px;
+.animated-letter {
+  opacity: 0;
+  animation: letterAnimation 1s ease-in-out forwards;
+  margin-right: 5px;
 }
 
-.game h2 {
-    background: linear-gradient(to right, #ff416c, #7f00ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    line-height: normal;
-    letter-spacing: 1px;
+.animated-letter:nth-child(1) {
+  animation-delay: 0s;
 }
 
-.game p {
-    padding: 15px;
+.animated-letter:nth-child(2) {
+  animation-delay: 0.5s;
 }
 
-.game input[type="number"] {
-    width: 50px;
-    height: 30px;
-    outline: none;
-    text-align: center;
+.animated-letter:nth-child(3) {
+  animation-delay: 1s;
 }
 
-.game button {
-    appearance: none;
-    border: none;
-    cursor: pointer;
-    outline: none;
-    vertical-align: middle;
-    white-space: nowrap;
-    user-select: none;
-    transform: translateZ(0);
-    transition: transform 0.25s ease-out;
-    will-change: transform;
-    backface-visibility: hidden;
-    perspective: 1000px;
-    filter: brightness(105%);
-    background: rgba(255, 65, 108, 0.75);
-    color: white;
-    fill: currentColor;
-    stroke: currentColor;
+.animated-letter:nth-child(4) {
+  animation-delay: 1.5s;
+}
+
+.animated-letter:nth-child(5) {
+  animation-delay: 2s;
+}
+
+.animated-letter:nth-child(6) {
+  animation-delay: 2.5s;
+}
+
+.animated-letter:nth-child(7) {
+  animation-delay: 3s;
+}
+
+.animated-letter:nth-child(8) {
+  animation-delay: 3.5s;
+}
+
+.animated-letter:nth-child(9) {
+  animation-delay: 4s;
+}
+
+@keyframes letterAnimation {
+  0% {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
     opacity: 1;
-    pointer-events: auto;
+  }
 }
 
-.game:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 40px rgba(127, 0, 255, .35);
+h1.header-text {
+  font-size: 3em;
+  animation: textAnimation 3s ease-in-out;
 }
 
-#wordGrid span {
-    display: inline-block;
-    float: left;
-    clear: both;
-    padding: 5px;
+p.animated-subtext {
+  font-size: 1.5em;
+  animation: textAnimation 4s ease-in-out;
 }
 
-#puzzleCanvas {
-    margin: 0 auto;
+@keyframes textAnimation {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+section {
+  padding: 20px;
+}
+
+/* Остальной стиль остается прежним */
+
+.about-section {
+  margin: 20px;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.about-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.contact-section {
+  margin: 20px;
 }
 
 footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #111;
-    color: #999;
-    display: flex;
-    justify-content: center;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+}
+
+.telegram-icon {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background-color: #0078e7;
+  padding: 10px 15px;
+  border-radius: 25px;
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.telegram-icon span {
+  margin-left: 5px;
+}
+
+.telegram-icon:hover {
+  background-color: #0060b5;
 }
