@@ -45,8 +45,8 @@ const playTextAnimation = () => {
     // Первая строка через 13 секунд
     setTimeout(() => {
         displayLine();
-        // Следующие строки каждые 3 секунды
-        textInterval = setInterval(displayLine, 3000);
+        // Следующие строки каждые 3.5 секунды
+        textInterval = setInterval(displayLine, 3500);
     }, 13000); // Задержка перед первой строкой
 };
 
