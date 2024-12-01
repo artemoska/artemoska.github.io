@@ -5,7 +5,7 @@ const animatedTexts = document.querySelectorAll('.animated-text');
 
 // Обработчик нажатия кнопки "Play"
 playButton.addEventListener('click', function() {
-    // Воспроизводим музыку
+    // Воспроизведение музыки
     audio.play().then(() => {
         console.log('Музыка начала воспроизведение!');
     }).catch(error => {
