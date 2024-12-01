@@ -52,24 +52,21 @@ const playTextAnimation = () => {
 
 // Функция для отображения строки
 const displayLine = () => {
-    container.innerHTML = ''; // Очистка предыдущей строки
-    const textElement = document.createElement('div');
+    container.innerHTML = ""; // Очистка предыдущей строки
+    const textElement = document.createElement("div");
     textElement.textContent = lines[lineIndex];
-    textElement.className = 'text-line';
-    container.appendChild(textElement);
+    textElement.className = "text-line";
 
-    lineIndex = (lineIndex + 1) % lines.length; // Цикл строк
-};
-
-// Установка кастомной анимации для 8-й строки
-    if (lineIndex === 8) {
-        textElement.style.animationDuration = "2.0s";
+    // Установка кастомной анимации для 8-й строки (индекс 7)
+    if (lineIndex === 7) {
+        textElement.style.animationDuration = "2.5s";
     }
 
     container.appendChild(textElement);
 
     lineIndex = (lineIndex + 1) % lines.length; // Цикл строк
 };
+
 
 // Управление воспроизведением
 playButton.addEventListener('click', () => {
