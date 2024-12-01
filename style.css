@@ -63,23 +63,71 @@ body {
 
 /* Задержка для каждой строки */
 .animated-text:nth-child(1) {
-    animation-delay: 0s;
+    animation-delay: 14s;
 }
 .animated-text:nth-child(2) {
-    animation-delay: 3s;
+    animation-delay: 17s;
 }
 .animated-text:nth-child(3) {
-    animation-delay: 6s;
+    animation-delay: 20s;
 }
 .animated-text:nth-child(4) {
-    animation-delay: 9s;
+    animation-delay: 23s;
 }
 .animated-text:nth-child(5) {
-    animation-delay: 12s;
+    animation-delay: 26s;
 }
 .animated-text:nth-child(6) {
-    animation-delay: 15s;
+    animation-delay: 29s;
 }
 .animated-text:nth-child(7) {
-    animation-delay: 18s;
+    animation-delay: 32s;
+}
+.animated-text:nth-child(8) {
+    animation-delay: 35s;
+}
+.animated-text:nth-child(9) {
+    animation-delay: 38s;
+}
+.animated-text:nth-child(10) {
+    animation-delay: 41s;
+}
+.animated-text:nth-child(11) {
+    animation-delay: 44s;
+}
+.animated-text:nth-child(12) {
+    animation-delay: 47s;
+}
+.animated-text:nth-child(13) {
+    animation-delay: 50s;
+}
+.animated-text:nth-child(14) {
+    animation-delay: 53s;
+}
+.animated-text:nth-child(15) {
+    animation-delay: 56s;
+}
+.animated-text:nth-child(16) {
+    animation-delay: 59s;
+}
+.animated-text:nth-child(17) {
+    animation-delay: 62s;
+}
+.animated-text:nth-child(18) {
+    animation-delay: 65s;
+}
+.animated-text:nth-child(19) {
+    animation-delay: 68s;
+}
+.animated-text:nth-child(20) {
+    animation-delay: 71s;
+}
+.animated-text:nth-child(21) {
+    animation-delay: 74s;
+}
+.animated-text:nth-child(22) {
+    animation-delay: 77s;
+}
+.animated-text:nth-child(23) {
+    animation-delay: 80s;
 }
