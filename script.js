@@ -63,7 +63,7 @@ const displayLine = () => {
 
 // Установка кастомной анимации для 8-й строки
     if (lineIndex === 8) {
-        textElement.style.animationDuration = "2.5s";
+        textElement.style.animationDuration = "2.0s";
     }
 
     container.appendChild(textElement);
