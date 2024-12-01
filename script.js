@@ -27,10 +27,11 @@ playButton.addEventListener('click', function() {
                     animatedTexts[currentIndex].classList.add('played-out');
                 }, 3000); // Через 3 секунды она уедет влево
 
+                // Переход к следующей строке
                 currentIndex++;
 
-                // Плавно переходим к следующей строке каждые 3 секунды
-                setTimeout(playTextAnimation, 3000);
+                // Плавно переходим к следующей строке каждые 6 секунд (3 для появления + 3 для уезда)
+                setTimeout(playTextAnimation, 6000);
             }
         }
 
