@@ -17,15 +17,23 @@ let lineIndex = 0;
 let textInterval;
 
 const playTextAnimation = () => {
-    textInterval = setInterval(() => {
-        container.innerHTML = ''; // Очистка предыдущей строки
-        const textElement = document.createElement('div');
-        textElement.textContent = lines[lineIndex];
-        textElement.className = 'text-line';
-        container.appendChild(textElement);
+    // Первая строка через 13 секунд
+    setTimeout(() => {
+        displayLine();
+        // Следующие строки каждые 3 секунды
+        textInterval = setInterval(displayLine, 3000);
+    }, 13000); // Задержка перед первой строкой
+};
 
-        lineIndex = (lineIndex + 1) % lines.length; // Цикл строк
-    }, 3000); // Интервал смены строк
+// Функция для отображения строки
+const displayLine = () => {
+    container.innerHTML = ''; // Очистка предыдущей строки
+    const textElement = document.createElement('div');
+    textElement.textContent = lines[lineIndex];
+    textElement.className = 'text-line';
+    container.appendChild(textElement);
+
+    lineIndex = (lineIndex + 1) % lines.length; // Цикл строк
 };
 
 // Управление воспроизведением
