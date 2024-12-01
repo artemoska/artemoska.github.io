@@ -25,7 +25,7 @@ body {
     background: linear-gradient(90deg, red, blue);
     background-clip: text;
     color: transparent;
-    animation: slideIn 4s ease-out forwards, fadeOut 4s ease-in 18s forwards;
+    animation: slideIn 4s ease-out forwards, fadeOut 4s ease-in forwards;
     opacity: 0;
     position: absolute;
     top: 0;
@@ -33,39 +33,40 @@ body {
     transform: translateX(-50%);
 }
 
-.animated-text:nth-child(1) { animation-delay: 0s; }
-.animated-text:nth-child(2) { animation-delay: 4s; }
-.animated-text:nth-child(3) { animation-delay: 8s; }
-.animated-text:nth-child(4) { animation-delay: 12s; }
-.animated-text:nth-child(5) { animation-delay: 16s; }
-.animated-text:nth-child(6) { animation-delay: 20s; }
-.animated-text:nth-child(7) { animation-delay: 24s; }
-.animated-text:nth-child(8) { animation-delay: 28s; }
-.animated-text:nth-child(9) { animation-delay: 32s; }
-.animated-text:nth-child(10) { animation-delay: 36s; }
-.animated-text:nth-child(11) { animation-delay: 40s; }
-.animated-text:nth-child(12) { animation-delay: 44s; }
-.animated-text:nth-child(13) { animation-delay: 48s; }
-.animated-text:nth-child(14) { animation-delay: 52s; }
+/* Первая строка появляется через 14 секунд */
+.animated-text:nth-child(1) { animation-delay: 14s; }
+.animated-text:nth-child(2) { animation-delay: 17s; }
+.animated-text:nth-child(3) { animation-delay: 20s; }
+.animated-text:nth-child(4) { animation-delay: 23s; }
+.animated-text:nth-child(5) { animation-delay: 26s; }
+.animated-text:nth-child(6) { animation-delay: 29s; }
+.animated-text:nth-child(7) { animation-delay: 32s; }
+.animated-text:nth-child(8) { animation-delay: 35s; }
+.animated-text:nth-child(9) { animation-delay: 38s; }
+.animated-text:nth-child(10) { animation-delay: 41s; }
+.animated-text:nth-child(11) { animation-delay: 44s; }
+.animated-text:nth-child(12) { animation-delay: 47s; }
+.animated-text:nth-child(13) { animation-delay: 50s; }
+.animated-text:nth-child(14) { animation-delay: 53s; }
 .animated-text:nth-child(15) { animation-delay: 56s; }
-.animated-text:nth-child(16) { animation-delay: 60s; }
-.animated-text:nth-child(17) { animation-delay: 64s; }
-.animated-text:nth-child(18) { animation-delay: 68s; }
-.animated-text:nth-child(19) { animation-delay: 72s; }
-.animated-text:nth-child(20) { animation-delay: 76s; }
-.animated-text:nth-child(21) { animation-delay: 80s; }
-.animated-text:nth-child(22) { animation-delay: 84s; }
-.animated-text:nth-child(23) { animation-delay: 88s; }
-.animated-text:nth-child(24) { animation-delay: 92s; }
-.animated-text:nth-child(25) { animation-delay: 96s; }
-.animated-text:nth-child(26) { animation-delay: 100s; }
-.animated-text:nth-child(27) { animation-delay: 104s; }
-.animated-text:nth-child(28) { animation-delay: 108s; }
-.animated-text:nth-child(29) { animation-delay: 112s; }
-.animated-text:nth-child(30) { animation-delay: 116s; }
-.animated-text:nth-child(31) { animation-delay: 120s; }
-.animated-text:nth-child(32) { animation-delay: 124s; }
-.animated-text:nth-child(33) { animation-delay: 128s; }
+.animated-text:nth-child(16) { animation-delay: 59s; }
+.animated-text:nth-child(17) { animation-delay: 62s; }
+.animated-text:nth-child(18) { animation-delay: 65s; }
+.animated-text:nth-child(19) { animation-delay: 68s; }
+.animated-text:nth-child(20) { animation-delay: 71s; }
+.animated-text:nth-child(21) { animation-delay: 74s; }
+.animated-text:nth-child(22) { animation-delay: 77s; }
+.animated-text:nth-child(23) { animation-delay: 80s; }
+.animated-text:nth-child(24) { animation-delay: 83s; }
+.animated-text:nth-child(25) { animation-delay: 86s; }
+.animated-text:nth-child(26) { animation-delay: 89s; }
+.animated-text:nth-child(27) { animation-delay: 92s; }
+.animated-text:nth-child(28) { animation-delay: 95s; }
+.animated-text:nth-child(29) { animation-delay: 98s; }
+.animated-text:nth-child(30) { animation-delay: 101s; }
+.animated-text:nth-child(31) { animation-delay: 104s; }
+.animated-text:nth-child(32) { animation-delay: 107s; }
+.animated-text:nth-child(33) { animation-delay: 110s; }
 
 @keyframes slideIn {
     0% {
