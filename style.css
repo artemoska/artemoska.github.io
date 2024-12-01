@@ -1,3 +1,4 @@
+/* Устанавливаем базовые стили для страницы */
 body {
     margin: 0;
     padding: 0;
@@ -25,15 +26,20 @@ body {
     background: linear-gradient(90deg, red, blue);
     background-clip: text;
     color: transparent;
-    animation: slideIn 4s ease-out forwards, fadeOut 4s ease-in forwards;
     opacity: 0;
     position: absolute;
     top: 0;
     left: 50%;
     transform: translateX(-50%);
+    transition: opacity 4s ease-out, transform 4s ease-out;
 }
 
-/* Первая строка появляется через 14 секунд */
+/* Задержка анимации для каждой строки */
+.animated-text.played {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
 .animated-text:nth-child(1) { animation-delay: 14s; }
 .animated-text:nth-child(2) { animation-delay: 17s; }
 .animated-text:nth-child(3) { animation-delay: 20s; }
@@ -67,23 +73,3 @@ body {
 .animated-text:nth-child(31) { animation-delay: 104s; }
 .animated-text:nth-child(32) { animation-delay: 107s; }
 .animated-text:nth-child(33) { animation-delay: 110s; }
-
-@keyframes slideIn {
-    0% {
-        opacity: 0;
-        transform: translateX(-50%) translateY(100%);
-    }
-    100% {
-        opacity: 1;
-        transform: translateX(-50%) translateY(0);
-    }
-}
-
-@keyframes fadeOut {
-    0% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-    }
-}
