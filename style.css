@@ -1,61 +1,153 @@
+/* Общие стили */
 body {
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(135deg, #ff0075, #7000ff);
-    color: white;
-    font-family: 'Arial', sans-serif;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(45deg, #6e7c7c, #c8e0e4);
+  color: #fff;
+  margin: 0;
+  padding: 0;
 }
 
-#player-container {
-    margin-bottom: 20px;
+header {
+  position: relative;
+  text-align: center;
+  padding: 50px;
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
-button {
-    background-color: #7000ff;
-    color: white;
-    font-size: 1.5rem;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 20px;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s;
+.animated-text-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
 }
 
-button:hover {
-    transform: scale(1.1);
+.animated-letter {
+  opacity: 0;
+  animation: letterAnimation 1s ease-in-out forwards;
+  margin-right: 5px;
 }
 
-#text-container {
-    text-align: center;
-    font-size: 2rem;
-    line-height: 1.5;
-    width: 80%;
-    max-width: 800px;
+.animated-letter:nth-child(1) {
+  animation-delay: 0s;
 }
 
-.text-line {
+.animated-letter:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.animated-letter:nth-child(3) {
+  animation-delay: 1s;
+}
+
+.animated-letter:nth-child(4) {
+  animation-delay: 1.5s;
+}
+
+.animated-letter:nth-child(5) {
+  animation-delay: 2s;
+}
+
+.animated-letter:nth-child(6) {
+  animation-delay: 2.5s;
+}
+
+.animated-letter:nth-child(7) {
+  animation-delay: 3s;
+}
+
+.animated-letter:nth-child(8) {
+  animation-delay: 3.5s;
+}
+
+.animated-letter:nth-child(9) {
+  animation-delay: 4s;
+}
+
+@keyframes letterAnimation {
+  0% {
+    transform: translateY(30px);
     opacity: 0;
-    animation: fadeInOut 3s linear;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
-@keyframes fadeInOut {
-    0% {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    50% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    100% {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
+h1.header-text {
+  font-size: 3em;
+  animation: textAnimation 3s ease-in-out;
+}
+
+p.animated-subtext {
+  font-size: 1.5em;
+  animation: textAnimation 4s ease-in-out;
+}
+
+@keyframes textAnimation {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+section {
+  padding: 20px;
+}
+
+/* Остальной стиль остается прежним */
+
+.about-section {
+  margin: 20px;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+
+.about-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.contact-section {
+  margin: 20px;
+}
+
+footer {
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+}
+
+.telegram-icon {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  background-color: #0078e7;
+  padding: 10px 15px;
+  border-radius: 25px;
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.telegram-icon span {
+  margin-left: 5px;
+}
+
+.telegram-icon:hover {
+  background-color: #0060b5;
 }
