@@ -61,6 +61,16 @@ const displayLine = () => {
     lineIndex = (lineIndex + 1) % lines.length; // Цикл строк
 };
 
+// Установка кастомной анимации для 8-й строки
+    if (lineIndex === 8) {
+        textElement.style.animationDuration = "2.5s";
+    }
+
+    container.appendChild(textElement);
+
+    lineIndex = (lineIndex + 1) % lines.length; // Цикл строк
+};
+
 // Управление воспроизведением
 playButton.addEventListener('click', () => {
     if (audio.paused) {
