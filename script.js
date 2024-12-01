@@ -1,30 +1,33 @@
-document.getElementById('playButton').addEventListener('click', function() {
-    var audio = document.getElementById('music');
-    
-    // Запуск воспроизведения музыки при нажатии кнопки
-    audio.play().then(function() {
-        console.log('Музыка начала воспроизводиться!');
-    }).catch(function(error) {
-        console.log('Ошибка воспроизведения музыки:', error);
+// Получаем кнопку и музыку
+const playButton = document.getElementById('playButton');
+const audio = document.getElementById('music');
+const animatedTexts = document.querySelectorAll('.animated-text');
+
+// Обработчик нажатия кнопки "Play"
+playButton.addEventListener('click', function() {
+    // Воспроизводим музыку
+    audio.play().then(() => {
+        console.log('Музыка начала воспроизведение!');
+    }).catch(error => {
+        console.error('Ошибка воспроизведения музыки:', error);
     });
 
-    // Начинаем анимацию текста через 14 секунд
-    setTimeout(function() {
-        let texts = document.querySelectorAll('.animated-text');
-        let currentText = 0;
+    // Начинаем анимацию через 14 секунд после нажатия кнопки
+    setTimeout(() => {
+        let currentIndex = 0;
 
-        // Функция для запуска анимации каждой строки
-        function animateText() {
-            if (currentText < texts.length) {
-                texts[currentText].style.animation = 'gradientAnimation 3s ease infinite, slideIn 3s ease forwards';
-                texts[currentText].style.opacity = 1; // Делаем текст видимым
-                currentText++;
+        // Функция для добавления класса "played" к каждой строке
+        function playTextAnimation() {
+            if (currentIndex < animatedTexts.length) {
+                animatedTexts[currentIndex].classList.add('played');
+                currentIndex++;
 
-                // Плавно исчезает и появляется следующая строка через 3 секунды
-                setTimeout(animateText, 3000);
+                // Плавно переходим к следующей строке каждые 3 секунды
+                setTimeout(playTextAnimation, 3000);
             }
         }
 
-        animateText(); // Запуск анимации
-    }, 14000); // Задержка перед анимацией
+        // Запускаем анимацию текста
+        playTextAnimation();
+    }, 14000); // Задержка перед началом анимации
 });
