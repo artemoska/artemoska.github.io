@@ -1,47 +1,61 @@
-/* Устанавливаем базовые стили для страницы */
 body {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: black;
+    background: linear-gradient(135deg, #ff0075, #7000ff);
     color: white;
-    height: 100vh;
-    overflow: hidden;
-}
-
-.text-container {
-    position: relative;
-    height: 100%;
+    font-family: 'Arial', sans-serif;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#player-container {
+    margin-bottom: 20px;
+}
+
+button {
+    background-color: #7000ff;
+    color: white;
+    font-size: 1.5rem;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s;
+}
+
+button:hover {
+    transform: scale(1.1);
+}
+
+#text-container {
     text-align: center;
+    font-size: 2rem;
+    line-height: 1.5;
+    width: 80%;
+    max-width: 800px;
 }
 
-.animated-text {
-    font-size: 4rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    background: linear-gradient(90deg, red, blue);
-    background-clip: text;
-    color: transparent;
+.text-line {
     opacity: 0;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(100%); /* Начальная позиция справа */
-    transition: opacity 2s ease-out, transform 2s ease-out;
+    animation: fadeInOut 3s linear;
 }
 
-/* Когда строка появляется (при добавлении класса played) */
-.animated-text.played {
-    opacity: 1;
-    transform: translateX(-50%); /* Строка выезжает по центру */
-}
-
-/* Когда строка исчезает (класс played-out) */
-.animated-text.played-out {
-    transform: translateX(-100%); /* Строка уезжает влево */
-    opacity: 0;
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
 }
