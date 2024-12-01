@@ -19,7 +19,14 @@ playButton.addEventListener('click', function() {
         // Функция для добавления класса "played" к каждой строке
         function playTextAnimation() {
             if (currentIndex < animatedTexts.length) {
+                // Добавляем класс для показа
                 animatedTexts[currentIndex].classList.add('played');
+                
+                // Через 3 секунды строка начнёт уезжать влево
+                setTimeout(() => {
+                    animatedTexts[currentIndex].classList.add('played-out');
+                }, 3000); // Через 3 секунды она уедет влево
+
                 currentIndex++;
 
                 // Плавно переходим к следующей строке каждые 3 секунды
