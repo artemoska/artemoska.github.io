@@ -34,48 +34,14 @@ body {
     transition: opacity 2s ease-out, transform 2s ease-out;
 }
 
-/* Задержка анимации для каждой строки */
+/* Когда строка появляется (при добавлении класса played) */
 .animated-text.played {
     opacity: 1;
     transform: translateX(-50%); /* Строка выезжает по центру */
 }
 
-/* Анимация уезда влево */
+/* Когда строка исчезает (класс played-out) */
 .animated-text.played-out {
     transform: translateX(-100%); /* Строка уезжает влево */
     opacity: 0;
 }
-
-.animated-text:nth-child(1) { animation-delay: 14s; }
-.animated-text:nth-child(2) { animation-delay: 17s; }
-.animated-text:nth-child(3) { animation-delay: 20s; }
-.animated-text:nth-child(4) { animation-delay: 23s; }
-.animated-text:nth-child(5) { animation-delay: 26s; }
-.animated-text:nth-child(6) { animation-delay: 29s; }
-.animated-text:nth-child(7) { animation-delay: 32s; }
-.animated-text:nth-child(8) { animation-delay: 35s; }
-.animated-text:nth-child(9) { animation-delay: 38s; }
-.animated-text:nth-child(10) { animation-delay: 41s; }
-.animated-text:nth-child(11) { animation-delay: 44s; }
-.animated-text:nth-child(12) { animation-delay: 47s; }
-.animated-text:nth-child(13) { animation-delay: 50s; }
-.animated-text:nth-child(14) { animation-delay: 53s; }
-.animated-text:nth-child(15) { animation-delay: 56s; }
-.animated-text:nth-child(16) { animation-delay: 59s; }
-.animated-text:nth-child(17) { animation-delay: 62s; }
-.animated-text:nth-child(18) { animation-delay: 65s; }
-.animated-text:nth-child(19) { animation-delay: 68s; }
-.animated-text:nth-child(20) { animation-delay: 71s; }
-.animated-text:nth-child(21) { animation-delay: 74s; }
-.animated-text:nth-child(22) { animation-delay: 77s; }
-.animated-text:nth-child(23) { animation-delay: 80s; }
-.animated-text:nth-child(24) { animation-delay: 83s; }
-.animated-text:nth-child(25) { animation-delay: 86s; }
-.animated-text:nth-child(26) { animation-delay: 89s; }
-.animated-text:nth-child(27) { animation-delay: 92s; }
-.animated-text:nth-child(28) { animation-delay: 95s; }
-.animated-text:nth-child(29) { animation-delay: 98s; }
-.animated-text:nth-child(30) { animation-delay: 101s; }
-.animated-text:nth-child(31) { animation-delay: 104s; }
-.animated-text:nth-child(32) { animation-delay: 107s; }
-.animated-text:nth-child(33) { animation-delay: 110s; }
