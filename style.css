@@ -1,69 +1,46 @@
-/* Основной фон */
 body {
-  margin: 0;
-  font-family: 'Arial', sans-serif;
-  background: black;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  overflow: hidden;
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
 }
 
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.text-container {
+    text-align: center;
+    font-size: 24px;
+    color: transparent;
+    background: linear-gradient(90deg, red, blue);
+    -webkit-background-clip: text;
+    animation: fade-in 1s ease-in-out forwards;
 }
 
-.lyrics {
-  text-align: center;
-}
-
-.line {
-  font-size: 2rem;
-  font-weight: bold;
-  margin: 10px 0;
-  opacity: 0;
-  transform: translateY(100px);
-  animation: slideIn 1.5s ease forwards;
-}
-
-/* Анимация плавного появления */
-@keyframes slideIn {
-  0% {
+.text-container p {
+    margin: 10px 0;
+    transform: translateY(50px);
     opacity: 0;
-    transform: translateY(100px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    animation: slide-up 1s ease-in-out forwards;
 }
 
-/* Задержка для каждой строки */
-.line:nth-child(1) { animation-delay: 0.5s; }
-.line:nth-child(2) { animation-delay: 1.5s; }
-.line:nth-child(3) { animation-delay: 2.5s; }
-.line:nth-child(4) { animation-delay: 3.5s; }
-.line:nth-child(5) { animation-delay: 4.5s; }
-.line:nth-child(6) { animation-delay: 5.5s; }
-.line:nth-child(7) { animation-delay: 6.5s; }
+.text-container p:nth-child(1) { animation-delay: 0s; }
+.text-container p:nth-child(2) { animation-delay: 0.5s; }
+.text-container p:nth-child(3) { animation-delay: 1s; }
+.text-container p:nth-child(4) { animation-delay: 1.5s; }
+.text-container p:nth-child(5) { animation-delay: 2s; }
+.text-container p:nth-child(6) { animation-delay: 2.5s; }
+.text-container p:nth-child(7) { animation-delay: 3s; }
 
-/* Градиентный текст с анимацией */
-.line {
-  background: linear-gradient(90deg, red, blue);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: gradientShift 3s infinite alternate;
-}
-
-@keyframes gradientShift {
-  0% {
-    background-position: 0% 50%;
-  }
-  100% {
-    background-position: 100% 50%;
-  }
+@keyframes slide-up {
+    0% {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
