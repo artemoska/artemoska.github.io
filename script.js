@@ -1,41 +1,42 @@
-// Получаем кнопку и музыку
-const playButton = document.getElementById('playButton');
-const audio = document.getElementById('music');
-const animatedTexts = document.querySelectorAll('.animated-text');
+// Песенные строки
+const lines = [
+    "Я вампир, какая твоя группа крови?",
+    "Дай мне укусить, я клянусь, не будет больно",
+    "Приходи ко мне, я не хочу быть одиноким",
+    "Нож в моих руках поможет мне чертить дороги",
+    "Детка, я вампир",
+];
 
-// Обработчик нажатия кнопки "Play"
-playButton.addEventListener('click', function() {
-    // Воспроизведение музыки
-    audio.play().then(() => {
-        console.log('Музыка начала воспроизведение!');
-    }).catch(error => {
-        console.error('Ошибка воспроизведения музыки:', error);
-    });
+// Ссылки на элементы
+const container = document.getElementById('text-container');
+const playButton = document.getElementById('play-button');
+const audio = document.getElementById('audio');
 
-    // Начинаем анимацию через 14 секунд после нажатия кнопки
-    setTimeout(() => {
-        let currentIndex = 0;
+// Добавление текста под бит
+let lineIndex = 0;
+let textInterval;
 
-        // Функция для добавления класса "played" к каждой строке
-        function playTextAnimation() {
-            if (currentIndex < animatedTexts.length) {
-                // Добавляем класс для показа
-                animatedTexts[currentIndex].classList.add('played');
-                
-                // Через 3 секунды строка начнёт уезжать влево
-                setTimeout(() => {
-                    animatedTexts[currentIndex].classList.add('played-out');
-                }, 3000); // Через 3 секунды она уедет влево
+const playTextAnimation = () => {
+    textInterval = setInterval(() => {
+        container.innerHTML = ''; // Очистка предыдущей строки
+        const textElement = document.createElement('div');
+        textElement.textContent = lines[lineIndex];
+        textElement.className = 'text-line';
+        container.appendChild(textElement);
 
-                // Переход к следующей строке
-                currentIndex++;
+        lineIndex = (lineIndex + 1) % lines.length; // Цикл строк
+    }, 3000); // Интервал смены строк
+};
 
-                // Плавно переходим к следующей строке каждые 6 секунд (3 для появления + 3 для уезда)
-                setTimeout(playTextAnimation, 6000);
-            }
-        }
-
-        // Запускаем анимацию текста
+// Управление воспроизведением
+playButton.addEventListener('click', () => {
+    if (audio.paused) {
+        audio.play();
+        playButton.textContent = '⏸️ Пауза';
         playTextAnimation();
-    }, 14000); // Задержка перед началом анимации
+    } else {
+        audio.pause();
+        playButton.textContent = '▶️ Воспроизвести';
+        clearInterval(textInterval);
+    }
 });
