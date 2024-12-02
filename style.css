@@ -7,11 +7,33 @@ body {
   padding: 0;
 }
 
+/* Анимационный градиентный фон */
+.animated-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, #5800ff, #000);
+  animation: moveBackground 8s infinite alternate ease-in-out;
+  z-index: -1;
+}
+
+@keyframes moveBackground {
+  0% {
+    transform: translate(-25%, -25%) scale(1);
+  }
+  100% {
+    transform: translate(25%, 25%) scale(1.2);
+  }
+}
+
 header {
   position: relative;
   text-align: center;
   padding: 50px;
   background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1;
 }
 
 .animated-text-container {
@@ -32,41 +54,15 @@ header {
   margin-right: 5px;
 }
 
-.animated-letter:nth-child(1) {
-  animation-delay: 0s;
-}
-
-.animated-letter:nth-child(2) {
-  animation-delay: 0.5s;
-}
-
-.animated-letter:nth-child(3) {
-  animation-delay: 1s;
-}
-
-.animated-letter:nth-child(4) {
-  animation-delay: 1.5s;
-}
-
-.animated-letter:nth-child(5) {
-  animation-delay: 2s;
-}
-
-.animated-letter:nth-child(6) {
-  animation-delay: 2.5s;
-}
-
-.animated-letter:nth-child(7) {
-  animation-delay: 3s;
-}
-
-.animated-letter:nth-child(8) {
-  animation-delay: 3.5s;
-}
-
-.animated-letter:nth-child(9) {
-  animation-delay: 4s;
-}
+.animated-letter:nth-child(1) { animation-delay: 0s; }
+.animated-letter:nth-child(2) { animation-delay: 0.5s; }
+.animated-letter:nth-child(3) { animation-delay: 1s; }
+.animated-letter:nth-child(4) { animation-delay: 1.5s; }
+.animated-letter:nth-child(5) { animation-delay: 2s; }
+.animated-letter:nth-child(6) { animation-delay: 2.5s; }
+.animated-letter:nth-child(7) { animation-delay: 3s; }
+.animated-letter:nth-child(8) { animation-delay: 3.5s; }
+.animated-letter:nth-child(9) { animation-delay: 4s; }
 
 @keyframes letterAnimation {
   0% {
@@ -99,12 +95,6 @@ p.animated-subtext {
     transform: translateY(0);
   }
 }
-
-section {
-  padding: 20px;
-}
-
-/* Остальной стиль остается прежним */
 
 .about-section {
   margin: 20px;
