@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Визитка - Artemoska</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artemoska</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>Привет, я Artemoska!</h1>
-    <p>Добро пожаловать на мой сайт-визитку.</p>
-  </header>
-  
-  <section>
-    <h2>Обо мне</h2>
-    <p>Краткая информация обо мне, моих навыках и проектах.</p>
-  </section>
-
-  <section>
-    <h2>Контакты</h2>
-    <p>Email: <a href="mailto:your_email@example.com">your_email@example.com</a></p>
-    <p>Telegram: <a href="https://t.me/artemoska" target="_blank">@artemoska</a></p>
-  </section>
+    <div class="background">
+        <canvas id="heartCanvas"></canvas>
+    </div>
+    <header>
+        <h1>Привет, я Artemoska!</h1>
+        <p>Добро пожаловать на мой персональный сайт.</p>
+    </header>
+    <main>
+        <section id="about">
+            <h2>Обо мне</h2>
+            <p>Привет! Я Artemoska — программист, администратор RubetonChat и создатель множества проектов. Разрабатываю ботов, игры и веб-приложения.</p>
+            <p>Занимаюсь разработкой игр, Telegram и VK ботов.</p>
+            <p>Связаться со мной можно в Telegram: <a href="https://t.me/artemoska">@artemoska</a> или <a href="https://t.me/tonxui">@tonxui</a>.</p>
+        </section>
+        <section id="effects">
+            <h2>Выбор эффектов</h2>
+            <button onclick="toggleHearts()">Включить/Выключить сердца</button>
+            <button onclick="changeTheme()">Сменить тему</button>
+        </section>
+    </main>
+    <script src="script.js"></script>
 </body>
 </html>
