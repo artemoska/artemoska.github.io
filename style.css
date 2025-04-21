@@ -1,78 +1,104 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Press Start 2P', cursive;
-    background: linear-gradient(135deg, #ff99cc, #ffccff);
-    color: #222;
-    transition: background 0.5s ease;
-    image-rendering: pixelated;
-}
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Press Start 2P', cursive;
+            background: linear-gradient(135deg, #ff99cc, #ffccff);
+            color: #222;
+            transition: background 0.5s ease;
+            image-rendering: pixelated;
+        }
 
-.background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    z-index: -1;
-}
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
 
-canvas {
-    display: block;
-}
+        canvas {
+            display: block;
+        }
 
-header {
-    text-align: center;
-    padding: 40px 20px;
-    border-bottom: 4px dashed #ff66b2;
-}
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            border-bottom: 4px dashed #ff66b2;
+        }
 
-h1, h2 {
-    font-size: 1.5em;
-    margin: 0.5em 0;
-    color: #ff0080;
-    text-shadow: 2px 2px #fff;
-}
+        h1, h2 {
+            font-size: 1.5em;
+            margin: 0.5em 0;
+            color: #ff0080;
+            text-shadow: 2px 2px #fff;
+        }
 
-p, a {
-    font-size: 0.8em;
-    line-height: 1.8;
-    color: #550055;
-    text-decoration: none;
-}
+        p, a {
+            font-size: 0.8em;
+            line-height: 1.8;
+            color: #550055;
+            text-decoration: none;
+        }
 
-main {
-    text-align: center;
-    padding: 30px;
-}
+        main {
+            text-align: center;
+            padding: 30px;
+        }
 
-button {
-    background: #ff66b2;
-    color: #fff;
-    border: 4px solid #ff99cc;
-    padding: 10px 20px;
-    font-size: 0.8em;
-    cursor: pointer;
-    margin: 10px;
-    border-radius: 0;
-    box-shadow: 4px 4px #ff3399;
-    transition: transform 0.1s ease;
-    font-family: 'Press Start 2P', cursive;
-}
+        button {
+            background: #ff66b2;
+            color: #fff;
+            border: 4px solid #ff99cc;
+            padding: 10px 20px;
+            font-size: 0.8em;
+            cursor: pointer;
+            margin: 10px;
+            border-radius: 0;
+            box-shadow: 4px 4px #ff3399;
+            transition: transform 0.1s ease;
+            font-family: 'Press Start 2P', cursive;
+        }
 
-button:hover {
-    background: #ff33aa;
-    transform: translateY(-2px);
-}
+        button:hover {
+            background: #ff33aa;
+            transform: translateY(-2px);
+        }
 
-a:hover {
-    text-decoration: underline;
-}
+        a:hover {
+            text-decoration: underline;
+        }
 
-.dark-theme {
-    background: #2c003e !important;
-    color: #eee !important;
-}
+        .dark-theme {
+            background: #2c003e !important;
+            color: #eee !important;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.6s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            h1, h2 {
+                font-size: 1em;
+            }
+
+            button {
+                font-size: 0.6em;
+                padding: 8px 14px;
+            }
+
+            p, a {
+                font-size: 0.7em;
+            }
+        }
