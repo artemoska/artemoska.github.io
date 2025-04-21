@@ -6,25 +6,45 @@ let animationFrame;
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-class Heart {
+class PixelHeart {
     constructor() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 10 + 5;
-        this.speedY = Math.random() * 1 + 0.5;
+        this.size = Math.floor(Math.random() * 3 + 2) * 4; // кратно 4
+        this.speedY = Math.random() * 0.7 + 0.3;
     }
+
     draw() {
-        ctx.fillStyle = "rgba(255, 50, 50, 0.8)";
-        ctx.beginPath();
-        ctx.moveTo(this.x, this.y);
-        ctx.bezierCurveTo(this.x - this.size, this.y - this.size, this.x - this.size * 2, this.y + this.size / 2, this.x, this.y + this.size);
-        ctx.bezierCurveTo(this.x + this.size * 2, this.y + this.size / 2, this.x + this.size, this.y - this.size, this.x, this.y);
-        ctx.fill();
+        ctx.fillStyle = "#ff66b2";
+
+        const s = this.size;
+        const px = this.x;
+        const py = this.y;
+
+        // пиксельный сердечко: рисуем "блоками" (4x4 или 8x8)
+        const block = s / 4;
+        // координаты квадратов (матрица)
+        const pattern = [
+            [0,1,0,1,0],
+            [1,1,1,1,1],
+            [1,1,1,1,1],
+            [0,1,1,1,0],
+            [0,0,1,0,0]
+        ];
+
+        pattern.forEach((row, i) => {
+            row.forEach((cell, j) => {
+                if (cell) {
+                    ctx.fillRect(px + j * block, py + i * block, block, block);
+                }
+            });
+        });
     }
+
     update() {
         this.y -= this.speedY;
-        if (this.y < -this.size) {
-            this.y = canvas.height;
+        if (this.y < -this.size * 2) {
+            this.y = canvas.height + this.size;
             this.x = Math.random() * canvas.width;
         }
     }
@@ -32,8 +52,8 @@ class Heart {
 
 function createHearts() {
     hearts = [];
-    for (let i = 0; i < 100; i++) {
-        hearts.push(new Heart());
+    for (let i = 0; i < 80; i++) {
+        hearts.push(new PixelHeart());
     }
 }
 
@@ -60,11 +80,11 @@ function toggleHearts() {
 function changeTheme() {
     document.body.classList.toggle("dark-theme");
     if (document.body.classList.contains("dark-theme")) {
-        document.body.style.background = "#222";
+        document.body.style.background = "#2c003e";
         document.body.style.color = "#fff";
     } else {
-        document.body.style.background = "linear-gradient(135deg, #ff9a9e, #fad0c4)";
-        document.body.style.color = "#333";
+        document.body.style.background = "linear-gradient(135deg, #ff99cc, #ffccff)";
+        document.body.style.color = "#222";
     }
 }
 
