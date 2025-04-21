@@ -6,7 +6,6 @@
     <title>Artemoska</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-</head>
 <body>
     <div class="background">
         <canvas id="heartCanvas"></canvas>
@@ -18,7 +17,7 @@
     </header>
 
     <main>
-        <section id="about">
+        <section id="about" class="reveal">
             <h2>★ Обо мне</h2>
             <p>Привет! Я Artemoska — программист, админ RubetonChat и создатель проектов.</p>
             <p>Делаю игры, Telegram и VK ботов, веб-приложения и просто магию на JavaScript.</p>
@@ -29,13 +28,22 @@
             </p>
         </section>
 
-        <section id="effects">
+        <section id="projects" class="reveal">
+            <h2>📦 Проекты</h2>
+            <p>RubetonChat, геймдев-эксперименты, боты и мини-игры — следи за обновлениями!</p>
+        </section>
+
+        <section id="effects" class="reveal">
             <h2>♥ Эффекты</h2>
             <button onclick="toggleHearts()">💖 Сердечки</button>
             <button onclick="changeTheme()">🌙 Сменить тему</button>
         </section>
-    </main>
 
-    <script src="script.js"></script>
-</body>
-</html>
+        <section id="contacts" class="reveal">
+            <h2>📫 Контакты</h2>
+            <p>Пиши в Telegram, если хочешь сотрудничать, задать вопрос или просто пообщаться.</p>
+            <p>
+                <a href="https://t.me/artemoska">@artemoska</a><br>
+            </p>
+        </section>
+    </main>
