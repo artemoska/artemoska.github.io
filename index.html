@@ -3,39 +3,835 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artemoska</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <title>Artemoska | Docker-style Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --docker-blue: #2496ed;
+            --docker-dark: #0d1117;
+            --docker-darker: #090c10;
+            --docker-gray: #161b22;
+            --docker-light-gray: #30363d;
+            --docker-text: #e6edf3;
+            --docker-green: #3fb950;
+            --docker-red: #f85149;
+            --docker-yellow: #d29922;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--docker-dark);
+            color: var(--docker-text);
+            font-family: 'Ubuntu Mono', monospace;
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(36, 150, 237, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(63, 185, 80, 0.1) 0%, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        /* Терминальный эффект */
+        .terminal-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(22, 27, 34, 0.8),
+                rgba(22, 27, 34, 0.8) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        /* Шапка */
+        header {
+            background: linear-gradient(to bottom, var(--docker-darker), var(--docker-gray));
+            padding: 2rem 1rem;
+            text-align: center;
+            border-bottom: 3px solid var(--docker-blue);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .docker-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .docker-particle {
+            position: absolute;
+            background-color: var(--docker-blue);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .docker-logo {
+            width: 80px;
+            filter: drop-shadow(0 0 10px var(--docker-blue));
+            margin-bottom: 1rem;
+            animation: pulse 3s infinite;
+        }
+
+        h1 {
+            color: var(--docker-blue);
+            text-shadow: 0 0 10px rgba(36, 150, 237, 0.5);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        h1::after {
+            content: '_';
+            animation: blink 1s infinite;
+            color: var(--docker-blue);
+            position: absolute;
+            right: -15px;
+        }
+
+        .header-subtitle {
+            color: var(--docker-text);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 5px rgba(230, 237, 243, 0.3);
+        }
+
+        /* Основное содержимое */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        section {
+            background: var(--docker-gray);
+            margin: 2rem 0;
+            padding: 2rem;
+            border: 1px solid var(--docker-light-gray);
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--docker-blue), var(--docker-green));
+        }
+
+        h2 {
+            color: var(--docker-green);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--docker-blue);
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        ul {
+            list-style-type: none;
+            margin-bottom: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--docker-blue);
+        }
+
+        /* Кнопки */
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: var(--docker-blue);
+            color: var(--docker-text);
+            border: none;
+            border-radius: 4px;
+            font-family: 'Ubuntu Mono', monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            margin-right: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            background: #1a7fcc;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.5s ease;
+        }
+
+        .btn:hover::after {
+            left: 100%;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--docker-blue);
+            color: var(--docker-blue);
+        }
+
+        .btn-outline:hover {
+            background: rgba(36, 150, 237, 0.1);
+        }
+
+        /* Социальные сети */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            background: var(--docker-gray);
+            color: var(--docker-text);
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid var(--docker-light-gray);
+        }
+
+        .social-link:hover {
+            background: var(--docker-light-gray);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .social-link i {
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        .telegram { color: #0088cc; }
+        .github { color: var(--docker-text); }
+        .email { color: var(--docker-red); }
+
+        /* Навыки */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .skill-card {
+            background: var(--docker-gray);
+            border: 1px solid var(--docker-light-gray);
+            border-radius: 5px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .skill-card:hover {
+            border-color: var(--docker-blue);
+            box-shadow: 0 5px 15px rgba(36, 150, 237, 0.2);
+        }
+
+        .skill-card h3 {
+            color: var(--docker-blue);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .skill-card h3 i {
+            margin-right: 0.8rem;
+        }
+
+        .skill-level {
+            height: 8px;
+            background: var(--docker-light-gray);
+            border-radius: 4px;
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+
+        .skill-level-bar {
+            height: 100%;
+            background: linear-gradient(to right, var(--docker-blue), var(--docker-green));
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+
+        /* Проекты */
+        .projects-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            background: var(--docker-gray);
+            border: 1px solid var(--docker-light-gray);
+            border-radius: 5px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-image {
+            height: 180px;
+            background: var(--docker-darker);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--docker-light-gray);
+            font-size: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(36, 150, 237, 0.1), rgba(63, 185, 80, 0.1));
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-content h3 {
+            color: var(--docker-blue);
+            margin-bottom: 0.8rem;
+        }
+
+        .project-content p {
+            color: var(--docker-text);
+            opacity: 0.8;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-tag {
+            background: rgba(36, 150, 237, 0.1);
+            color: var(--docker-blue);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* Футер */
+        footer {
+            background: linear-gradient(to top, var(--docker-darker), var(--docker-gray));
+            text-align: center;
+            padding: 3rem 1rem;
+            border-top: 3px solid var(--docker-blue);
+            margin-top: 3rem;
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none"/><path d="M20,20 L80,20 L80,80 L20,80 Z" stroke="%232496ed" stroke-width="0.5" fill="none"/></svg>');
+            opacity: 0.05;
+            pointer-events: none;
+        }
+
+        .footer-logo {
+            width: 60px;
+            filter: drop-shadow(0 0 5px var(--docker-blue));
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-text {
+            color: var(--docker-text);
+            opacity: 0.7;
+            margin-bottom: 1.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .copyright {
+            color: var(--docker-text);
+            opacity: 0.5;
+            font-size: 0.9rem;
+        }
+
+        /* Анимации */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Эффекты при прокрутке */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .animate-on-scroll.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Консольный эффект */
+        .console-effect {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(13, 17, 23, 0.9);
+            border: 1px solid var(--docker-blue);
+            border-radius: 5px;
+            padding: 1rem;
+            max-width: 300px;
+            box-shadow: 0 0 20px rgba(36, 150, 237, 0.3);
+            z-index: 1000;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .console-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            color: var(--docker-blue);
+        }
+
+        .console-close {
+            cursor: pointer;
+            color: var(--docker-red);
+        }
+
+        .console-content {
+            color: var(--docker-green);
+            font-family: 'Ubuntu Mono', monospace;
+        }
+
+        .console-input {
+            color: var(--docker-blue);
+        }
+
+        .console-cursor {
+            display: inline-block;
+            width: 10px;
+            height: 16px;
+            background: var(--docker-blue);
+            vertical-align: middle;
+            margin-left: 2px;
+            animation: blink 1s infinite;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            section {
+                padding: 1.5rem;
+            }
+
+            .skills-container, .projects-container {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .header-subtitle {
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="background">
-        <canvas id="heartCanvas"></canvas>
-    </div>
-
+    <div class="terminal-effect"></div>
+    
     <header>
-        <h1>☆ Привет, я Artemoska! ☆</h1>
-        <p>Добро пожаловать в мою берлогу)</p>
+        <div class="docker-particles" id="particles"></div>
+        <div class="header-content">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Docker_%28container_engine%29_logo.svg" 
+                 alt="Docker Logo" 
+                 class="docker-logo">
+            <h1>☆ Привет, я Artemoska! ☆</h1>
+            <p class="header-subtitle">Добро пожаловать в мою берлогу)</p>
+        </div>
     </header>
 
-    <main>
-        <section id="about">
+    <div class="container">
+        <section class="animate-on-scroll">
             <h2>★ Обо мне</h2>
             <p>Привет! Я Artemoska — программист, админ RubetonChat и создатель проектов.</p>
             <p>Делаю игры, Telegram и VK ботов, веб-приложения и просто магию на JavaScript.</p>
-            <p>
-                Telegram:
-                <a href="https://t.me/artemoska">@artemoska</a> /
-                <a href="https://t.me/tonxui">@tonxui</a>
-            </p>
+            <div class="social-links">
+                <a href="https://t.me/artemoska" class="social-link" target="_blank">
+                    <i class="fab fa-telegram telegram"></i> Telegram: @artemoska
+                </a>
+                <a href="https://t.me/tonxui" class="social-link" target="_blank">
+                    <i class="fab fa-telegram telegram"></i> Telegram: @tonxui
+                </a>
+            </div>
         </section>
 
-        <section id="effects">
-            <h2>♥ Эффекты</h2>
-            <button onclick="toggleHearts()">💖 Сердечки</button>
-            <button onclick="changeTheme()">🌙 Сменить тему</button>
+        <section class="animate-on-scroll">
+            <h2>★ Навыки</h2>
+            <div class="skills-container">
+                <div class="skill-card">
+                    <h3><i class="fab fa-js"></i> JavaScript</h3>
+                    <p>Создание интерактивных веб-приложений, работа с API, анимации.</p>
+                    <div class="skill-level">
+                        <div class="skill-level-bar" style="width: 90%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3><i class="fab fa-telegram"></i> Telegram Bots</h3>
+                    <p>Разработка ботов любой сложности на Node.js и Python.</p>
+                    <div class="skill-level">
+                        <div class="skill-level-bar" style="width: 85%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3><i class="fab fa-html5"></i> HTML/CSS</h3>
+                    <p>Создание адаптивных и современных интерфейсов.</p>
+                    <div class="skill-level">
+                        <div class="skill-level-bar" style="width: 80%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3><i class="fab fa-node-js"></i> Node.js</h3>
+                    <p>Серверная разработка, REST API, WebSockets.</p>
+                    <div class="skill-level">
+                        <div class="skill-level-bar" style="width: 75%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3><i class="fas fa-gamepad"></i> Game Dev</h3>
+                    <p>Разработка браузерных игр на JavaScript.</p>
+                    <div class="skill-level">
+                        <div class="skill-level-bar" style="width: 70%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3><i class="fab fa-docker"></i> Docker</h3>
+                    <p>Контейнеризация приложений, оркестрация.</p>
+                    <div class="skill-level">
+                        <div class="skill-level-bar" style="width: 65%"></div>
+                    </div>
+                </div>
+            </div>
         </section>
-    </main>
 
-    <script src="script.js"></script>
+        <section class="animate-on-scroll">
+            <h2>★ Проекты</h2>
+            <div class="projects-container">
+                <div class="project-card">
+                    <div class="project-image">
+                        <i class="fab fa-telegram" style="color: var(--docker-blue);"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>RubetonChat</h3>
+                        <p>Многофункциональный Telegram чат с модерацией и развлекательными функциями.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">Telegram</span>
+                            <span class="project-tag">Node.js</span>
+                            <span class="project-tag">Bot API</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="btn btn-outline">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <i class="fas fa-gamepad" style="color: var(--docker-green);"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>Browser Game</h3>
+                        <p>Интерактивная браузерная игра с использованием Canvas и WebGL.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">JavaScript</span>
+                            <span class="project-tag">HTML5</span>
+                            <span class="project-tag">Game Dev</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="btn btn-outline">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <i class="fas fa-robot" style="color: var(--docker-yellow);"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>VK Bot</h3>
+                        <p>Умный бот для ВКонтакте с интеграцией внешних API и базой данных.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">VK API</span>
+                            <span class="project-tag">Python</span>
+                            <span class="project-tag">MySQL</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="btn btn-outline">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="animate-on-scroll">
+            <h2>★ Контакты</h2>
+            <p>Хотите сотрудничать или просто пообщаться? Я всегда открыт для новых идей и проектов!</p>
+            <div class="social-links">
+                <a href="https://t.me/artemoska" class="social-link" target="_blank">
+                    <i class="fab fa-telegram telegram"></i> Telegram
+                </a>
+                <a href="https://github.com/artemoska" class="social-link" target="_blank">
+                    <i class="fab fa-github github"></i> GitHub
+                </a>
+                <a href="mailto:your-email@example.com" class="social-link" target="_blank">
+                    <i class="fas fa-envelope email"></i> Email
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Docker_%28container_engine%29_logo.svg" 
+             alt="Docker Logo" 
+             class="footer-logo">
+        <p class="footer-text">"Контейнеризирую идеи, развертываю решения"</p>
+        <p class="copyright">© 2023 Artemoska. All rights reserved.</p>
+    </footer>
+
+    <div class="console-effect" id="console">
+        <div class="console-header">
+            <span>Artemoska Console</span>
+            <span class="console-close" onclick="document.getElementById('console').style.display='none'">×</span>
+        </div>
+        <div class="console-content">
+            <div>> Initializing system...</div>
+            <div>> Loading portfolio data...</div>
+            <div>> Connecting to Telegram API...</div>
+            <div>> Ready!</div>
+            <div class="console-input">> _<span class="console-cursor"></span></div>
+        </div>
+    </div>
+
+    <script>
+        // Анимация частиц в шапке
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'docker-particle';
+                
+                // Случайные параметры
+                const size = Math.random() * 5 + 2;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const delay = Math.random() * 5;
+                const duration = Math.random() * 10 + 5;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.opacity = Math.random() * 0.5 + 0.1;
+                particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+                
+                container.appendChild(particle);
+            }
+        }
+
+        // Анимация при прокрутке
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.animate-on-scroll');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+                
+                if (elementPosition < screenPosition) {
+                    element.classList.add('animated');
+                }
+            });
+        }
+
+        // Консольный текст
+        function typeConsoleText() {
+            const phrases = [
+                "git pull origin master",
+                "npm start",
+                "docker-compose up -d",
+                "node app.js",
+                "Проверка связи...",
+                "Готов к работе!",
+                "Загрузка данных...",
+                "Инициализация завершена"
+            ];
+            
+            const consoleInput = document.querySelector('.console-input');
+            let currentPhrase = 0;
+            let currentChar = 0;
+            let isDeleting = false;
+            let isWaiting = false;
+            
+            function type() {
+                if (isWaiting) return;
+                
+                const currentText = phrases[currentPhrase];
+                
+                if (!isDeleting && currentChar < currentText.length) {
+                    consoleInput.innerHTML = `> ${currentText.substring(0, currentChar + 1)}<span class="console-cursor"></span>`;
+                    currentChar++;
+                    setTimeout(type, 100);
+                } else if (isDeleting && currentChar > 0) {
+                    consoleInput.innerHTML = `> ${currentText.substring(0, currentChar - 1)}<span class="console-cursor"></span>`;
+                    currentChar--;
+                    setTimeout(type, 50);
+                } else {
+                    if (!isDeleting && currentChar === currentText.length) {
+                        isWaiting = true;
+                        setTimeout(() => {
+                            isWaiting = false;
+                            isDeleting = true;
+                            setTimeout(type, 1000);
+                        }, 2000);
+                    } else if (isDeleting && currentChar === 0) {
+                        isDeleting = false;
+                        currentPhrase = (currentPhrase + 1) % phrases.length;
+                        setTimeout(type, 500);
+                    }
+                }
+            }
+            
+            type();
+        }
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            animateOnScroll();
+            typeConsoleText();
+            
+            // Повторная проверка при прокрутке
+            window.addEventListener('scroll', animateOnScroll);
+        });
+    </script>
 </body>
 </html>
