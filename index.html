@@ -4,19 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artemoska | Dark Magic Developer</title>
+    <meta name="description" content="Artemoska - разработчик Telegram ботов, веб-приложений и игр. Создаю магию с помощью JavaScript.">
+    <meta name="keywords" content="Artemoska, программист, разработчик, Telegram боты, JavaScript, портфолио">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --main-color: #8a2be2;  /* Фиолетовый - основной цвет бренда */
-            --dark: #0d0a10;        /* Тёмный фон */
-            --darker: #07050a;      /* Ещё темнее */
-            --gray: #16121d;       /* Серый для карточек */
-            --light-gray: #302a3a;  /* Светло-серый */
-            --text: #f0e6ff;       /* Основной текст */
-            --green: #9d4edd;     /* Зелёный для акцентов */
-            --red: #ff4d6d;        /* Красный для ошибок */
-            --yellow: #ffd166;     /* Жёлтый для предупреждений */
+            --main-color: #8a2be2;
+            --dark: #0d0a10;
+            --darker: #07050a;
+            --gray: #16121d;
+            --light-gray: #302a3a;
+            --text: #f0e6ff;
+            --green: #9d4edd;
+            --red: #ff4d6d;
+            --yellow: #ffd166;
         }
 
         * {
@@ -25,16 +27,51 @@
             box-sizing: border-box;
         }
 
+        /* Кастомный скроллбар */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--darker);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--main-color);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--green);
+        }
+
         body {
             background-color: var(--dark);
             color: var(--text);
             font-family: 'Ubuntu Mono', monospace;
             line-height: 1.6;
             overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 25% 25%, rgba(138, 43, 226, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 75% 75%, rgba(157, 78, 221, 0.1) 0%, transparent 50%);
-            background-attachment: fixed;
+        }
+
+        /* Анимированный фон с частицами */
+        .magic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(ellipse at bottom, var(--darker) 0%, var(--dark) 100%);
+            overflow: hidden;
+        }
+        
+        .magic-particle {
+            position: absolute;
+            background: rgba(138, 43, 226, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(1px);
         }
 
         /* Терминальный эффект */
@@ -56,14 +93,42 @@
             opacity: 0.3;
         }
 
-        /* Шапка */
+        /* Магический шар */
+        .magic-ball {
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle at 30% 30%, 
+                                      rgba(138, 43, 226, 0.8), 
+                                      rgba(157, 78, 221, 0.4));
+            border-radius: 50%;
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            filter: blur(25px);
+            z-index: -1;
+            animation: float-ball 8s ease-in-out infinite;
+            opacity: 0.5;
+        }
+        
+        @keyframes float-ball {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(20px, -20px); }
+            50% { transform: translate(0, -40px); }
+            75% { transform: translate(-20px, -20px); }
+        }
+
+        /* Шапка с параллаксом */
         header {
             background: linear-gradient(to bottom, var(--darker), var(--gray));
-            padding: 2rem 1rem;
+            padding: 3rem 1rem;
             text-align: center;
             border-bottom: 3px solid var(--main-color);
             position: relative;
             overflow: hidden;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
         }
 
         .particles {
@@ -85,6 +150,7 @@
         .header-content {
             position: relative;
             z-index: 1;
+            transform: translateZ(0);
         }
 
         .brand-logo {
@@ -92,9 +158,21 @@
             color: var(--main-color);
             text-shadow: 0 0 15px rgba(138, 43, 226, 0.7);
             margin-bottom: 1rem;
-            animation: pulse 3s infinite;
+            animation: pulse 3s infinite, neon-glow 1.5s ease-in-out infinite alternate;
             font-weight: bold;
             letter-spacing: 2px;
+            background: linear-gradient(90deg, var(--main-color), var(--green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        /* Неоновая подсветка */
+        @keyframes neon-glow {
+            from { text-shadow: 0 0 5px var(--main-color); }
+            to { text-shadow: 0 0 10px var(--main-color), 
+                             0 0 20px var(--main-color), 
+                             0 0 30px var(--main-color); }
         }
 
         h1 {
@@ -104,6 +182,7 @@
             margin-bottom: 0.5rem;
             position: relative;
             display: inline-block;
+            animation: neon-glow 1.5s ease-in-out infinite alternate;
         }
 
         h1::after {
@@ -128,6 +207,7 @@
             padding: 2rem;
         }
 
+        /* 3D-эффект для секций */
         section {
             background: var(--gray);
             margin: 2rem 0;
@@ -138,11 +218,13 @@
             position: relative;
             overflow: hidden;
             transition: all 0.3s ease;
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
         }
 
         section:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            transform: perspective(1000px) rotateX(2deg) rotateY(2deg) translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
         }
 
         section::before {
@@ -155,12 +237,24 @@
             background: linear-gradient(to bottom, var(--main-color), var(--green));
         }
 
+        /* Анимация загрузки секций */
+        .section-load {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         h2 {
             color: var(--green);
             margin-bottom: 1.5rem;
             font-size: 1.8rem;
             position: relative;
             display: inline-block;
+            animation: neon-glow 1.5s ease-in-out infinite alternate;
         }
 
         h2::after {
@@ -171,6 +265,11 @@
             width: 50px;
             height: 3px;
             background: var(--main-color);
+            animation: width-grow 1.5s ease-in-out infinite alternate;
+        }
+        
+        @keyframes width-grow {
+            to { width: 100px; }
         }
 
         p {
@@ -196,7 +295,7 @@
             color: var(--main-color);
         }
 
-        /* Кнопки */
+        /* Кнопки с улучшенной анимацией */
         .btn {
             display: inline-block;
             padding: 0.8rem 1.5rem;
@@ -214,15 +313,16 @@
             position: relative;
             overflow: hidden;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transform: translateZ(0);
         }
 
         .btn:hover {
             background: #7b1fa2;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
         }
 
-        .btn::after {
+        .btn::before {
             content: '';
             position: absolute;
             top: 0;
@@ -233,7 +333,7 @@
             transition: all 0.5s ease;
         }
 
-        .btn:hover::after {
+        .btn:hover::before {
             left: 100%;
         }
 
@@ -241,10 +341,28 @@
             background: transparent;
             border: 1px solid var(--main-color);
             color: var(--main-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-outline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(138, 43, 226, 0.1), transparent);
+            transition: all 0.5s ease;
+        }
+
+        .btn-outline:hover::before {
+            left: 100%;
         }
 
         .btn-outline:hover {
             background: rgba(138, 43, 226, 0.1);
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.3);
         }
 
         /* Социальные сети */
@@ -266,24 +384,30 @@
             text-decoration: none;
             transition: all 0.3s ease;
             border: 1px solid var(--light-gray);
+            transform: translateZ(0);
         }
 
         .social-link:hover {
             background: var(--light-gray);
-            transform: translateY(-3px);
+            transform: translateY(-5px) scale(1.05);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .social-link i {
             margin-right: 0.8rem;
             font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .social-link:hover i {
+            transform: scale(1.2);
         }
 
         .telegram { color: #0088cc; }
         .github { color: var(--text); }
         .email { color: var(--red); }
 
-        /* Навыки */
+        /* Навыки с анимированными индикаторами */
         .skills-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -298,11 +422,26 @@
             padding: 1.5rem;
             transition: all 0.3s ease;
             position: relative;
+            transform-style: preserve-3d;
+            transform: perspective(500px);
+            overflow: hidden;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), transparent);
+            z-index: -1;
         }
 
         .skill-card:hover {
             border-color: var(--main-color);
-            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.2);
+            box-shadow: 0 5px 20px rgba(138, 43, 226, 0.3);
+            transform: perspective(500px) rotateX(5deg) rotateY(5deg);
         }
 
         .skill-card h3 {
@@ -314,6 +453,7 @@
 
         .skill-card h3 i {
             margin-right: 0.8rem;
+            font-size: 1.5rem;
         }
 
         .skill-level {
@@ -322,21 +462,37 @@
             border-radius: 4px;
             margin-top: 1rem;
             overflow: hidden;
+            position: relative;
+        }
+
+        .skill-level::before {
+            content: attr(data-level);
+            position: absolute;
+            right: 5px;
+            top: -20px;
+            font-size: 0.7rem;
+            color: var(--text);
         }
 
         .skill-level-bar {
             height: 100%;
             background: linear-gradient(to right, var(--main-color), var(--green));
             border-radius: 4px;
-            transition: width 1s ease;
+            width: 0;
+            transition: width 1.5s ease-out, box-shadow 0.3s ease;
         }
 
-        /* Проекты */
+        .skill-card:hover .skill-level-bar {
+            box-shadow: 0 0 10px var(--main-color);
+        }
+
+        /* Проекты с эффектом наклона */
         .projects-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 2rem;
             margin-top: 2rem;
+            perspective: 1000px;
         }
 
         .project-card {
@@ -344,13 +500,25 @@
             border: 1px solid var(--light-gray);
             border-radius: 5px;
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.5s ease;
             position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), transparent);
+            z-index: -1;
         }
 
         .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            transform: rotateX(5deg) rotateY(5deg) translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
         }
 
         .project-image {
@@ -373,15 +541,26 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), rgba(157, 78, 221, 0.1));
+            transition: all 0.5s ease;
+        }
+
+        .project-card:hover .project-image::after {
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.2), rgba(157, 78, 221, 0.2));
         }
 
         .project-content {
             padding: 1.5rem;
+            transform: translateZ(30px);
         }
 
         .project-content h3 {
             color: var(--main-color);
             margin-bottom: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover .project-content h3 {
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
         }
 
         .project-content p {
@@ -389,6 +568,11 @@
             opacity: 0.8;
             font-size: 0.9rem;
             margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover .project-content p {
+            opacity: 1;
         }
 
         .project-tags {
@@ -404,6 +588,12 @@
             padding: 0.3rem 0.8rem;
             border-radius: 20px;
             font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover .project-tag {
+            background: rgba(138, 43, 226, 0.2);
+            box-shadow: 0 0 5px rgba(138, 43, 226, 0.3);
         }
 
         .project-links {
@@ -411,7 +601,7 @@
             gap: 1rem;
         }
 
-        /* Футер */
+        /* Футер с анимированным градиентом */
         footer {
             background: linear-gradient(to top, var(--darker), var(--gray));
             text-align: center;
@@ -419,6 +609,7 @@
             border-top: 3px solid var(--main-color);
             margin-top: 3rem;
             position: relative;
+            overflow: hidden;
         }
 
         footer::before {
@@ -431,6 +622,12 @@
             background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none"/><path d="M20,20 L80,20 L80,80 L20,80 Z" stroke="%238a2be2" stroke-width="0.5" fill="none"/></svg>');
             opacity: 0.05;
             pointer-events: none;
+            animation: bg-move 20s linear infinite;
+        }
+        
+        @keyframes bg-move {
+            from { background-position: 0 0; }
+            to { background-position: 100px 100px; }
         }
 
         .footer-logo {
@@ -439,6 +636,11 @@
             text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
             margin-bottom: 1.5rem;
             font-weight: bold;
+            background: linear-gradient(90deg, var(--main-color), var(--green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            animation: neon-glow 1.5s ease-in-out infinite alternate;
         }
 
         .footer-text {
@@ -448,6 +650,7 @@
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
+            position: relative;
         }
 
         .copyright {
@@ -490,20 +693,28 @@
             transform: translateY(0);
         }
 
-        /* Консольный эффект */
+        /* Улучшенная консоль */
         .console-effect {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: rgba(13, 10, 16, 0.9);
+            background: rgba(13, 10, 16, 0.95);
             border: 1px solid var(--main-color);
             border-radius: 5px;
             padding: 1rem;
             max-width: 300px;
-            box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
             z-index: 1000;
             font-size: 0.9rem;
             line-height: 1.5;
+            transform: translateZ(0);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        .console-effect:hover {
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.7);
+            transform: translateY(-5px);
         }
 
         .console-header {
@@ -512,20 +723,41 @@
             align-items: center;
             margin-bottom: 0.5rem;
             color: var(--main-color);
+            text-shadow: 0 0 5px var(--main-color);
         }
 
         .console-close {
             cursor: pointer;
             color: var(--red);
+            transition: all 0.3s ease;
+        }
+
+        .console-close:hover {
+            transform: scale(1.2);
+            color: var(--main-color);
         }
 
         .console-content {
             color: var(--green);
             font-family: 'Ubuntu Mono', monospace;
+            max-height: 200px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--main-color) var(--dark);
+        }
+
+        .console-content::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .console-content::-webkit-scrollbar-thumb {
+            background: var(--main-color);
+            border-radius: 5px;
         }
 
         .console-input {
             color: var(--main-color);
+            position: relative;
         }
 
         .console-cursor {
@@ -536,6 +768,7 @@
             vertical-align: middle;
             margin-left: 2px;
             animation: blink 1s infinite;
+            box-shadow: 0 0 5px var(--main-color);
         }
 
         /* Адаптивность */
@@ -560,15 +793,28 @@
                 font-size: 1rem;
             }
 
-            .brand-logo {
+            .brand-logo, .footer-logo {
                 font-size: 2rem;
+            }
+            
+            .console-effect {
+                max-width: 250px;
+                font-size: 0.8rem;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Анимированный фон с частицами -->
+    <div class="magic-bg" id="magicBg"></div>
+    
+    <!-- Магический шар в углу -->
+    <div class="magic-ball"></div>
+    
+    <!-- Терминальный эффект -->
     <div class="terminal-effect"></div>
     
+    <!-- Шапка с параллаксом -->
     <header>
         <div class="particles" id="particles"></div>
         <div class="header-content">
@@ -578,8 +824,10 @@
         </div>
     </header>
 
+    <!-- Основное содержимое -->
     <div class="container">
-        <section class="animate-on-scroll">
+        <!-- Секция "Обо мне" -->
+        <section class="animate-on-scroll section-load" style="animation-delay: 0.1s">
             <h2>★ Обо мне</h2>
             <p>Привет! Я Artemoska — программист, админ RubetonChat и создатель проектов.</p>
             <p>Делаю игры, Telegram и VK ботов, веб-приложения и просто магию на JavaScript.</p>
@@ -593,55 +841,57 @@
             </div>
         </section>
 
-        <section class="animate-on-scroll">
+        <!-- Секция "Навыки" -->
+        <section class="animate-on-scroll section-load" style="animation-delay: 0.2s">
             <h2>★ Навыки</h2>
             <div class="skills-container">
                 <div class="skill-card">
                     <h3><i class="fab fa-js"></i> JavaScript</h3>
                     <p>Создание интерактивных веб-приложений, работа с API, анимации.</p>
-                    <div class="skill-level">
+                    <div class="skill-level" data-level="90%">
                         <div class="skill-level-bar" style="width: 90%"></div>
                     </div>
                 </div>
                 <div class="skill-card">
                     <h3><i class="fab fa-telegram"></i> Telegram Bots</h3>
                     <p>Разработка ботов любой сложности на Node.js и Python.</p>
-                    <div class="skill-level">
+                    <div class="skill-level" data-level="85%">
                         <div class="skill-level-bar" style="width: 85%"></div>
                     </div>
                 </div>
                 <div class="skill-card">
                     <h3><i class="fab fa-html5"></i> HTML/CSS</h3>
                     <p>Создание адаптивных и современных интерфейсов.</p>
-                    <div class="skill-level">
+                    <div class="skill-level" data-level="80%">
                         <div class="skill-level-bar" style="width: 80%"></div>
                     </div>
                 </div>
                 <div class="skill-card">
                     <h3><i class="fab fa-node-js"></i> Node.js</h3>
                     <p>Серверная разработка, REST API, WebSockets.</p>
-                    <div class="skill-level">
+                    <div class="skill-level" data-level="75%">
                         <div class="skill-level-bar" style="width: 75%"></div>
                     </div>
                 </div>
                 <div class="skill-card">
                     <h3><i class="fas fa-gamepad"></i> Game Dev</h3>
                     <p>Разработка браузерных игр на JavaScript.</p>
-                    <div class="skill-level">
+                    <div class="skill-level" data-level="70%">
                         <div class="skill-level-bar" style="width: 70%"></div>
                     </div>
                 </div>
                 <div class="skill-card">
                     <h3><i class="fas fa-magic"></i> Code Magic</h3>
                     <p>Нестандартные решения и креативный подход.</p>
-                    <div class="skill-level">
+                    <div class="skill-level" data-level="95%">
                         <div class="skill-level-bar" style="width: 95%"></div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="animate-on-scroll">
+        <!-- Секция "Проекты" -->
+        <section class="animate-on-scroll section-load" style="animation-delay: 0.3s">
             <h2>★ Проекты</h2>
             <div class="projects-container">
                 <div class="project-card">
@@ -698,7 +948,8 @@
             </div>
         </section>
 
-        <section class="animate-on-scroll">
+        <!-- Секция "Контакты" -->
+        <section class="animate-on-scroll section-load" style="animation-delay: 0.4s">
             <h2>★ Контакты</h2>
             <p>Хотите сотрудничать или просто пообщаться? Я всегда открыт для новых идей и проектов!</p>
             <div class="social-links">
@@ -715,12 +966,14 @@
         </section>
     </div>
 
+    <!-- Футер -->
     <footer>
         <div class="footer-logo">ARTEMOSKA</div>
         <p class="footer-text">"Превращаю идеи в цифровую реальность"</p>
         <p class="copyright">© 2023 Artemoska. All rights reserved.</p>
     </footer>
 
+    <!-- Интерактивная консоль -->
     <div class="console-effect" id="console">
         <div class="console-header">
             <span>Artemoska Console</span>
@@ -736,7 +989,7 @@
     </div>
 
     <script>
-        // Анимация частиц в шапке
+        // 1. Анимация частиц в шапке
         function createParticles() {
             const container = document.getElementById('particles');
             const particleCount = 30;
@@ -745,7 +998,6 @@
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 
-                // Случайные параметры
                 const size = Math.random() * 5 + 2;
                 const posX = Math.random() * 100;
                 const posY = Math.random() * 100;
@@ -763,80 +1015,4 @@
             }
         }
 
-        // Анимация при прокрутке
-        function animateOnScroll() {
-            const elements = document.querySelectorAll('.animate-on-scroll');
-            
-            elements.forEach(element => {
-                const elementPosition = element.getBoundingClientRect().top;
-                const screenPosition = window.innerHeight / 1.3;
-                
-                if (elementPosition < screenPosition) {
-                    element.classList.add('animated');
-                }
-            });
-        }
-
-        // Консольный текст
-        function typeConsoleText() {
-            const phrases = [
-                "npm run magic",
-                "node spell.js",
-                "git push origin master",
-                "Инициализация заклинаний...",
-                "Заклинание готово!",
-                "Загрузка волшебства...",
-                "Подключение к магическому API...",
-                "Готов к работе!"
-            ];
-            
-            const consoleInput = document.querySelector('.console-input');
-            let currentPhrase = 0;
-            let currentChar = 0;
-            let isDeleting = false;
-            let isWaiting = false;
-            
-            function type() {
-                if (isWaiting) return;
-                
-                const currentText = phrases[currentPhrase];
-                
-                if (!isDeleting && currentChar < currentText.length) {
-                    consoleInput.innerHTML = `> ${currentText.substring(0, currentChar + 1)}<span class="console-cursor"></span>`;
-                    currentChar++;
-                    setTimeout(type, 100);
-                } else if (isDeleting && currentChar > 0) {
-                    consoleInput.innerHTML = `> ${currentText.substring(0, currentChar - 1)}<span class="console-cursor"></span>`;
-                    currentChar--;
-                    setTimeout(type, 50);
-                } else {
-                    if (!isDeleting && currentChar === currentText.length) {
-                        isWaiting = true;
-                        setTimeout(() => {
-                            isWaiting = false;
-                            isDeleting = true;
-                            setTimeout(type, 1000);
-                        }, 2000);
-                    } else if (isDeleting && currentChar === 0) {
-                        isDeleting = false;
-                        currentPhrase = (currentPhrase + 1) % phrases.length;
-                        setTimeout(type, 500);
-                    }
-                }
-            }
-            
-            type();
-        }
-
-        // Инициализация
-        document.addEventListener('DOMContentLoaded', () => {
-            createParticles();
-            animateOnScroll();
-            typeConsoleText();
-            
-            // Повторная проверка при прокрутке
-            window.addEventListener('scroll', animateOnScroll);
-        });
-    </script>
-</body>
-</html>
+        // 
