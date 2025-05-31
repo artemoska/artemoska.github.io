@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artemoska | Docker-style Portfolio</title>
+    <title>Artemoska | Dark Magic Developer</title>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --docker-blue: #2496ed;
-            --docker-dark: #0d1117;
-            --docker-darker: #090c10;
-            --docker-gray: #161b22;
-            --docker-light-gray: #30363d;
-            --docker-text: #e6edf3;
-            --docker-green: #3fb950;
-            --docker-red: #f85149;
-            --docker-yellow: #d29922;
+            --main-color: #8a2be2;  /* Фиолетовый - основной цвет бренда */
+            --dark: #0d0a10;        /* Тёмный фон */
+            --darker: #07050a;      /* Ещё темнее */
+            --gray: #16121d;       /* Серый для карточек */
+            --light-gray: #302a3a;  /* Светло-серый */
+            --text: #f0e6ff;       /* Основной текст */
+            --green: #9d4edd;     /* Зелёный для акцентов */
+            --red: #ff4d6d;        /* Красный для ошибок */
+            --yellow: #ffd166;     /* Жёлтый для предупреждений */
         }
 
         * {
@@ -26,14 +26,14 @@
         }
 
         body {
-            background-color: var(--docker-dark);
-            color: var(--docker-text);
+            background-color: var(--dark);
+            color: var(--text);
             font-family: 'Ubuntu Mono', monospace;
             line-height: 1.6;
             overflow-x: hidden;
             background-image: 
-                radial-gradient(circle at 25% 25%, rgba(36, 150, 237, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 75% 75%, rgba(63, 185, 80, 0.1) 0%, transparent 50%);
+                radial-gradient(circle at 25% 25%, rgba(138, 43, 226, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(157, 78, 221, 0.1) 0%, transparent 50%);
             background-attachment: fixed;
         }
 
@@ -46,8 +46,8 @@
             height: 100%;
             background: repeating-linear-gradient(
                 0deg,
-                rgba(22, 27, 34, 0.8),
-                rgba(22, 27, 34, 0.8) 1px,
+                rgba(22, 18, 29, 0.8),
+                rgba(22, 18, 29, 0.8) 1px,
                 transparent 1px,
                 transparent 2px
             );
@@ -58,15 +58,15 @@
 
         /* Шапка */
         header {
-            background: linear-gradient(to bottom, var(--docker-darker), var(--docker-gray));
+            background: linear-gradient(to bottom, var(--darker), var(--gray));
             padding: 2rem 1rem;
             text-align: center;
-            border-bottom: 3px solid var(--docker-blue);
+            border-bottom: 3px solid var(--main-color);
             position: relative;
             overflow: hidden;
         }
 
-        .docker-particles {
+        .particles {
             position: absolute;
             top: 0;
             left: 0;
@@ -75,9 +75,9 @@
             z-index: 0;
         }
 
-        .docker-particle {
+        .particle {
             position: absolute;
-            background-color: var(--docker-blue);
+            background-color: var(--main-color);
             border-radius: 50%;
             opacity: 0.3;
         }
@@ -87,16 +87,19 @@
             z-index: 1;
         }
 
-        .docker-logo {
-            width: 80px;
-            filter: drop-shadow(0 0 10px var(--docker-blue));
+        .brand-logo {
+            font-size: 3rem;
+            color: var(--main-color);
+            text-shadow: 0 0 15px rgba(138, 43, 226, 0.7);
             margin-bottom: 1rem;
             animation: pulse 3s infinite;
+            font-weight: bold;
+            letter-spacing: 2px;
         }
 
         h1 {
-            color: var(--docker-blue);
-            text-shadow: 0 0 10px rgba(36, 150, 237, 0.5);
+            color: var(--main-color);
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
             font-size: 2.5rem;
             margin-bottom: 0.5rem;
             position: relative;
@@ -106,16 +109,16 @@
         h1::after {
             content: '_';
             animation: blink 1s infinite;
-            color: var(--docker-blue);
+            color: var(--main-color);
             position: absolute;
             right: -15px;
         }
 
         .header-subtitle {
-            color: var(--docker-text);
+            color: var(--text);
             font-size: 1.2rem;
             margin-bottom: 1rem;
-            text-shadow: 0 0 5px rgba(230, 237, 243, 0.3);
+            text-shadow: 0 0 5px rgba(240, 230, 255, 0.3);
         }
 
         /* Основное содержимое */
@@ -126,10 +129,10 @@
         }
 
         section {
-            background: var(--docker-gray);
+            background: var(--gray);
             margin: 2rem 0;
             padding: 2rem;
-            border: 1px solid var(--docker-light-gray);
+            border: 1px solid var(--light-gray);
             border-radius: 5px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             position: relative;
@@ -149,11 +152,11 @@
             left: 0;
             width: 5px;
             height: 100%;
-            background: linear-gradient(to bottom, var(--docker-blue), var(--docker-green));
+            background: linear-gradient(to bottom, var(--main-color), var(--green));
         }
 
         h2 {
-            color: var(--docker-green);
+            color: var(--green);
             margin-bottom: 1.5rem;
             font-size: 1.8rem;
             position: relative;
@@ -167,7 +170,7 @@
             left: 0;
             width: 50px;
             height: 3px;
-            background: var(--docker-blue);
+            background: var(--main-color);
         }
 
         p {
@@ -190,15 +193,15 @@
             content: '▹';
             position: absolute;
             left: 0;
-            color: var(--docker-blue);
+            color: var(--main-color);
         }
 
         /* Кнопки */
         .btn {
             display: inline-block;
             padding: 0.8rem 1.5rem;
-            background: var(--docker-blue);
-            color: var(--docker-text);
+            background: var(--main-color);
+            color: var(--text);
             border: none;
             border-radius: 4px;
             font-family: 'Ubuntu Mono', monospace;
@@ -214,7 +217,7 @@
         }
 
         .btn:hover {
-            background: #1a7fcc;
+            background: #7b1fa2;
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
@@ -236,12 +239,12 @@
 
         .btn-outline {
             background: transparent;
-            border: 1px solid var(--docker-blue);
-            color: var(--docker-blue);
+            border: 1px solid var(--main-color);
+            color: var(--main-color);
         }
 
         .btn-outline:hover {
-            background: rgba(36, 150, 237, 0.1);
+            background: rgba(138, 43, 226, 0.1);
         }
 
         /* Социальные сети */
@@ -257,16 +260,16 @@
             display: flex;
             align-items: center;
             padding: 0.8rem 1.5rem;
-            background: var(--docker-gray);
-            color: var(--docker-text);
+            background: var(--gray);
+            color: var(--text);
             border-radius: 4px;
             text-decoration: none;
             transition: all 0.3s ease;
-            border: 1px solid var(--docker-light-gray);
+            border: 1px solid var(--light-gray);
         }
 
         .social-link:hover {
-            background: var(--docker-light-gray);
+            background: var(--light-gray);
             transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
@@ -277,8 +280,8 @@
         }
 
         .telegram { color: #0088cc; }
-        .github { color: var(--docker-text); }
-        .email { color: var(--docker-red); }
+        .github { color: var(--text); }
+        .email { color: var(--red); }
 
         /* Навыки */
         .skills-container {
@@ -289,8 +292,8 @@
         }
 
         .skill-card {
-            background: var(--docker-gray);
-            border: 1px solid var(--docker-light-gray);
+            background: var(--gray);
+            border: 1px solid var(--light-gray);
             border-radius: 5px;
             padding: 1.5rem;
             transition: all 0.3s ease;
@@ -298,12 +301,12 @@
         }
 
         .skill-card:hover {
-            border-color: var(--docker-blue);
-            box-shadow: 0 5px 15px rgba(36, 150, 237, 0.2);
+            border-color: var(--main-color);
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.2);
         }
 
         .skill-card h3 {
-            color: var(--docker-blue);
+            color: var(--main-color);
             margin-bottom: 1rem;
             display: flex;
             align-items: center;
@@ -315,7 +318,7 @@
 
         .skill-level {
             height: 8px;
-            background: var(--docker-light-gray);
+            background: var(--light-gray);
             border-radius: 4px;
             margin-top: 1rem;
             overflow: hidden;
@@ -323,7 +326,7 @@
 
         .skill-level-bar {
             height: 100%;
-            background: linear-gradient(to right, var(--docker-blue), var(--docker-green));
+            background: linear-gradient(to right, var(--main-color), var(--green));
             border-radius: 4px;
             transition: width 1s ease;
         }
@@ -337,8 +340,8 @@
         }
 
         .project-card {
-            background: var(--docker-gray);
-            border: 1px solid var(--docker-light-gray);
+            background: var(--gray);
+            border: 1px solid var(--light-gray);
             border-radius: 5px;
             overflow: hidden;
             transition: all 0.3s ease;
@@ -352,11 +355,11 @@
 
         .project-image {
             height: 180px;
-            background: var(--docker-darker);
+            background: var(--darker);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--docker-light-gray);
+            color: var(--light-gray);
             font-size: 3rem;
             position: relative;
             overflow: hidden;
@@ -369,7 +372,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(36, 150, 237, 0.1), rgba(63, 185, 80, 0.1));
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), rgba(157, 78, 221, 0.1));
         }
 
         .project-content {
@@ -377,12 +380,12 @@
         }
 
         .project-content h3 {
-            color: var(--docker-blue);
+            color: var(--main-color);
             margin-bottom: 0.8rem;
         }
 
         .project-content p {
-            color: var(--docker-text);
+            color: var(--text);
             opacity: 0.8;
             font-size: 0.9rem;
             margin-bottom: 1.5rem;
@@ -396,8 +399,8 @@
         }
 
         .project-tag {
-            background: rgba(36, 150, 237, 0.1);
-            color: var(--docker-blue);
+            background: rgba(138, 43, 226, 0.1);
+            color: var(--main-color);
             padding: 0.3rem 0.8rem;
             border-radius: 20px;
             font-size: 0.8rem;
@@ -410,10 +413,10 @@
 
         /* Футер */
         footer {
-            background: linear-gradient(to top, var(--docker-darker), var(--docker-gray));
+            background: linear-gradient(to top, var(--darker), var(--gray));
             text-align: center;
             padding: 3rem 1rem;
-            border-top: 3px solid var(--docker-blue);
+            border-top: 3px solid var(--main-color);
             margin-top: 3rem;
             position: relative;
         }
@@ -425,19 +428,21 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none"/><path d="M20,20 L80,20 L80,80 L20,80 Z" stroke="%232496ed" stroke-width="0.5" fill="none"/></svg>');
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none"/><path d="M20,20 L80,20 L80,80 L20,80 Z" stroke="%238a2be2" stroke-width="0.5" fill="none"/></svg>');
             opacity: 0.05;
             pointer-events: none;
         }
 
         .footer-logo {
-            width: 60px;
-            filter: drop-shadow(0 0 5px var(--docker-blue));
+            font-size: 2.5rem;
+            color: var(--main-color);
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
             margin-bottom: 1.5rem;
+            font-weight: bold;
         }
 
         .footer-text {
-            color: var(--docker-text);
+            color: var(--text);
             opacity: 0.7;
             margin-bottom: 1.5rem;
             max-width: 600px;
@@ -446,7 +451,7 @@
         }
 
         .copyright {
-            color: var(--docker-text);
+            color: var(--text);
             opacity: 0.5;
             font-size: 0.9rem;
         }
@@ -490,12 +495,12 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: rgba(13, 17, 23, 0.9);
-            border: 1px solid var(--docker-blue);
+            background: rgba(13, 10, 16, 0.9);
+            border: 1px solid var(--main-color);
             border-radius: 5px;
             padding: 1rem;
             max-width: 300px;
-            box-shadow: 0 0 20px rgba(36, 150, 237, 0.3);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
             z-index: 1000;
             font-size: 0.9rem;
             line-height: 1.5;
@@ -506,28 +511,28 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 0.5rem;
-            color: var(--docker-blue);
+            color: var(--main-color);
         }
 
         .console-close {
             cursor: pointer;
-            color: var(--docker-red);
+            color: var(--red);
         }
 
         .console-content {
-            color: var(--docker-green);
+            color: var(--green);
             font-family: 'Ubuntu Mono', monospace;
         }
 
         .console-input {
-            color: var(--docker-blue);
+            color: var(--main-color);
         }
 
         .console-cursor {
             display: inline-block;
             width: 10px;
             height: 16px;
-            background: var(--docker-blue);
+            background: var(--main-color);
             vertical-align: middle;
             margin-left: 2px;
             animation: blink 1s infinite;
@@ -554,6 +559,10 @@
             .header-subtitle {
                 font-size: 1rem;
             }
+
+            .brand-logo {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
@@ -561,11 +570,9 @@
     <div class="terminal-effect"></div>
     
     <header>
-        <div class="docker-particles" id="particles"></div>
+        <div class="particles" id="particles"></div>
         <div class="header-content">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Docker_%28container_engine%29_logo.svg" 
-                 alt="Docker Logo" 
-                 class="docker-logo">
+            <div class="brand-logo">ARTEMOSKA</div>
             <h1>☆ Привет, я Artemoska! ☆</h1>
             <p class="header-subtitle">Добро пожаловать в мою берлогу)</p>
         </div>
@@ -625,10 +632,10 @@
                     </div>
                 </div>
                 <div class="skill-card">
-                    <h3><i class="fab fa-docker"></i> Docker</h3>
-                    <p>Контейнеризация приложений, оркестрация.</p>
+                    <h3><i class="fas fa-magic"></i> Code Magic</h3>
+                    <p>Нестандартные решения и креативный подход.</p>
                     <div class="skill-level">
-                        <div class="skill-level-bar" style="width: 65%"></div>
+                        <div class="skill-level-bar" style="width: 95%"></div>
                     </div>
                 </div>
             </div>
@@ -639,7 +646,7 @@
             <div class="projects-container">
                 <div class="project-card">
                     <div class="project-image">
-                        <i class="fab fa-telegram" style="color: var(--docker-blue);"></i>
+                        <i class="fab fa-telegram" style="color: var(--main-color);"></i>
                     </div>
                     <div class="project-content">
                         <h3>RubetonChat</h3>
@@ -656,7 +663,7 @@
                 </div>
                 <div class="project-card">
                     <div class="project-image">
-                        <i class="fas fa-gamepad" style="color: var(--docker-green);"></i>
+                        <i class="fas fa-gamepad" style="color: var(--green);"></i>
                     </div>
                     <div class="project-content">
                         <h3>Browser Game</h3>
@@ -673,7 +680,7 @@
                 </div>
                 <div class="project-card">
                     <div class="project-image">
-                        <i class="fas fa-robot" style="color: var(--docker-yellow);"></i>
+                        <i class="fas fa-robot" style="color: var(--yellow);"></i>
                     </div>
                     <div class="project-content">
                         <h3>VK Bot</h3>
@@ -709,10 +716,8 @@
     </div>
 
     <footer>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4e/Docker_%28container_engine%29_logo.svg" 
-             alt="Docker Logo" 
-             class="footer-logo">
-        <p class="footer-text">"Контейнеризирую идеи, развертываю решения"</p>
+        <div class="footer-logo">ARTEMOSKA</div>
+        <p class="footer-text">"Превращаю идеи в цифровую реальность"</p>
         <p class="copyright">© 2023 Artemoska. All rights reserved.</p>
     </footer>
 
@@ -722,10 +727,10 @@
             <span class="console-close" onclick="document.getElementById('console').style.display='none'">×</span>
         </div>
         <div class="console-content">
-            <div>> Initializing system...</div>
-            <div>> Loading portfolio data...</div>
-            <div>> Connecting to Telegram API...</div>
-            <div>> Ready!</div>
+            <div>> Инициализация магии кода...</div>
+            <div>> Загрузка заклинаний JavaScript...</div>
+            <div>> Подключение к Telegram API...</div>
+            <div>> Готов к волшебству!</div>
             <div class="console-input">> _<span class="console-cursor"></span></div>
         </div>
     </div>
@@ -738,7 +743,7 @@
             
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
-                particle.className = 'docker-particle';
+                particle.className = 'particle';
                 
                 // Случайные параметры
                 const size = Math.random() * 5 + 2;
@@ -775,14 +780,14 @@
         // Консольный текст
         function typeConsoleText() {
             const phrases = [
-                "git pull origin master",
-                "npm start",
-                "docker-compose up -d",
-                "node app.js",
-                "Проверка связи...",
-                "Готов к работе!",
-                "Загрузка данных...",
-                "Инициализация завершена"
+                "npm run magic",
+                "node spell.js",
+                "git push origin master",
+                "Инициализация заклинаний...",
+                "Заклинание готово!",
+                "Загрузка волшебства...",
+                "Подключение к магическому API...",
+                "Готов к работе!"
             ];
             
             const consoleInput = document.querySelector('.console-input');
