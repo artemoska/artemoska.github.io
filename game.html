@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candy Race Gun</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --main-color: #FF6B6B;
+            --secondary-color: #4ECDC4;
+            --dark: #292F36;
+            --light: #F7FFF7;
+            --accent: #FFE66D;
+            --candy-pink: #FF9AA2;
+            --candy-blue: #B5EAD7;
+            --candy-purple: #C7CEEA;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            font-family: 'Press Start 2P', cursive;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .game-container {
+            position: relative;
+            width: 800px;
+            height: 500px;
+            background: linear-gradient(to bottom, #2C3E50, #4CA1AF);
+            border: 8px solid var(--accent);
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .road {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 50px,
+                var(--light) 50px,
+                var(--light) 55px
+            );
+            animation: roadMove 2s linear infinite;
+        }
+
+        @keyframes roadMove {
+            from { background-position: 0 0; }
+            to { background-position: 0 55px; }
+        }
+
+        .player {
+            position: absolute;
+            width: 80px;
+            height: 120px;
+            bottom: 50px;
+            left: 200px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 150"><rect x="20" y="50" width="60" height="80" rx="10" fill="%23FF6B6B"/><rect x="10" y="70" width="80" height="60" rx="10" fill="%23FF6B6B"/><circle cx="25" cy="130" r="15" fill="%23292F36"/><circle cx="75" cy="130" r="15" fill="%23292F36"/><rect x="40" y="30" width="20" height="20" rx="5" fill="%234ECDC4"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: 10;
+            transition: transform 0.1s;
+        }
+
+        .bullet {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            z-index: 5;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        .enemy {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: 8;
+        }
+
+        .candy {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: 7;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .score-board {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 20px;
+            color: var(--light);
+            text-shadow: 3px 3px 0 var(--dark);
+            z-index: 20;
+        }
+
+        .health-bar {
+            position: absolute;
+            top: 60px;
+            left: 20px;
+            width: 200px;
+            height: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: 2px solid var(--light);
+            border-radius: 5px;
+            overflow: hidden;
+            z-index: 20;
+        }
+
+        .health {
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(to right, #FF0000, #FF6B6B);
+            transition: width 0.3s;
+        }
+
+        .game-over {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 30;
+            display: none;
+        }
+
+        .game-over h1 {
+            color: var(--main-color);
+            font-size: 40px;
+            margin-bottom: 30px;
+            text-shadow: 5px 5px 0 var(--dark);
+        }
+
+        .restart-btn {
+            padding: 15px 30px;
+            background-color: var(--secondary-color);
+            color: var(--dark);
+            border: none;
+            border-radius: 10px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .restart-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px var(--secondary-color);
+        }
+
+        .candy-effects {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 15;
+            overflow: hidden;
+        }
+
+        .candy-particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(100vh); }
+        }
+
+        .power-up {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: 9;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: var(--accent);
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 24px;
+            z-index: 25;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="road"></div>
+        <div class="player" id="player"></div>
+        <div class="candy-effects" id="candyEffects"></div>
+        
+        <div class="score-board">
+            Score: <span id="score">0</span>
+        </div>
+        
+        <div class="health-bar">
+            <div class="health" id="health"></div>
+        </div>
+        
+        <div class="game-over" id="gameOver">
+            <h1>GAME OVER</h1>
+            <div class="final-score">Your score: <span id="finalScore">0</span></div>
+            <button class="restart-btn" id="restartBtn">PLAY AGAIN</button>
+        </div>
+        
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        // Game elements
+        const player = document.getElementById('player');
+        const gameContainer = document.querySelector('.game-container');
+        const scoreElement = document.getElementById('score');
+        const healthElement = document.getElementById('health');
+        const gameOverScreen = document.getElementById('gameOver');
+        const finalScoreElement = document.getElementById('finalScore');
+        const restartBtn = document.getElementById('restartBtn');
+        const candyEffects = document.getElementById('candyEffects');
+        const messageElement = document.getElementById('message');
+
+        // Game state
+        let score = 0;
+        let health = 100;
+        let gameRunning = true;
+        let playerSpeed = 5;
+        let lastShotTime = 0;
+        let shotDelay = 300; // ms
+        let enemySpawnRate = 2000; // ms
+        let candySpawnRate = 3000; // ms
+        let powerUpSpawnRate = 10000; // ms
+        let lastEnemySpawn = 0;
+        let lastCandySpawn = 0;
+        let lastPowerUpSpawn = 0;
+        let doublePointsActive = false;
+        let doublePointsEndTime = 0;
+        let rapidFireActive = false;
+        let rapidFireEndTime = 0;
+        let invincibleActive = false;
+        let invincibleEndTime = 0;
+
+        // Candy colors for effects
+        const candyColors = [
+            '#FF9AA2', '#FFB7B2', '#FFDAC1', '#E2F0CB', 
+            '#B5EAD7', '#C7CEEA', '#F8B195', '#F67280'
+        ];
+
+        // Enemy types with different colors and speeds
+        const enemyTypes = [
+            { color: '#FF9AA2', speed: 3, health: 1, points: 10 },
+            { color: '#B5EAD7', speed: 5, health: 1, points: 20 },
+            { color: '#C7CEEA', speed: 4, health: 2, points: 30 },
+            { color: '#FFDAC1', speed: 6, health: 1, points: 40 }
+        ];
+
+        // Power-up types
+        const powerUpTypes = [
+            { type: 'double', color: '#FFE66D', duration: 10000 },
+            { type: 'rapid', color: '#4ECDC4', duration: 8000 },
+            { type: 'health', color: '#FF6B6B', duration: 0 },
+            { type: 'invincible', color: '#F7FFF7', duration: 5000 }
+        ];
+
+        // Player movement
+        const keys = {
+            ArrowLeft: false,
+            ArrowRight: false,
+            ArrowUp: false,
+            ArrowDown: false,
+            ' ': false // space for shooting
+        };
+
+        // Event listeners for keyboard
+        document.addEventListener('keydown', (e) => {
+            if (keys.hasOwnProperty(e.key)) {
+                keys[e.key] = true;
+            }
+        });
+
+        document.addEventListener('keyup', (e) => {
+            if (keys.hasOwnProperty(e.key)) {
+                keys[e.key] = false;
+            }
+        });
+
+        // Touch controls for mobile
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        gameContainer.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            keys[' '] = true; // Shoot on touch
+        });
+
+        gameContainer.addEventListener('touchmove', (e) => {
+            const touchX = e.touches[0].clientX;
+            const touchY = e.touches[0].clientY;
+            
+            // Determine movement direction
+            const xDiff = touchX - touchStartX;
+            const yDiff = touchY - touchStartY;
+            
+            // Reset all movement keys
+            keys.ArrowLeft = false;
+            keys.ArrowRight = false;
+            keys.ArrowUp = false;
+            keys.ArrowDown = false;
+            
+            // Set new movement based on touch
+            if (Math.abs(xDiff) > Math.abs(yDiff)) {
+                if (xDiff > 0) keys.ArrowRight = true;
+                else keys.ArrowLeft = true;
+            } else {
+                if (yDiff > 0) keys.ArrowDown = true;
+                else keys.ArrowUp = true;
+            }
+        });
+
+        gameContainer.addEventListener('touchend', () => {
+            // Reset all keys on touch end
+            keys.ArrowLeft = false;
+            keys.ArrowRight = false;
+            keys.ArrowUp = false;
+            keys.ArrowDown = false;
+            keys[' '] = false;
+        });
+
+        // Game loop
+        function gameLoop(timestamp) {
+            if (!gameRunning) return;
+            
+            // Player movement
+            const playerRect = player.getBoundingClientRect();
+            const containerRect = gameContainer.getBoundingClientRect();
+            
+            if (keys.ArrowLeft && playerRect.left > containerRect.left + 10) {
+                player.style.left = (parseInt(player.style.left) - playerSpeed) + 'px';
+            }
+            if (keys.ArrowRight && playerRect.right < containerRect.right - 10) {
+                player.style.left = (parseInt(player.style.left) + playerSpeed) + 'px';
+            }
+            if (keys.ArrowUp && playerRect.top > containerRect.top + 10) {
+                player.style.top = (parseInt(player.style.top) - playerSpeed) + 'px';
+            }
+            if (keys.ArrowDown && playerRect.bottom < containerRect.bottom - 10) {
+                player.style.top = (parseInt(player.style.top) + playerSpeed) + 'px';
+            }
+            
+            // Shooting
+            if (keys[' '] && timestamp - lastShotTime > (rapidFireActive ? shotDelay / 2 : shotDelay)) {
+                shoot();
+                lastShotTime = timestamp;
+            }
+            
+            // Spawn enemies
+            if (timestamp - lastEnemySpawn > enemySpawnRate) {
+                spawnEnemy();
+                lastEnemySpawn = timestamp;
+                // Increase difficulty
+                enemySpawnRate = Math.max(500, enemySpawnRate - 10);
+            }
+            
+            // Spawn candies
+            if (timestamp - lastCandySpawn > candySpawnRate) {
+                spawnCandy();
+                lastCandySpawn = timestamp;
+            }
+            
+            // Spawn power-ups
+            if (timestamp - lastPowerUpSpawn > powerUpSpawnRate) {
+                spawnPowerUp();
+                lastPowerUpSpawn = timestamp;
+            }
+            
+            // Check power-up timers
+            const currentTime = timestamp;
+            if (doublePointsActive && currentTime > doublePointsEndTime) {
+                doublePointsActive = false;
+                showMessage("Double Points Ended!");
+            }
+            if (rapidFireActive && currentTime > rapidFireEndTime) {
+                rapidFireActive = false;
+                showMessage("Rapid Fire Ended!");
+            }
+            if (invincibleActive && currentTime > invincibleEndTime) {
+                invincibleActive = false;
+                showMessage("Invincibility Ended!");
+            }
+            
+            // Move bullets
+            const bullets = document.querySelectorAll('.bullet');
+            bullets.forEach(bullet => {
+                const bulletTop = parseInt(bullet.style.top);
+                bullet.style.top = (bulletTop - 10) + 'px';
+                
+                // Remove if out of bounds
+                if (bulletTop < 0) {
+                    bullet.remove();
+                }
+            });
+            
+            // Move enemies
+            const enemies = document.querySelectorAll('.enemy');
+            enemies.forEach(enemy => {
+                const enemyData = JSON.parse(enemy.dataset.enemy);
+                const enemyTop = parseInt(enemy.style.top);
+                enemy.style.top = (enemyTop + enemyData.speed) + 'px';
+                
+                // Check if enemy passed player
+                if (enemyTop > containerRect.height) {
+                    enemy.remove();
+                    if (!invincibleActive) {
+                        takeDamage(5);
+                    }
+                }
+                
+                // Check collision with player
+                if (checkCollision(player, enemy) && !invincibleActive) {
+                    enemy.remove();
+                    takeDamage(10);
+                    createCandyExplosion(enemy);
+                }
+            });
+            
+            // Move candies
+            const candies = document.querySelectorAll('.candy');
+            candies.forEach(candy => {
+                const candyTop = parseInt(candy.style.top);
+                candy.style.top = (candyTop + 3) + 'px';
+                
+                // Remove if out of bounds
+                if (candyTop > containerRect.height) {
+                    candy.remove();
+                }
+                
+                // Check collision with player
+                if (checkCollision(player, candy)) {
+                    candy.remove();
+                    addScore(50);
+                    createCandyExplosion(candy);
+                }
+            });
+            
+            // Move power-ups
+            const powerUps = document.querySelectorAll('.power-up');
+            powerUps.forEach(powerUp => {
+                const powerUpTop = parseInt(powerUp.style.top);
+                powerUp.style.top = (powerUpTop + 2) + 'px';
+                
+                // Remove if out of bounds
+                if (powerUpTop > containerRect.height) {
+                    powerUp.remove();
+                }
+                
+                // Check collision with player
+                if (checkCollision(player, powerUp)) {
+                    const powerUpType = powerUp.dataset.type;
+                    activatePowerUp(powerUpType, timestamp);
+                    powerUp.remove();
+                    createCandyExplosion(powerUp);
+                }
+            });
+            
+            // Check bullet-enemy collisions
+            bullets.forEach(bullet => {
+                enemies.forEach(enemy => {
+                    if (checkCollision(bullet, enemy)) {
+                        const enemyData = JSON.parse(enemy.dataset.enemy);
+                        enemyData.health--;
+                        
+                        if (enemyData.health <= 0) {
+                            const points = doublePointsActive ? enemyData.points * 2 : enemyData.points;
+                            addScore(points);
+                            enemy.remove();
+                            createCandyExplosion(enemy);
+                        } else {
+                            enemy.dataset.enemy = JSON.stringify(enemyData);
+                            // Visual feedback for hit
+                            enemy.style.filter = 'brightness(1.5)';
+                            setTimeout(() => {
+                                enemy.style.filter = 'none';
+                            }, 100);
+                        }
+                        
+                        bullet.remove();
+                    }
+                });
+            });
+            
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Helper functions
+        function checkCollision(obj1, obj2) {
+            const rect1 = obj1.getBoundingClientRect();
+            const rect2 = obj2.getBoundingClientRect();
+            
+            return !(
+                rect1.right < rect2.left || 
+                rect1.left > rect2.right || 
+                rect1.bottom < rect2.top || 
+                rect1.top > rect2.bottom
+            );
+        }
+
+        function shoot() {
+            const bullet = document.createElement('div');
+            bullet.className = 'bullet';
+            
+            const playerRect = player.getBoundingClientRect();
+            const containerRect = gameContainer.getBoundingClientRect();
+            
+            bullet.style.left = (playerRect.left - containerRect.left + playerRect.width / 2 - 10) + 'px';
+            bullet.style.top = (playerRect.top - containerRect.top) + 'px';
+            
+            gameContainer.appendChild(bullet);
+            
+            // Shooting effect
+            createCandyParticles(
+                playerRect.left - containerRect.left + playerRect.width / 2,
+                playerRect.top - containerRect.top + playerRect.height,
+                10,
+                -90,
+                5
+            );
+        }
+
+        function spawnEnemy() {
+            const enemy = document.createElement('div');
+            enemy.className = 'enemy';
+            
+            const containerRect = gameContainer.getBoundingClientRect();
+            const enemyType = enemyTypes[Math.floor(Math.random() * enemyTypes.length)];
+            
+            enemy.dataset.enemy = JSON.stringify(enemyType);
+            enemy.style.left = (Math.random() * (containerRect.width - 70)) + 'px';
+            enemy.style.top = '-70px';
+            enemy.style.backgroundColor = enemyType.color;
+            
+            // Add some visual variety
+            if (Math.random() > 0.5) {
+                enemy.style.borderRadius = '50%';
+            } else {
+                enemy.style.borderRadius = '10px';
+            }
+            
+            gameContainer.appendChild(enemy);
+        }
+
+        function spawnCandy() {
+            const candy = document.createElement('div');
+            candy.className = 'candy';
+            
+            const containerRect = gameContainer.getBoundingClientRect();
+            const candyColor = candyColors[Math.floor(Math.random() * candyColors.length)];
+            
+            candy.style.left = (Math.random() * (containerRect.width - 30)) + 'px';
+            candy.style.top = '-30px';
+            candy.style.backgroundColor = candyColor;
+            
+            gameContainer.appendChild(candy);
+        }
+
+        function spawnPowerUp() {
+            const powerUp = document.createElement('div');
+            powerUp.className = 'power-up';
+            
+            const containerRect = gameContainer.getBoundingClientRect();
+            const powerUpType = powerUpTypes[Math.floor(Math.random() * powerUpTypes.length)];
+            
+            powerUp.dataset.type = powerUpType.type;
+            powerUp.style.left = (Math.random() * (containerRect.width - 40)) + 'px';
+            powerUp.style.top = '-40px';
+            powerUp.style.backgroundColor = powerUpType.color;
+            
+            // Different shapes for different power-ups
+            switch(powerUpType.type) {
+                case 'double':
+                    powerUp.style.borderRadius = '50%';
+                    powerUp.style.boxShadow = '0 0 15px gold';
+                    break;
+                case 'rapid':
+                    powerUp.style.borderRadius = '5px';
+                    powerUp.style.boxShadow = '0 0 15px cyan';
+                    break;
+                case 'health':
+                    powerUp.style.borderRadius = '0';
+                    powerUp.style.clipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
+                    powerUp.style.boxShadow = '0 0 15px red';
+                    break;
+                case 'invincible':
+                    powerUp.style.borderRadius = '50%';
+                    powerUp.style.boxShadow = '0 0 15px white';
+                    break;
+            }
+            
+            gameContainer.appendChild(powerUp);
+        }
+
+        function activatePowerUp(type, currentTime) {
+            switch(type) {
+                case 'double':
+                    doublePointsActive = true;
+                    doublePointsEndTime = currentTime + 10000;
+                    showMessage("Double Points Activated!");
+                    break;
+                case 'rapid':
+                    rapidFireActive = true;
+                    rapidFireEndTime = currentTime + 8000;
+                    showMessage("Rapid Fire Activated!");
+                    break;
+                case 'health':
+                    health = Math.min(100, health + 30);
+                    healthElement.style.width = health + '%';
+                    showMessage("Health +30!");
+                    break;
+                case 'invincible':
+                    invincibleActive = true;
+                    invincibleEndTime = currentTime + 5000;
+                    showMessage("Invincibility Activated!");
+                    break;
+            }
+            
+            // Visual feedback
+            createCandyExplosion(document.querySelector('.power-up[data-type="' + type + '"]'));
+        }
+
+        function addScore(points) {
+            score += points;
+            scoreElement.textContent = score;
+            
+            // Score effect
+            scoreElement.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                scoreElement.style.transform = 'scale(1)';
+            }, 200);
+        }
+
+        function takeDamage(damage) {
+            health -= damage;
+            healthElement.style.width = health + '%';
+            
+            // Damage effect
+            gameContainer.style.boxShadow = '0 0 30px red';
+            setTimeout(() => {
+                gameContainer.style.boxShadow = '0 0 30px rgba(0, 0, 0, 0.5)';
+            }, 300);
+            
+            // Check game over
+            if (health <= 0) {
+                gameOver();
+            }
+        }
+
+        function gameOver() {
+            gameRunning = false;
+            finalScoreElement.textContent = score;
+            gameOverScreen.style.display = 'flex';
+        }
+
+        function createCandyExplosion(element) {
+            if (!element) return;
+            
+            const rect = element.getBoundingClientRect();
+            const containerRect = gameContainer.getBoundingClientRect();
+            
+            const x = rect.left - containerRect.left + rect.width / 2;
+            const y = rect.top - containerRect.top + rect.height / 2;
+            
+            createCandyParticles(x, y, 20, 0, 360);
+        }
+
+        function createCandyParticles(x, y, count, angleStart, angleRange) {
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'candy-particle';
+                
+                const angle = angleStart + Math.random() * angleRange;
+                const speed = 2 + Math.random() * 3;
+                const size = 5 + Math.random() * 10;
+                const color = candyColors[Math.floor(Math.random() * candyColors.length)];
+                
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.backgroundColor = color;
+                
+                // Random animation duration
+                const duration = 1 + Math.random() * 2;
+                particle.style.animation = `fall ${duration}s linear forwards`;
+                
+                // Set initial velocity
+                const radians = angle * (Math.PI / 180);
+                const vx = Math.cos(radians) * speed;
+                const vy = Math.sin(radians) * speed;
+                
+                particle.style.transform = `translate(${vx * 10}px, ${vy * 10}px)`;
+                
+                candyEffects.appendChild(particle);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    particle.remove();
+                }, duration * 1000);
+            }
+        }
+
+        function showMessage(text) {
+            messageElement.textContent = text;
+            messageElement.style.opacity = '1';
+            
+            setTimeout(() => {
+                messageElement.style.opacity = '0';
+            }, 2000);
+        }
+
+        // Initialize game
+        function initGame() {
+            // Reset game state
+            score = 0;
+            health = 100;
+            gameRunning = true;
+            playerSpeed = 5;
+            enemySpawnRate = 2000;
+            candySpawnRate = 3000;
+            powerUpSpawnRate = 10000;
+            doublePointsActive = false;
+            rapidFireActive = false;
+            invincibleActive = false;
+            
+            // Reset UI
+            scoreElement.textContent = '0';
+            healthElement.style.width = '100%';
+            gameOverScreen.style.display = 'none';
+            
+            // Clear all game elements
+            document.querySelectorAll('.bullet, .enemy, .candy, .power-up, .candy-particle').forEach(el => el.remove());
+            
+            // Reset player position
+            player.style.left = '200px';
+            player.style.top = (gameContainer.offsetHeight - 170) + 'px';
+            
+            // Start game loop
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Start game
+        restartBtn.addEventListener('click', initGame);
+        initGame();
+    </script>
+</body>
+</html>
