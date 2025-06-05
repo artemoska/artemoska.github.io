@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RubetonChat | Artemoska</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Используем те же стили, что и на главной странице */
+        :root {
+            --main-color: #8a2be2;
+            --dark: #0d0a10;
+            --darker: #07050a;
+            --gray: #16121d;
+            --light-gray: #302a3a;
+            --text: #f0e6ff;
+            --green: #9d4edd;
+            --red: #ff4d6d;
+            --yellow: #ffd166;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--text);
+            font-family: 'Ubuntu Mono', monospace;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            background: linear-gradient(to bottom, var(--darker), var(--gray));
+            padding: 2rem 1rem;
+            text-align: center;
+            border-bottom: 3px solid var(--main-color);
+        }
+
+        h1 {
+            color: var(--main-color);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin: 1rem 0;
+            padding: 0.5rem 1rem;
+            background: var(--main-color);
+            color: var(--text);
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--green);
+        }
+
+        .project-details {
+            background: var(--gray);
+            padding: 2rem;
+            border-radius: 5px;
+            margin-top: 2rem;
+        }
+
+        .project-features {
+            margin: 2rem 0;
+        }
+
+        .feature {
+            margin-bottom: 1.5rem;
+        }
+
+        .feature h3 {
+            color: var(--green);
+            margin-bottom: 0.5rem;
+        }
+
+        .screenshots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .screenshot {
+            border: 1px solid var(--light-gray);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .screenshot img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        footer {
+            background: var(--darker);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>RubetonChat</h1>
+            <p>Многофункциональный Telegram чат</p>
+            <a href="index.html" class="back-btn">← На главную</a>
+        </header>
+
+        <div class="project-details">
+            <h2>О проекте</h2>
+            <p>RubetonChat - это мощный Telegram бот для управления чатами с расширенными функциями модерации, развлечений и автоматизации.</p>
+            
+            <div class="project-features">
+                <h3>Основные возможности:</h3>
+                
+                <div class="feature">
+                    <h3>⚙️ Модерация</h3>
+                    <p>Автоматическое удаление спама, мата и нежелательного контента. Гибкие настройки фильтров.</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>🎮 Развлечения</h3>
+                    <p>Мини-игры, викторины, система рейтинга пользователей и ежедневные бонусы.</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>🤖 Автоматизация</h3>
+                    <p>Приветствие новых участников, автоматические ответы на частые вопросы, напоминания.</p>
+                </div>
+                
+                <div class="feature">
+                    <h3>📊 Статистика</h3>
+                    <p>Подробная статистика активности чата и пользователей с возможностью экспорта данных.</p>
+                </div>
+            </div>
+
+            <div class="screenshots">
+                <div class="screenshot">
+                    <img src="https://via.placeholder.com/600x400/16121d/8a2be2?text=RubetonChat+Interface" alt="Интерфейс RubetonChat">
+                </div>
+                <div class="screenshot">
+                    <img src="https://via.placeholder.com/600x400/16121d/9d4edd?text=Moderation+Panel" alt="Панель модерации">
+                </div>
+                <div class="screenshot">
+                    <img src="https://via.placeholder.com/600x400/16121d/ffd166?text=Games+Menu" alt="Меню игр">
+                </div>
+            </div>
+
+            <h3>Технологии</h3>
+            <ul>
+                <li>Node.js + Telegraf.js для работы с Telegram API</li>
+                <li>MongoDB для хранения данных</li>
+                <li>Redis для кэширования и очередей</li>
+                <li>Docker для развертывания</li>
+            </ul>
+
+            <a href="https://t.me/RubetonChatBot" class="back-btn" target="_blank">Попробовать бота</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2023 Artemoska. Все права защищены.</p>
+    </footer>
+</body>
+</html>
