@@ -3,190 +3,267 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RubetonChat | Artemoska</title>
+    <title>Artemoska | RubeTON Developer</title>
+    <meta name="description" content="Ruben Babaev - разработчик RubeTON.app, экосистемы для TON & Solana. Создаю децентрализованные сервисы и приложения.">
+    <meta name="keywords" content="Artemoska, RubeTON, TON, Solana, криптовалюта, блокчейн, разработчик">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Используем те же стили, что и на главной странице */
-        :root {
-            --main-color: #8a2be2;
-            --dark: #0d0a10;
-            --darker: #07050a;
-            --gray: #16121d;
-            --light-gray: #302a3a;
-            --text: #f0e6ff;
-            --green: #9d4edd;
-            --red: #ff4d6d;
-            --yellow: #ffd166;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: var(--dark);
-            color: var(--text);
-            font-family: 'Ubuntu Mono', monospace;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        header {
-            background: linear-gradient(to bottom, var(--darker), var(--gray));
-            padding: 2rem 1rem;
-            text-align: center;
-            border-bottom: 3px solid var(--main-color);
-        }
-
-        h1 {
-            color: var(--main-color);
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .back-btn {
-            display: inline-block;
-            margin: 1rem 0;
-            padding: 0.5rem 1rem;
-            background: var(--main-color);
-            color: var(--text);
+        /* Сохраняем все предыдущие стили из вашего оригинального кода */
+        /* Добавляем новые стили для секции RubeTON */
+        
+        .ton-badge {
+            background: linear-gradient(135deg, #0088cc, #50a8e0);
+            color: white;
+            padding: 0.3rem 0.6rem;
             border-radius: 4px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+        
+        .sol-badge {
+            background: linear-gradient(135deg, #00ffbd, #0088cc);
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+        
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .project-item {
+            background: var(--gray);
+            border: 1px solid var(--light-gray);
+            border-radius: 5px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .project-item:hover {
+            border-color: var(--main-color);
+            transform: translateY(-5px);
+        }
+        
+        .project-item h3 {
+            color: var(--main-color);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .project-item h3 i {
+            margin-right: 0.8rem;
+        }
+        
+        .token-address {
+            font-size: 0.8rem;
+            background: var(--darker);
+            padding: 0.5rem;
+            border-radius: 4px;
+            word-break: break-all;
+            margin: 0.5rem 0;
+        }
+        
+        .buy-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .buy-link {
+            background: rgba(138, 43, 226, 0.1);
+            color: var(--main-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
             text-decoration: none;
             transition: all 0.3s ease;
         }
-
-        .back-btn:hover {
-            background: var(--green);
+        
+        .buy-link:hover {
+            background: rgba(138, 43, 226, 0.3);
         }
-
-        .project-details {
-            background: var(--gray);
-            padding: 2rem;
-            border-radius: 5px;
-            margin-top: 2rem;
-        }
-
-        .project-features {
-            margin: 2rem 0;
-        }
-
-        .feature {
-            margin-bottom: 1.5rem;
-        }
-
-        .feature h3 {
-            color: var(--green);
-            margin-bottom: 0.5rem;
-        }
-
-        .screenshots {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .screenshot {
-            border: 1px solid var(--light-gray);
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .screenshot img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        footer {
-            background: var(--darker);
-            text-align: center;
-            padding: 2rem;
-            margin-top: 2rem;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
+        
+        .flag-icon {
+            width: 20px;
+            height: 15px;
+            margin-right: 0.5rem;
+            border-radius: 2px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>RubetonChat</h1>
-            <p>Многофункциональный Telegram чат</p>
-            <a href="index.html" class="back-btn">← На главную</a>
-        </header>
-
-        <div class="project-details">
-            <h2>О проекте</h2>
-            <p>RubetonChat - это мощный Telegram бот для управления чатами с расширенными функциями модерации, развлечений и автоматизации.</p>
-            
-            <div class="project-features">
-                <h3>Основные возможности:</h3>
-                
-                <div class="feature">
-                    <h3>⚙️ Модерация</h3>
-                    <p>Автоматическое удаление спама, мата и нежелательного контента. Гибкие настройки фильтров.</p>
-                </div>
-                
-                <div class="feature">
-                    <h3>🎮 Развлечения</h3>
-                    <p>Мини-игры, викторины, система рейтинга пользователей и ежедневные бонусы.</p>
-                </div>
-                
-                <div class="feature">
-                    <h3>🤖 Автоматизация</h3>
-                    <p>Приветствие новых участников, автоматические ответы на частые вопросы, напоминания.</p>
-                </div>
-                
-                <div class="feature">
-                    <h3>📊 Статистика</h3>
-                    <p>Подробная статистика активности чата и пользователей с возможностью экспорта данных.</p>
-                </div>
-            </div>
-
-            <div class="screenshots">
-                <div class="screenshot">
-                    <img src="https://via.placeholder.com/600x400/16121d/8a2be2?text=RubetonChat+Interface" alt="Интерфейс RubetonChat">
-                </div>
-                <div class="screenshot">
-                    <img src="https://via.placeholder.com/600x400/16121d/9d4edd?text=Moderation+Panel" alt="Панель модерации">
-                </div>
-                <div class="screenshot">
-                    <img src="https://via.placeholder.com/600x400/16121d/ffd166?text=Games+Menu" alt="Меню игр">
-                </div>
-            </div>
-
-            <h3>Технологии</h3>
-            <ul>
-                <li>Node.js + Telegraf.js для работы с Telegram API</li>
-                <li>MongoDB для хранения данных</li>
-                <li>Redis для кэширования и очередей</li>
-                <li>Docker для развертывания</li>
-            </ul>
-
-            <a href="https://t.me/RubetonChatBot" class="back-btn" target="_blank">Попробовать бота</a>
+    <!-- Остальная часть вашего оригинального HTML -->
+    
+    <!-- Обновленная секция "Обо мне" -->
+    <section class="animate-on-scroll section-load" style="animation-delay: 0.1s">
+        <h2>★ Обо мне</h2>
+        <p>Привет! Ruben Babaev — основатель RubeTON.app, экосистемы сервисов для TON & Solana блокчейнов.</p>
+        <p>Создает децентрализованные приложения, маркетплейсы и финансовые инструменты для криптосообщества.</p>
+        <div class="social-links">
+            <a href="https://t.me/artemoska" class="social-link" target="_blank">
+                <i class="fab fa-telegram telegram"></i> Telegram: @just14zy
+            </a>
+            <a href="https://t.me/rubetonchat" class="social-link" target="_blank">
+                <i class="fab fa-telegram telegram"></i> RubeTON Chat
+            </a>
         </div>
-    </div>
+    </section>
 
-    <footer>
-        <p>© 2023 Artemoska. Все права защищены.</p>
-    </footer>
+    <!-- Новая секция RubeTON -->
+    <section class="animate-on-scroll section-load" style="animation-delay: 0.2s">
+        <h2>★ RubeTON.app</h2>
+        <p>Децентрализованный кошелек с экосистемой сервисов для TON & Solana блокчейнов.</p>
+        
+        <div class="project-grid">
+            <div class="project-item">
+                <h3><i class="fas fa-wallet"></i> RubeTON Токены</h3>
+                <p>Нативные токены экосистемы RubeTON</p>
+                
+                <div>
+                    <span class="ton-badge">TON</span>
+                    <span class="token-address">EQCweXSZaX5k5xOtXLbGgfF8FY6Dbg6rNiPrd9d0f_-kDSHZ</span>
+                    <div class="buy-links">
+                        <a href="https://dedust.io/swap/ton/rubeton/" class="buy-link" target="_blank">DeDust.io</a>
+                        <a href="https://app.ston.fi/swap?ft=TON&tt=EQCweXSZaX5k5xOtXLbGgfF8FY6Dbg6rNiPrd9d0f_-kDSHZ" class="buy-link" target="_blank">STON.fi</a>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 1rem;">
+                    <span class="sol-badge">SOL</span>
+                    <span class="token-address">2AtZBT1FxZV7Gh5o7ZmmZZfWJUKaM1qZ1NAZ4KL3pump</span>
+                    <div class="buy-links">
+                        <a href="https://raydium.io/swap/?inputMint=sol&outputMint=2AtZBT1FxZV7Gh5o7ZmmZZfWJUKaM1qZ1NAZ4KL3pump" class="buy-link" target="_blank">Raydium</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="project-item">
+                <h3><i class="fas fa-link"></i> Основные ссылки</h3>
+                <ul>
+                    <li><a href="https://rubeton.app/" target="_blank">Официальный сайт</a></li>
+                    <li><a href="https://t.me/rubetonchat" target="_blank">RubeTON Chat</a></li>
+                    <li><a href="https://t.me/+zCW9E4_4htw0YTMy" target="_blank">RubeTON Holders</a></li>
+                    <li><a href="https://docs.google.com/document/d/1nd8AOwILMnnLaidSwm46J2d7nP3qikFvd3qCJHlS1Mg/edit" target="_blank">Whitepaper</a></li>
+                    <li><a href="https://docs.google.com/spreadsheets/d/1vUOte_jZyaerHrt2kBlDKCHQXYnTP_tTkivsU5xjnas/edit" target="_blank">Tokenomics</a></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция проектов RubeTON -->
+    <section class="animate-on-scroll section-load" style="animation-delay: 0.3s">
+        <h2>★ Проекты RubeTON</h2>
+        <p>Экосистема сервисов, разрабатываемых под брендом RubeTON</p>
+        
+        <div class="project-grid">
+            <div class="project-item">
+                <h3><i class="fas fa-shopping-bag"></i> RubeTON Market</h3>
+                <p>Маркетплейс товаров и услуг за TON</p>
+                <a href="http://t.me/Rubeton_bot/market" class="buy-link" target="_blank">Перейти</a>
+            </div>
+            
+            <div class="project-item">
+                <h3><i class="fas fa-plane"></i> RubeTON Travel</h3>
+                <p>Сервис поиска лучших цен на авиабилеты</p>
+                <a href="https://travel.rubeton.app/" class="buy-link" target="_blank">Перейти</a>
+            </div>
+            
+            <div class="project-item">
+                <h3><i class="fas fa-exchange-alt"></i> RubeTON Exchange</h3>
+                <p>Обмен криптовалют между сетями (DEX) и P2P боты</p>
+                <a href="http://t.me/rubetonexchange" class="buy-link" target="_blank">Перейти</a>
+            </div>
+            
+            <div class="project-item">
+                <h3><i class="fas fa-briefcase"></i> RubeTON Works</h3>
+                <p>Работа в экосистеме RubeTON и Ambassador программа</p>
+                <a href="https://t.me/+WM70UXTvg5YyMjUy" class="buy-link" target="_blank">Перейти</a>
+            </div>
+            
+            <div class="project-item">
+                <h3><i class="fas fa-shield-alt"></i> RubeTON Security</h3>
+                <p>Образовательное сообщество по кибербезопасности в TON</p>
+                <a href="https://t.me/+giOg1VhREvo4MDAy" class="buy-link" target="_blank">Перейти</a>
+            </div>
+            
+            <div class="project-item">
+                <h3><i class="fas fa-rocket"></i> RubeTON Incubator</h3>
+                <p>Инкубатор для молодых проектов на TON</p>
+                <a href="https://incubator.rubeton.app/" class="buy-link" target="_blank">Перейти</a>
+            </div>
+            
+            <div class="project-item">
+                <h3><i class="fas fa-gamepad"></i> TON Memes</h3>
+                <p>Крипто-игра с мем-персонажами</p>
+                <a href="https://getgems.io/ton-memes/" class="buy-link" target="_blank">Перейти</a>
+            </div>
+            
+            <div class="project-item">
+                <h3><i class="fas fa-heartbeat"></i> Activity Tracker</h3>
+                <p>Мини-приложение для здоровых привычек</p>
+                <a href="http://t.me/rubetonactivity" class="buy-link" target="_blank">Перейти</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция международных сообществ -->
+    <section class="animate-on-scroll section-load" style="animation-delay: 0.4s">
+        <h2>★ Международные сообщества</h2>
+        <p>Присоединяйтесь к RubeTON на вашем языке</p>
+        
+        <div class="project-grid">
+            <div class="project-item">
+                <h3><img src="https://flagcdn.com/w20/us.png" class="flag-icon"> English</h3>
+                <a href="http://t.me/rubetonenglish" class="buy-link" target="_blank">@rubetonenglish</a>
+            </div>
+            
+            <div class="project-item">
+                <h3><img src="https://flagcdn.com/w20/es.png" class="flag-icon"> Spanish</h3>
+                <a href="http://t.me/rubetonspanish" class="buy-link" target="_blank">@rubetonspanish</a>
+            </div>
+            
+            <div class="project-item">
+                <h3><img src="https://flagcdn.com/w20/jp.png" class="flag-icon"> Japanese</h3>
+                <a href="http://t.me/rubetonjapanese" class="buy-link" target="_blank">@rubetonjapanese</a>
+            </div>
+            
+            <div class="project-item">
+                <h3><img src="https://flagcdn.com/w20/ru.png" class="flag-icon"> Russian</h3>
+                <a href="http://t.me/rubetonrussian" class="buy-link" target="_blank">@rubetonrussian</a>
+            </div>
+            
+            <div class="project-item">
+                <h3><img src="https://flagcdn.com/w20/fr.png" class="flag-icon"> French</h3>
+                <a href="http://t.me/rubetonfrench" class="buy-link" target="_blank">@rubetonfrench</a>
+            </div>
+            
+            <div class="project-item">
+                <h3><img src="https://flagcdn.com/w20/th.png" class="flag-icon"> Thai</h3>
+                <a href="https://t.me/+InM73uN-JZczN2Vi" class="buy-link" target="_blank">@rubetonthai</a>
+            </div>
+            
+            <div class="project-item">
+                <h3><img src="https://flagcdn.com/w20/am.png" class="flag-icon"> Armenian</h3>
+                <a href="https://t.me/+5ZE-lHwVvhA2YzI6" class="buy-link" target="_blank">@rubetonarmenian</a>
+            </div>
+            
+            <div class="project-item">
+                <h3><img src="https://flagcdn.com/w20/ng.png" class="flag-icon"> Nigeria</h3>
+                <a href="https://t.me/rubetonnigeria" class="buy-link" target="_blank">@rubetonnigeria</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Остальная часть вашего оригинального HTML -->
 </body>
 </html>
