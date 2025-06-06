@@ -6,9 +6,7 @@
     <title>RubetonChat | Artemoska</title>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-        /* Используем те же стили, что и на главной странице */
         :root {
             --main-color: #8a2be2;
             --dark: #0d0a10;
@@ -25,12 +23,12 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Ubuntu Mono', monospace;
         }
 
         body {
             background-color: var(--dark);
             color: var(--text);
-            font-family: 'Ubuntu Mono', monospace;
             line-height: 1.6;
             overflow-x: hidden;
         }
@@ -43,30 +41,100 @@
 
         header {
             background: linear-gradient(to bottom, var(--darker), var(--gray));
-            padding: 2rem 1rem;
+            padding: 3rem 1rem;
             text-align: center;
             border-bottom: 3px solid var(--main-color);
+            position: relative;
+            overflow: hidden;
         }
 
         h1 {
             color: var(--main-color);
             font-size: 2.5rem;
             margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+            position: relative;
+            display: inline-block;
+            animation: neon-glow 1.5s ease-in-out infinite alternate;
+        }
+
+        h1::after {
+            content: '_';
+            animation: blink 1s infinite;
+            color: var(--main-color);
+            position: absolute;
+            right: -15px;
+        }
+
+        h2 {
+            color: var(--green);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            position: relative;
+            display: inline-block;
+            animation: neon-glow 1.5s ease-in-out infinite alternate;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--main-color);
+            animation: width-grow 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes neon-glow {
+            from { text-shadow: 0 0 5px var(--main-color); }
+            to { text-shadow: 0 0 10px var(--main-color), 
+                             0 0 20px var(--main-color), 
+                             0 0 30px var(--main-color); }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        @keyframes width-grow {
+            to { width: 100px; }
         }
 
         .back-btn {
             display: inline-block;
             margin: 1rem 0;
-            padding: 0.5rem 1rem;
+            padding: 0.8rem 1.5rem;
             background: var(--main-color);
             color: var(--text);
             border-radius: 4px;
             text-decoration: none;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .back-btn:hover {
-            background: var(--green);
+            background: #7b1fa2;
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.5s ease;
+        }
+
+        .back-btn:hover::before {
+            left: 100%;
         }
 
         .project-details {
@@ -74,6 +142,19 @@
             padding: 2rem;
             border-radius: 5px;
             margin-top: 2rem;
+            border: 1px solid var(--light-gray);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .project-details::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--main-color), var(--green));
         }
 
         .project-features {
@@ -87,6 +168,7 @@
         .feature h3 {
             color: var(--green);
             margin-bottom: 0.5rem;
+            font-size: 1.3rem;
         }
 
         .screenshots {
@@ -100,6 +182,11 @@
             border: 1px solid var(--light-gray);
             border-radius: 5px;
             overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .screenshot:hover {
+            transform: scale(1.02);
         }
 
         .screenshot img {
@@ -109,25 +196,34 @@
         }
 
         footer {
-            background: var(--darker);
+            background: linear-gradient(to top, var(--darker), var(--gray));
             text-align: center;
-            padding: 2rem;
-            margin-top: 2rem;
+            padding: 3rem 1rem;
+            border-top: 3px solid var(--main-color);
+            margin-top: 3rem;
+            position: relative;
+            overflow: hidden;
         }
 
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none"/><path d="M20,20 L80,20 L80,80 L20,80 Z" stroke="%238a2be2" stroke-width="0.5" fill="none"/></svg>');
+            opacity: 0.05;
+            pointer-events: none;
+            animation: bg-move 20s linear infinite;
         }
-    
-        /* Сохраняем все предыдущие стили из вашего оригинального кода */
-        /* Добавляем новые стили для секции RubeTON */
         
+        @keyframes bg-move {
+            from { background-position: 0 0; }
+            to { background-position: 100px 100px; }
+        }
+
+        /* Стили для секции RubeTON */
         .ton-badge {
             background: linear-gradient(135deg, #0088cc, #50a8e0);
             color: white;
@@ -161,11 +257,13 @@
             border-radius: 5px;
             padding: 1.5rem;
             transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
         .project-item:hover {
             border-color: var(--main-color);
             transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
         
         .project-item h3 {
@@ -173,10 +271,12 @@
             margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
+            font-size: 1.2rem;
         }
         
         .project-item h3 i {
             margin-right: 0.8rem;
+            font-size: 1.2rem;
         }
         
         .token-address {
@@ -186,6 +286,7 @@
             border-radius: 4px;
             word-break: break-all;
             margin: 0.5rem 0;
+            font-family: 'Ubuntu Mono', monospace;
         }
         
         .buy-links {
@@ -198,15 +299,17 @@
         .buy-link {
             background: rgba(138, 43, 226, 0.1);
             color: var(--main-color);
-            padding: 0.3rem 0.8rem;
+            padding: 0.5rem 1rem;
             border-radius: 4px;
             font-size: 0.8rem;
             text-decoration: none;
             transition: all 0.3s ease;
+            border: 1px solid var(--main-color);
         }
         
         .buy-link:hover {
             background: rgba(138, 43, 226, 0.3);
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.2);
         }
         
         .flag-icon {
@@ -215,171 +318,241 @@
             margin-right: 0.5rem;
             border-radius: 2px;
         }
+
+        /* Стили для социальных ссылок */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            background: var(--gray);
+            color: var(--text);
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid var(--light-gray);
+        }
+
+        .social-link:hover {
+            background: var(--light-gray);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .social-link i {
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .social-link:hover i {
+            transform: scale(1.2);
+        }
+
+        .telegram { color: #0088cc; }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .social-link {
+                padding: 0.8rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Остальная часть вашего оригинального HTML -->
-    
-    <!-- Обновленная секция "Обо мне" -->
-    <section class="animate-on-scroll section-load" style="animation-delay: 0.1s">
-        <h2>★ О проекте </h2>
-        <p>Привет! Ruben Babaev — основатель RubeTON.app, экосистемы сервисов для TON & Solana блокчейнов.</p>
-        <p>Создает децентрализованные приложения, маркетплейсы и финансовые инструменты для криптосообщества.</p>
-        <div class="social-links">
-            <a href="https://t.me/artemoska" class="social-link" target="_blank">
-                <i class="fab fa-telegram telegram"></i> Telegram: @just14zy
-            </a>
-            <a href="https://t.me/rubetonchat" class="social-link" target="_blank">
-                <i class="fab fa-telegram telegram"></i> RubeTON Chat
-            </a>
-        </div>
-    </section>
+    <div class="container">
+        <header>
+            <h1>RubeTON.app</h1>
+            <p>Экосистема сервисов для TON & Solana</p>
+            <a href="index.html" class="back-btn">← На главную</a>
+        </header>
 
-    <!-- Новая секция RubeTON -->
-    <section class="animate-on-scroll section-load" style="animation-delay: 0.2s">
-        <h2>★ RubeTON.app</h2>
-        <p>Децентрализованный кошелек с экосистемой сервисов для TON & Solana блокчейнов.</p>
-        
-        <div class="project-grid">
-            <div class="project-item">
-                <h3><i class="fas fa-wallet"></i> RubeTON Токены</h3>
-                <p>Нативные токены экосистемы RubeTON</p>
-                
-                <div>
-                    <span class="ton-badge">TON</span>
-                    <span class="token-address">EQCweXSZaX5k5xOtXLbGgfF8FY6Dbg6rNiPrd9d0f_-kDSHZ</span>
-                    <div class="buy-links">
-                        <a href="https://dedust.io/swap/ton/rubeton/" class="buy-link" target="_blank">DeDust.io</a>
-                        <a href="https://app.ston.fi/swap?ft=TON&tt=EQCweXSZaX5k5xOtXLbGgfF8FY6Dbg6rNiPrd9d0f_-kDSHZ" class="buy-link" target="_blank">STON.fi</a>
+        <!-- Обновленная секция "О проекте" -->
+        <section class="project-details">
+            <h2>★ О проекте</h2>
+            <p>Ruben Babaev — основатель RubeTON.app, экосистемы сервисов для TON & Solana блокчейнов.</p>
+            <p>Создает децентрализованные приложения, маркетплейсы и финансовые инструменты для криптосообщества.</p>
+            <div class="social-links">
+                <a href="https://t.me/just14zy" class="social-link" target="_blank">
+                    <i class="fab fa-telegram telegram"></i> Telegram: @just14zy
+                </a>
+                <a href="https://t.me/rubetonchat" class="social-link" target="_blank">
+                    <i class="fab fa-telegram telegram"></i> RubeTON Chat
+                </a>
+            </div>
+        </section>
+
+        <!-- Секция RubeTON -->
+        <section class="project-details">
+            <h2>★ RubeTON.app</h2>
+            <p>Децентрализованный кошелек с экосистемой сервисов для TON & Solana блокчейнов.</p>
+            
+            <div class="project-grid">
+                <div class="project-item">
+                    <h3><i class="fas fa-wallet"></i> RubeTON Токены</h3>
+                    <p>Нативные токены экосистемы RubeTON</p>
+                    
+                    <div>
+                        <span class="ton-badge">TON</span>
+                        <span class="token-address">EQCweXSZaX5k5xOtXLbGgfF8FY6Dbg6rNiPrd9d0f_-kDSHZ</span>
+                        <div class="buy-links">
+                            <a href="https://dedust.io/swap/ton/rubeton/" class="buy-link" target="_blank">DeDust.io</a>
+                            <a href="https://app.ston.fi/swap?ft=TON&tt=EQCweXSZaX5k5xOtXLbGgfF8FY6Dbg6rNiPrd9d0f_-kDSHZ" class="buy-link" target="_blank">STON.fi</a>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 1rem;">
+                        <span class="sol-badge">SOL</span>
+                        <span class="token-address">2AtZBT1FxZV7Gh5o7ZmmZZfWJUKaM1qZ1NAZ4KL3pump</span>
+                        <div class="buy-links">
+                            <a href="https://raydium.io/swap/?inputMint=sol&outputMint=2AtZBT1FxZV7Gh5o7ZmmZZfWJUKaM1qZ1NAZ4KL3pump" class="buy-link" target="_blank">Raydium</a>
+                        </div>
                     </div>
                 </div>
                 
-                <div style="margin-top: 1rem;">
-                    <span class="sol-badge">SOL</span>
-                    <span class="token-address">2AtZBT1FxZV7Gh5o7ZmmZZfWJUKaM1qZ1NAZ4KL3pump</span>
-                    <div class="buy-links">
-                        <a href="https://raydium.io/swap/?inputMint=sol&outputMint=2AtZBT1FxZV7Gh5o7ZmmZZfWJUKaM1qZ1NAZ4KL3pump" class="buy-link" target="_blank">Raydium</a>
-                    </div>
+                <div class="project-item">
+                    <h3><i class="fas fa-link"></i> Основные ссылки</h3>
+                    <ul>
+                        <li><a href="https://rubeton.app/" target="_blank">Официальный сайт</a></li>
+                        <li><a href="https://t.me/rubetonchat" target="_blank">RubeTON Chat</a></li>
+                        <li><a href="https://t.me/+zCW9E4_4htw0YTMy" target="_blank">RubeTON Holders</a></li>
+                        <li><a href="https://docs.google.com/document/d/1nd8AOwILMnnLaidSwm46J2d7nP3qikFvd3qCJHlS1Mg/edit" target="_blank">Whitepaper</a></li>
+                        <li><a href="https://docs.google.com/spreadsheets/d/1vUOte_jZyaerHrt2kBlDKCHQXYnTP_tTkivsU5xjnas/edit" target="_blank">Tokenomics</a></li>
+                    </ul>
                 </div>
             </div>
-            
-            <div class="project-item">
-                <h3><i class="fas fa-link"></i> Основные ссылки</h3>
-                <ul>
-                    <li><a href="https://rubeton.app/" target="_blank">Официальный сайт</a></li>
-                    <li><a href="https://t.me/rubetonchat" target="_blank">RubeTON Chat</a></li>
-                    <li><a href="https://t.me/+zCW9E4_4htw0YTMy" target="_blank">RubeTON Holders</a></li>
-                    <li><a href="https://docs.google.com/document/d/1nd8AOwILMnnLaidSwm46J2d7nP3qikFvd3qCJHlS1Mg/edit" target="_blank">Whitepaper</a></li>
-                    <li><a href="https://docs.google.com/spreadsheets/d/1vUOte_jZyaerHrt2kBlDKCHQXYnTP_tTkivsU5xjnas/edit" target="_blank">Tokenomics</a></li>
-                </ul>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Секция проектов RubeTON -->
-    <section class="animate-on-scroll section-load" style="animation-delay: 0.3s">
-        <h2>★ Проекты RubeTON</h2>
-        <p>Экосистема сервисов, разрабатываемых под брендом RubeTON</p>
-        
-        <div class="project-grid">
-            <div class="project-item">
-                <h3><i class="fas fa-shopping-bag"></i> RubeTON Market</h3>
-                <p>Маркетплейс товаров и услуг за TON</p>
-                <a href="http://t.me/Rubeton_bot/market" class="buy-link" target="_blank">Перейти</a>
-            </div>
+        <!-- Секция проектов RubeTON -->
+        <section class="project-details">
+            <h2>★ Проекты RubeTON</h2>
+            <p>Экосистема сервисов, разрабатываемых под брендом RubeTON</p>
             
-            <div class="project-item">
-                <h3><i class="fas fa-plane"></i> RubeTON Travel</h3>
-                <p>Сервис поиска лучших цен на авиабилеты</p>
-                <a href="https://travel.rubeton.app/" class="buy-link" target="_blank">Перейти</a>
+            <div class="project-grid">
+                <div class="project-item">
+                    <h3><i class="fas fa-shopping-bag"></i> RubeTON Market</h3>
+                    <p>Маркетплейс товаров и услуг за TON</p>
+                    <a href="http://t.me/Rubeton_bot/market" class="buy-link" target="_blank">Перейти</a>
+                </div>
+                
+                <div class="project-item">
+                    <h3><i class="fas fa-plane"></i> RubeTON Travel</h3>
+                    <p>Сервис поиска лучших цен на авиабилеты</p>
+                    <a href="https://travel.rubeton.app/" class="buy-link" target="_blank">Перейти</a>
+                </div>
+                
+                <div class="project-item">
+                    <h3><i class="fas fa-exchange-alt"></i> RubeTON Exchange</h3>
+                    <p>Обмен криптовалют между сетями (DEX) и P2P боты</p>
+                    <a href="http://t.me/rubetonexchange" class="buy-link" target="_blank">Перейти</a>
+                </div>
+                
+                <div class="project-item">
+                    <h3><i class="fas fa-briefcase"></i> RubeTON Works</h3>
+                    <p>Работа в экосистеме RubeTON и Ambassador программа</p>
+                    <a href="https://t.me/+WM70UXTvg5YyMjUy" class="buy-link" target="_blank">Перейти</a>
+                </div>
+                
+                <div class="project-item">
+                    <h3><i class="fas fa-shield-alt"></i> RubeTON Security</h3>
+                    <p>Образовательное сообщество по кибербезопасности в TON</p>
+                    <a href="https://t.me/+giOg1VhREvo4MDAy" class="buy-link" target="_blank">Перейти</a>
+                </div>
+                
+                <div class="project-item">
+                    <h3><i class="fas fa-rocket"></i> RubeTON Incubator</h3>
+                    <p>Инкубатор для молодых проектов на TON</p>
+                    <a href="https://incubator.rubeton.app/" class="buy-link" target="_blank">Перейти</a>
+                </div>
+                
+                <div class="project-item">
+                    <h3><i class="fas fa-gamepad"></i> TON Memes</h3>
+                    <p>Крипто-игра с мем-персонажами</p>
+                    <a href="https://getgems.io/ton-memes/" class="buy-link" target="_blank">Перейти</a>
+                </div>
+                
+                <div class="project-item">
+                    <h3><i class="fas fa-heartbeat"></i> Activity Tracker</h3>
+                    <p>Мини-приложение для здоровых привычек</p>
+                    <a href="http://t.me/rubetonactivity" class="buy-link" target="_blank">Перейти</a>
+                </div>
             </div>
-            
-            <div class="project-item">
-                <h3><i class="fas fa-exchange-alt"></i> RubeTON Exchange</h3>
-                <p>Обмен криптовалют между сетями (DEX) и P2P боты</p>
-                <a href="http://t.me/rubetonexchange" class="buy-link" target="_blank">Перейти</a>
-            </div>
-            
-            <div class="project-item">
-                <h3><i class="fas fa-briefcase"></i> RubeTON Works</h3>
-                <p>Работа в экосистеме RubeTON и Ambassador программа</p>
-                <a href="https://t.me/+WM70UXTvg5YyMjUy" class="buy-link" target="_blank">Перейти</a>
-            </div>
-            
-            <div class="project-item">
-                <h3><i class="fas fa-shield-alt"></i> RubeTON Security</h3>
-                <p>Образовательное сообщество по кибербезопасности в TON</p>
-                <a href="https://t.me/+giOg1VhREvo4MDAy" class="buy-link" target="_blank">Перейти</a>
-            </div>
-            
-            <div class="project-item">
-                <h3><i class="fas fa-rocket"></i> RubeTON Incubator</h3>
-                <p>Инкубатор для молодых проектов на TON</p>
-                <a href="https://incubator.rubeton.app/" class="buy-link" target="_blank">Перейти</a>
-            </div>
-            
-            <div class="project-item">
-                <h3><i class="fas fa-gamepad"></i> TON Memes</h3>
-                <p>Крипто-игра с мем-персонажами</p>
-                <a href="https://getgems.io/ton-memes/" class="buy-link" target="_blank">Перейти</a>
-            </div>
-            
-            <div class="project-item">
-                <h3><i class="fas fa-heartbeat"></i> Activity Tracker</h3>
-                <p>Мини-приложение для здоровых привычек</p>
-                <a href="http://t.me/rubetonactivity" class="buy-link" target="_blank">Перейти</a>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Секция международных сообществ -->
-    <section class="animate-on-scroll section-load" style="animation-delay: 0.4s">
-        <h2>★ Международные сообщества</h2>
-        <p>Присоединяйтесь к RubeTON на вашем языке</p>
-        
-        <div class="project-grid">
-            <div class="project-item">
-                <h3><img src="https://flagcdn.com/w20/us.png" class="flag-icon"> English</h3>
-                <a href="http://t.me/rubetonenglish" class="buy-link" target="_blank">@rubetonenglish</a>
-            </div>
+        <!-- Секция международных сообществ -->
+        <section class="project-details">
+            <h2>★ Международные сообщества</h2>
+            <p>Присоединяйтесь к RubeTON на вашем языке</p>
             
-            <div class="project-item">
-                <h3><img src="https://flagcdn.com/w20/es.png" class="flag-icon"> Spanish</h3>
-                <a href="http://t.me/rubetonspanish" class="buy-link" target="_blank">@rubetonspanish</a>
+            <div class="project-grid">
+                <div class="project-item">
+                    <h3><img src="https://flagcdn.com/w20/us.png" class="flag-icon"> English</h3>
+                    <a href="http://t.me/rubetonenglish" class="buy-link" target="_blank">@rubetonenglish</a>
+                </div>
+                
+                <div class="project-item">
+                    <h3><img src="https://flagcdn.com/w20/es.png" class="flag-icon"> Spanish</h3>
+                    <a href="http://t.me/rubetonspanish" class="buy-link" target="_blank">@rubetonspanish</a>
+                </div>
+                
+                <div class="project-item">
+                    <h3><img src="https://flagcdn.com/w20/jp.png" class="flag-icon"> Japanese</h3>
+                    <a href="http://t.me/rubetonjapanese" class="buy-link" target="_blank">@rubetonjapanese</a>
+                </div>
+                
+                <div class="project-item">
+                    <h3><img src="https://flagcdn.com/w20/ru.png" class="flag-icon"> Russian</h3>
+                    <a href="http://t.me/rubetonrussian" class="buy-link" target="_blank">@rubetonrussian</a>
+                </div>
+                
+                <div class="project-item">
+                    <h3><img src="https://flagcdn.com/w20/fr.png" class="flag-icon"> French</h3>
+                    <a href="http://t.me/rubetonfrench" class="buy-link" target="_blank">@rubetonfrench</a>
+                </div>
+                
+                <div class="project-item">
+                    <h3><img src="https://flagcdn.com/w20/th.png" class="flag-icon"> Thai</h3>
+                    <a href="https://t.me/+InM73uN-JZczN2Vi" class="buy-link" target="_blank">@rubetonthai</a>
+                </div>
+                
+                <div class="project-item">
+                    <h3><img src="https://flagcdn.com/w20/am.png" class="flag-icon"> Armenian</h3>
+                    <a href="https://t.me/+5ZE-lHwVvhA2YzI6" class="buy-link" target="_blank">@rubetonarmenian</a>
+                </div>
+                
+                <div class="project-item">
+                    <h3><img src="https://flagcdn.com/w20/ng.png" class="flag-icon"> Nigeria</h3>
+                    <a href="https://t.me/rubetonnigeria" class="buy-link" target="_blank">@rubetonnigeria</a>
+                </div>
             </div>
-            
-            <div class="project-item">
-                <h3><img src="https://flagcdn.com/w20/jp.png" class="flag-icon"> Japanese</h3>
-                <a href="http://t.me/rubetonjapanese" class="buy-link" target="_blank">@rubetonjapanese</a>
-            </div>
-            
-            <div class="project-item">
-                <h3><img src="https://flagcdn.com/w20/ru.png" class="flag-icon"> Russian</h3>
-                <a href="http://t.me/rubetonrussian" class="buy-link" target="_blank">@rubetonrussian</a>
-            </div>
-            
-            <div class="project-item">
-                <h3><img src="https://flagcdn.com/w20/fr.png" class="flag-icon"> French</h3>
-                <a href="http://t.me/rubetonfrench" class="buy-link" target="_blank">@rubetonfrench</a>
-            </div>
-            
-            <div class="project-item">
-                <h3><img src="https://flagcdn.com/w20/th.png" class="flag-icon"> Thai</h3>
-                <a href="https://t.me/+InM73uN-JZczN2Vi" class="buy-link" target="_blank">@rubetonthai</a>
-            </div>
-            
-            <div class="project-item">
-                <h3><img src="https://flagcdn.com/w20/am.png" class="flag-icon"> Armenian</h3>
-                <a href="https://t.me/+5ZE-lHwVvhA2YzI6" class="buy-link" target="_blank">@rubetonarmenian</a>
-            </div>
-            
-            <div class="project-item">
-                <h3><img src="https://flagcdn.com/w20/ng.png" class="flag-icon"> Nigeria</h3>
-                <a href="https://t.me/rubetonnigeria" class="buy-link" target="_blank">@rubetonnigeria</a>
-            </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
-    <!-- Остальная часть вашего оригинального HTML -->
+    <footer>
+        <p>© 2025 RubeTON.app. Все права защищены.</p>
+    </footer>
 </body>
 </html>
