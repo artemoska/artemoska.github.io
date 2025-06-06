@@ -19,6 +19,7 @@
             --green: #9d4edd;
             --red: #ff4d6d;
             --yellow: #ffd166;
+            --blue: #4d9de0;
         }
 
         * {
@@ -771,6 +772,220 @@
             box-shadow: 0 0 5px var(--main-color);
         }
 
+        /* Новые стили для виджетов */
+        .widgets-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .widget {
+            background: var(--gray);
+            border: 1px solid var(--light-gray);
+            border-radius: 5px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .widget::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), transparent);
+            z-index: -1;
+        }
+
+        .widget:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .widget-title {
+            color: var(--main-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .widget-title i {
+            margin-right: 0.8rem;
+            font-size: 1.5rem;
+        }
+
+        /* Стили для рекламного блока */
+        .ad-place {
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.2), rgba(157, 78, 221, 0.1));
+            border: 2px dashed var(--main-color);
+            border-radius: 5px;
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .ad-place:hover {
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.3), rgba(157, 78, 221, 0.2));
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+        }
+
+        .ad-place h3 {
+            color: var(--main-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .ad-place p {
+            color: var(--text);
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .ad-place .btn {
+            margin-top: 1rem;
+        }
+
+        /* Стили для запланированных проектов */
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 2rem auto;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 3px;
+            background: var(--main-color);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1.5px;
+            box-shadow: 0 0 10px var(--main-color);
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--main-color);
+            border-radius: 50%;
+            top: 15px;
+            z-index: 1;
+            box-shadow: 0 0 10px var(--main-color);
+        }
+
+        .left {
+            left: 0;
+        }
+
+        .right {
+            left: 50%;
+        }
+
+        .left::after {
+            right: -10px;
+        }
+
+        .right::after {
+            left: -10px;
+        }
+
+        .timeline-content {
+            padding: 20px;
+            background: var(--gray);
+            border: 1px solid var(--light-gray);
+            border-radius: 5px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-color: var(--main-color);
+        }
+
+        .timeline-date {
+            color: var(--main-color);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Статистика */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: var(--gray);
+            border: 1px solid var(--light-gray);
+            border-radius: 5px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), transparent);
+            z-index: -1;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-color: var(--main-color);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--main-color);
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover .stat-number {
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+        }
+
+        .stat-label {
+            color: var(--text);
+            opacity: 0.8;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover .stat-label {
+            opacity: 1;
+        }
+
         /* Адаптивность */
         @media (max-width: 768px) {
             .container {
@@ -781,7 +996,7 @@
                 padding: 1.5rem;
             }
 
-            .skills-container, .projects-container {
+            .skills-container, .projects-container, .widgets-container {
                 grid-template-columns: 1fr;
             }
 
@@ -800,6 +1015,32 @@
             .console-effect {
                 max-width: 250px;
                 font-size: 0.8rem;
+            }
+
+            .timeline::after {
+                left: 31px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+
+            .timeline-item::after {
+                left: 21px;
+            }
+
+            .left::after, .right::after {
+                left: 21px;
+            }
+
+            .right {
+                left: 0%;
+            }
+
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
@@ -831,6 +1072,27 @@
             <h2>★ Обо мне</h2>
             <p>Привет! Я Artemoska — программист, админ RubetonChat и создатель проектов.</p>
             <p>Делаю игры, Telegram и VK ботов, веб-приложения и просто магию на JavaScript.</p>
+            
+            <!-- Виджет статистики -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-number" id="projects-count">0</div>
+                    <div class="stat-label">Завершенных проектов</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="clients-count">0</div>
+                    <div class="stat-label">Довольных клиентов</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="bots-count">0</div>
+                    <div class="stat-label">Созданных ботов</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="experience-years">0</div>
+                    <div class="stat-label">Лет опыта</div>
+                </div>
+            </div>
+            
             <div class="social-links">
                 <a href="https://t.me/artemoska" class="social-link" target="_blank">
                     <i class="fab fa-telegram telegram"></i> Telegram: @artemoska
@@ -838,6 +1100,15 @@
                 <a href="https://t.me/tonxui" class="social-link" target="_blank">
                     <i class="fab fa-telegram telegram"></i> Telegram: @tonxui
                 </a>
+            </div>
+        </section>
+
+        <!-- Рекламный блок -->
+        <section class="animate-on-scroll section-load" style="animation-delay: 0.15s">
+            <div class="ad-place">
+                <h3>Здесь могла быть ваша реклама!</h3>
+                <p>Это место идеально подходит для продвижения вашего продукта или услуги. Свяжитесь со мной для размещения рекламы.</p>
+                <a href="https://t.me/artemoska" class="btn" target="_blank">Заказать рекламу</a>
             </div>
         </section>
 
@@ -948,8 +1219,77 @@
             </div>
         </section>
 
-        <!-- Секция "Контакты" -->
+        <!-- Секция "Запланированные проекты" -->
         <section class="animate-on-scroll section-load" style="animation-delay: 0.4s">
+            <h2>★ Запланированные проекты</h2>
+            <p>Вот что я планирую реализовать в ближайшем будущем:</p>
+            
+            <div class="timeline">
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2023 Q4</div>
+                        <h3>Telegram Mini Apps</h3>
+                        <p>Разработка мини-приложений для Telegram с интеграцией криптовалютных платежей.</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2024 Q1</div>
+                        <h3>AI Chat Bot</h3>
+                        <p>Создание интеллектуального чат-бота с использованием GPT-технологий.</p>
+                    </div>
+                </div>
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2024 Q2</div>
+                        <h3>Multiplayer Game</h3>
+                        <p>Разработка многопользовательской браузерной игры с реальным временем.</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2024 Q3</div>
+                        <h3>Dev Tools Package</h3>
+                        <p>Публикация набора инструментов для разработчиков Telegram ботов.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Виджеты -->
+        <section class="animate-on-scroll section-load" style="animation-delay: 0.5s">
+            <h2>★ Виджеты</h2>
+            <div class="widgets-container">
+                <div class="widget">
+                    <h3 class="widget-title"><i class="fas fa-code"></i> Последний код</h3>
+                    <div class="code-widget">
+                        <pre><code>function magicSpell() {
+  console.log("Abracadabra!");
+  return "✨ Magic happens!";
+}</code></pre>
+                    </div>
+                </div>
+                <div class="widget">
+                    <h3 class="widget-title"><i class="fas fa-trophy"></i> Достижения</h3>
+                    <ul>
+                        <li>1000+ пользователей ботов</li>
+                        <li>5 завершенных проектов</li>
+                        <li>3 довольных клиента</li>
+                        <li>2 года опыта</li>
+                    </ul>
+                </div>
+                <div class="widget">
+                    <h3 class="widget-title"><i class="fas fa-quote-left"></i> Цитата дня</h3>
+                    <blockquote>
+                        "Любая достаточно развитая технология неотличима от магии."
+                        <footer>- Артур Кларк</footer>
+                    </blockquote>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция "Контакты" -->
+        <section class="animate-on-scroll section-load" style="animation-delay: 0.6s">
             <h2>★ Контакты</h2>
             <p>Хотите сотрудничать или просто пообщаться? Я всегда открыт для новых идей и проектов!</p>
             <div class="social-links">
@@ -970,7 +1310,7 @@
     <footer>
         <div class="footer-logo">ARTEMOSKA</div>
         <p class="footer-text">"Превращаю идеи в цифровую реальность"</p>
-        <p class="copyright">© 2025 Artemoska. All rights reserved.</p>
+        <p class="copyright">© 2023 Artemoska. All rights reserved.</p>
     </footer>
 
     <!-- Интерактивная консоль -->
@@ -1195,6 +1535,44 @@
             });
         }
 
+        // 8. Анимация счетчиков статистики
+        function animateCounters() {
+            const projectsCount = document.getElementById('projects-count');
+            const clientsCount = document.getElementById('clients-count');
+            const botsCount = document.getElementById('bots-count');
+            const experienceYears = document.getElementById('experience-years');
+            
+            const targetValues = {
+                projects: 5,
+                clients: 3,
+                bots: 7,
+                experience: 2
+            };
+            
+            const duration = 2000; // 2 секунды
+            const interval = 50; // интервал обновления
+            const steps = duration / interval;
+            
+            function animateCounter(element, target) {
+                let current = 0;
+                const increment = target / steps;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    element.textContent = Math.floor(current);
+                }, interval);
+            }
+            
+            animateCounter(projectsCount, targetValues.projects);
+            animateCounter(clientsCount, targetValues.clients);
+            animateCounter(botsCount, targetValues.bots);
+            animateCounter(experienceYears, targetValues.experience);
+        }
+
         // Инициализация при загрузке страницы
         document.addEventListener('DOMContentLoaded', () => {
             createParticles();
@@ -1204,6 +1582,7 @@
             setupParallax();
             animateSkills();
             setupConsole();
+            animateCounters();
             
             // Задержка для анимации загрузки секций
             document.querySelectorAll('.section-load').forEach((section, index) => {
