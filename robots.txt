@@ -1,3 +1,7 @@
+# Robots.txt для artemoska.github.io
 User-agent: *
 Allow: /
+Disallow: /admin/  # Если есть закрытый раздел
+
+# Sitemap
 Sitemap: https://artemoska.github.io/sitemap.xml
