@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VK Bot | Artemoska</title>
+    <title>Artemoska | Dark Magic Developer</title>
+    <meta name="description" content="Artemoska - разработчик Telegram ботов, веб-приложений и игр. Создаю магию с помощью JavaScript.">
+    <meta name="keywords" content="Artemoska, программист, разработчик, Telegram боты, JavaScript, портфолио">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -17,12 +19,32 @@
             --green: #9d4edd;
             --red: #ff4d6d;
             --yellow: #ffd166;
+            --blue: #4d9de0;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        /* Кастомный скроллбар */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--darker);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--main-color);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--green);
         }
 
         body {
@@ -33,303 +55,1550 @@
             overflow-x: hidden;
         }
 
+        /* Анимированный фон с частицами */
+        .magic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(ellipse at bottom, var(--darker) 0%, var(--dark) 100%);
+            overflow: hidden;
+        }
+        
+        .magic-particle {
+            position: absolute;
+            background: rgba(138, 43, 226, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(1px);
+        }
+
+        /* Терминальный эффект */
+        .terminal-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(22, 18, 29, 0.8),
+                rgba(22, 18, 29, 0.8) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        /* Магический шар */
+        .magic-ball {
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle at 30% 30%, 
+                                      rgba(138, 43, 226, 0.8), 
+                                      rgba(157, 78, 221, 0.4));
+            border-radius: 50%;
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            filter: blur(25px);
+            z-index: -1;
+            animation: float-ball 8s ease-in-out infinite;
+            opacity: 0.5;
+        }
+        
+        @keyframes float-ball {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(20px, -20px); }
+            50% { transform: translate(0, -40px); }
+            75% { transform: translate(-20px, -20px); }
+        }
+
+        /* Шапка с параллаксом */
+        header {
+            background: linear-gradient(to bottom, var(--darker), var(--gray));
+            padding: 3rem 1rem;
+            text-align: center;
+            border-bottom: 3px solid var(--main-color);
+            position: relative;
+            overflow: hidden;
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: var(--main-color);
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+            transform: translateZ(0);
+        }
+
+        .brand-logo {
+            font-size: 3rem;
+            color: var(--main-color);
+            text-shadow: 0 0 15px rgba(138, 43, 226, 0.7);
+            margin-bottom: 1rem;
+            animation: pulse 3s infinite, neon-glow 1.5s ease-in-out infinite alternate;
+            font-weight: bold;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, var(--main-color), var(--green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        /* Неоновая подсветка */
+        @keyframes neon-glow {
+            from { text-shadow: 0 0 5px var(--main-color); }
+            to { text-shadow: 0 0 10px var(--main-color), 
+                             0 0 20px var(--main-color), 
+                             0 0 30px var(--main-color); }
+        }
+
+        h1 {
+            color: var(--main-color);
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+            animation: neon-glow 1.5s ease-in-out infinite alternate;
+        }
+
+        h1::after {
+            content: '_';
+            animation: blink 1s infinite;
+            color: var(--main-color);
+            position: absolute;
+            right: -15px;
+        }
+
+        .header-subtitle {
+            color: var(--text);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 5px rgba(240, 230, 255, 0.3);
+        }
+
+        /* Основное содержимое */
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
         }
 
-        header {
-            background: linear-gradient(to bottom, var(--darker), var(--gray));
-            padding: 2rem 1rem;
-            text-align: center;
-            border-bottom: 3px solid var(--main-color);
-        }
-
-        h1 {
-            color: var(--main-color);
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .back-btn {
-            display: inline-block;
-            margin: 1rem 0;
-            padding: 0.5rem 1rem;
-            background: var(--main-color);
-            color: var(--text);
-            border-radius: 4px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .back-btn:hover {
-            background: var(--green);
-        }
-
-        .bot-demo {
+        /* 3D-эффект для секций */
+        section {
             background: var(--gray);
-            border-radius: 5px;
+            margin: 2rem 0;
             padding: 2rem;
-            margin-top: 2rem;
-        }
-
-        .chat-container {
-            background: var(--darker);
             border: 1px solid var(--light-gray);
             border-radius: 5px;
-            height: 400px;
-            overflow-y: auto;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .message {
-            max-width: 70%;
-            padding: 0.8rem;
-            margin-bottom: 1rem;
-            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
         }
 
-        .user-message {
-            align-self: flex-end;
+        section:hover {
+            transform: perspective(1000px) rotateX(2deg) rotateY(2deg) translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--main-color), var(--green));
+        }
+
+        /* Анимация загрузки секций */
+        .section-load {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: var(--green);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            position: relative;
+            display: inline-block;
+            animation: neon-glow 1.5s ease-in-out infinite alternate;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 50px;
+            height: 3px;
             background: var(--main-color);
-            color: white;
-            border-top-right-radius: 0;
+            animation: width-grow 1.5s ease-in-out infinite alternate;
+        }
+        
+        @keyframes width-grow {
+            to { width: 100px; }
         }
 
-        .bot-message {
-            align-self: flex-start;
-            background: var(--light-gray);
-            border-top-left-radius: 0;
+        p {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
         }
 
-        .message-time {
-            font-size: 0.7rem;
-            opacity: 0.7;
-            margin-top: 0.3rem;
-            text-align: right;
+        ul {
+            list-style-type: none;
+            margin-bottom: 1.5rem;
         }
 
-        .input-container {
-            display: flex;
-            gap: 0.5rem;
+        li {
+            margin-bottom: 0.8rem;
+            position: relative;
+            padding-left: 1.5rem;
         }
 
-        .message-input {
-            flex-grow: 1;
-            background: var(--darker);
-            border: 1px solid var(--light-gray);
-            border-radius: 4px;
-            padding: 0.8rem;
-            color: var(--text);
-            font-family: inherit;
+        li::before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--main-color);
         }
 
-        .send-btn {
-            padding: 0 1.5rem;
+        /* Кнопки с улучшенной анимацией */
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
             background: var(--main-color);
             color: var(--text);
             border: none;
             border-radius: 4px;
+            font-family: 'Ubuntu Mono', monospace;
+            font-size: 1rem;
             cursor: pointer;
-            font-family: inherit;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            margin-right: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transform: translateZ(0);
         }
 
-        .send-btn:hover {
-            background: var(--green);
+        .btn:hover {
+            background: #7b1fa2;
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
         }
 
-        .bot-features {
-            margin: 2rem 0;
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.5s ease;
         }
 
-        .feature {
-            margin-bottom: 1.5rem;
+        .btn:hover::before {
+            left: 100%;
         }
 
-        .feature h3 {
-            color: var(--green);
-            margin-bottom: 0.5rem;
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--main-color);
+            color: var(--main-color);
+            position: relative;
+            overflow: hidden;
         }
 
-        footer {
-            background: var(--darker);
-            text-align: center;
-            padding: 2rem;
+        .btn-outline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(138, 43, 226, 0.1), transparent);
+            transition: all 0.5s ease;
+        }
+
+        .btn-outline:hover::before {
+            left: 100%;
+        }
+
+        .btn-outline:hover {
+            background: rgba(138, 43, 226, 0.1);
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.3);
+        }
+
+        /* Социальные сети */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
             margin-top: 2rem;
         }
 
+        .social-link {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            background: var(--gray);
+            color: var(--text);
+            border-radius: 4px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid var(--light-gray);
+            transform: translateZ(0);
+        }
+
+        .social-link:hover {
+            background: var(--light-gray);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .social-link i {
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .social-link:hover i {
+            transform: scale(1.2);
+        }
+
+        .telegram { color: #0088cc; }
+        .github { color: var(--text); }
+        .email { color: var(--red); }
+
+        /* Навыки с анимированными индикаторами */
+        .skills-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .skill-card {
+            background: var(--gray);
+            border: 1px solid var(--light-gray);
+            border-radius: 5px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: perspective(500px);
+            overflow: hidden;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), transparent);
+            z-index: -1;
+        }
+
+        .skill-card:hover {
+            border-color: var(--main-color);
+            box-shadow: 0 5px 20px rgba(138, 43, 226, 0.3);
+            transform: perspective(500px) rotateX(5deg) rotateY(5deg);
+        }
+
+        .skill-card h3 {
+            color: var(--main-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .skill-card h3 i {
+            margin-right: 0.8rem;
+            font-size: 1.5rem;
+        }
+
+        .skill-level {
+            height: 8px;
+            background: var(--light-gray);
+            border-radius: 4px;
+            margin-top: 1rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .skill-level::before {
+            content: attr(data-level);
+            position: absolute;
+            right: 5px;
+            top: -20px;
+            font-size: 0.7rem;
+            color: var(--text);
+        }
+
+        .skill-level-bar {
+            height: 100%;
+            background: linear-gradient(to right, var(--main-color), var(--green));
+            border-radius: 4px;
+            width: 0;
+            transition: width 1.5s ease-out, box-shadow 0.3s ease;
+        }
+
+        .skill-card:hover .skill-level-bar {
+            box-shadow: 0 0 10px var(--main-color);
+        }
+
+        /* Проекты с эффектом наклона */
+        .projects-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+            perspective: 1000px;
+        }
+
+        .project-card {
+            background: var(--gray);
+            border: 1px solid var(--light-gray);
+            border-radius: 5px;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), transparent);
+            z-index: -1;
+        }
+
+        .project-card:hover {
+            transform: rotateX(5deg) rotateY(5deg) translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .project-image {
+            height: 180px;
+            background: var(--darker);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light-gray);
+            font-size: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), rgba(157, 78, 221, 0.1));
+            transition: all 0.5s ease;
+        }
+
+        .project-card:hover .project-image::after {
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.2), rgba(157, 78, 221, 0.2));
+        }
+
+        .project-content {
+            padding: 1.5rem;
+            transform: translateZ(30px);
+        }
+
+        .project-content h3 {
+            color: var(--main-color);
+            margin-bottom: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover .project-content h3 {
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+        }
+
+        .project-content p {
+            color: var(--text);
+            opacity: 0.8;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover .project-content p {
+            opacity: 1;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-tag {
+            background: rgba(138, 43, 226, 0.1);
+            color: var(--main-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover .project-tag {
+            background: rgba(138, 43, 226, 0.2);
+            box-shadow: 0 0 5px rgba(138, 43, 226, 0.3);
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* Футер с анимированным градиентом */
+        footer {
+            background: linear-gradient(to top, var(--darker), var(--gray));
+            text-align: center;
+            padding: 3rem 1rem;
+            border-top: 3px solid var(--main-color);
+            margin-top: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none"/><path d="M20,20 L80,20 L80,80 L20,80 Z" stroke="%238a2be2" stroke-width="0.5" fill="none"/></svg>');
+            opacity: 0.05;
+            pointer-events: none;
+            animation: bg-move 20s linear infinite;
+        }
+        
+        @keyframes bg-move {
+            from { background-position: 0 0; }
+            to { background-position: 100px 100px; }
+        }
+
+        .footer-logo {
+            font-size: 2.5rem;
+            color: var(--main-color);
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+            margin-bottom: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, var(--main-color), var(--green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            animation: neon-glow 1.5s ease-in-out infinite alternate;
+        }
+
+        .footer-text {
+            color: var(--text);
+            opacity: 0.7;
+            margin-bottom: 1.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+        }
+
+        .copyright {
+            color: var(--text);
+            opacity: 0.5;
+            font-size: 0.9rem;
+        }
+
+        /* Анимации */
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Эффекты при прокрутке */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .animate-on-scroll.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Улучшенная консоль */
+        .console-effect {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(13, 10, 16, 0.95);
+            border: 1px solid var(--main-color);
+            border-radius: 5px;
+            padding: 1rem;
+            max-width: 300px;
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
+            z-index: 1000;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            transform: translateZ(0);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        .console-effect:hover {
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.7);
+            transform: translateY(-5px);
+        }
+
+        .console-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            color: var(--main-color);
+            text-shadow: 0 0 5px var(--main-color);
+        }
+
+        .console-close {
+            cursor: pointer;
+            color: var(--red);
+            transition: all 0.3s ease;
+        }
+
+        .console-close:hover {
+            transform: scale(1.2);
+            color: var(--main-color);
+        }
+
+        .console-content {
+            color: var(--green);
+            font-family: 'Ubuntu Mono', monospace;
+            max-height: 200px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--main-color) var(--dark);
+        }
+
+        .console-content::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .console-content::-webkit-scrollbar-thumb {
+            background: var(--main-color);
+            border-radius: 5px;
+        }
+
+        .console-input {
+            color: var(--main-color);
+            position: relative;
+        }
+
+        .console-cursor {
+            display: inline-block;
+            width: 10px;
+            height: 16px;
+            background: var(--main-color);
+            vertical-align: middle;
+            margin-left: 2px;
+            animation: blink 1s infinite;
+            box-shadow: 0 0 5px var(--main-color);
+        }
+
+        /* Новые стили для виджетов */
+        .widgets-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .widget {
+            background: var(--gray);
+            border: 1px solid var(--light-gray);
+            border-radius: 5px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .widget::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), transparent);
+            z-index: -1;
+        }
+
+        .widget:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .widget-title {
+            color: var(--main-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .widget-title i {
+            margin-right: 0.8rem;
+            font-size: 1.5rem;
+        }
+
+        /* Стили для рекламного блока */
+        .ad-place {
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.2), rgba(157, 78, 221, 0.1));
+            border: 2px dashed var(--main-color);
+            border-radius: 5px;
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .ad-place:hover {
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.3), rgba(157, 78, 221, 0.2));
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
+        }
+
+        .ad-place h3 {
+            color: var(--main-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .ad-place p {
+            color: var(--text);
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .ad-place .btn {
+            margin-top: 1rem;
+        }
+
+        /* Стили для запланированных проектов */
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 2rem auto;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 3px;
+            background: var(--main-color);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1.5px;
+            box-shadow: 0 0 10px var(--main-color);
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+            box-sizing: border-box;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--main-color);
+            border-radius: 50%;
+            top: 15px;
+            z-index: 1;
+            box-shadow: 0 0 10px var(--main-color);
+        }
+
+        .left {
+            left: 0;
+        }
+
+        .right {
+            left: 50%;
+        }
+
+        .left::after {
+            right: -10px;
+        }
+
+        .right::after {
+            left: -10px;
+        }
+
+        .timeline-content {
+            padding: 20px;
+            background: var(--gray);
+            border: 1px solid var(--light-gray);
+            border-radius: 5px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-color: var(--main-color);
+        }
+
+        .timeline-date {
+            color: var(--main-color);
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Статистика */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: var(--gray);
+            border: 1px solid var(--light-gray);
+            border-radius: 5px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), transparent);
+            z-index: -1;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-color: var(--main-color);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--main-color);
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover .stat-number {
+            text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+        }
+
+        .stat-label {
+            color: var(--text);
+            opacity: 0.8;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover .stat-label {
+            opacity: 1;
+        }
+
+        /* Адаптивность */
         @media (max-width: 768px) {
             .container {
                 padding: 1rem;
             }
-            
+
+            section {
+                padding: 1.5rem;
+            }
+
+            .skills-container, .projects-container, .widgets-container {
+                grid-template-columns: 1fr;
+            }
+
             h1 {
                 font-size: 2rem;
             }
+
+            .header-subtitle {
+                font-size: 1rem;
+            }
+
+            .brand-logo, .footer-logo {
+                font-size: 2rem;
+            }
             
-            .message {
-                max-width: 85%;
+            .console-effect {
+                max-width: 250px;
+                font-size: 0.8rem;
+            }
+
+            .timeline::after {
+                left: 31px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+
+            .timeline-item::after {
+                left: 21px;
+            }
+
+            .left::after, .right::after {
+                left: 21px;
+            }
+
+            .right {
+                left: 0%;
+            }
+
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>VK Бот</h1>
-            <p>Умный бот для ВКонтакте с искусственным интеллектом</p>
-            <a href="index.html" class="back-btn">← На главную</a>
-        </header>
+    <!-- Анимированный фон с частицами -->
+    <div class="magic-bg" id="magicBg"></div>
+    
+    <!-- Магический шар в углу -->
+    <div class="magic-ball"></div>
+    
+    <!-- Терминальный эффект -->
+    <div class="terminal-effect"></div>
+    
+    <!-- Шапка с параллаксом -->
+    <header>
+        <div class="particles" id="particles"></div>
+        <div class="header-content">
+            <div class="brand-logo">ARTEMOSKA</div>
+            <h1>☆ Привет, я Artemoska! ☆</h1>
+            <p class="header-subtitle">Добро пожаловать в мою берлогу)</p>
+        </div>
+    </header>
 
-        <div class="bot-demo">
-            <h2>Демонстрация работы бота</h2>
+    <!-- Основное содержимое -->
+    <div class="container">
+        <!-- Секция "Обо мне" -->
+        <section class="animate-on-scroll section-load" style="animation-delay: 0.1s">
+            <h2>★ Обо мне</h2>
+            <p>Привет! Я Artemoska — программист, админ RubetonChat и создатель проектов.</p>
+            <p>Делаю игры, Telegram и VK ботов, веб-приложения и просто магию на JavaScript.</p>
             
-            <div class="chat-container" id="chatContainer">
-                <div class="message bot-message">
-                    Привет! Я умный бот Artemoska. Чем могу помочь?
-                    <div class="message-time">12:00</div>
+            <!-- Виджет статистики -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-number" id="projects-count">0</div>
+                    <div class="stat-label">Завершенных проектов</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="clients-count">0</div>
+                    <div class="stat-label">Довольных клиентов</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="bots-count">0</div>
+                    <div class="stat-label">Созданных ботов</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="experience-years">0</div>
+                    <div class="stat-label">Лет опыта</div>
                 </div>
             </div>
             
-            <div class="input-container">
-                <input type="text" class="message-input" id="messageInput" placeholder="Введите сообщение...">
-                <button class="send-btn" id="sendBtn">Отправить</button>
+            <div class="social-links">
+                <a href="https://t.me/artemoska" class="social-link" target="_blank">
+                    <i class="fab fa-telegram telegram"></i> Telegram: @artemoska
+                </a>
+                <a href="https://t.me/tonxui" class="social-link" target="_blank">
+                    <i class="fab fa-telegram telegram"></i> Telegram: @tonxui
+                </a>
             </div>
-        </div>
+        </section>
 
-        <div class="bot-features">
-            <h2>Возможности бота</h2>
-            
-            <div class="feature">
-                <h3>🤖 Интеллектуальный чат</h3>
-                <p>Бот понимает контекст беседы и может поддерживать осмысленный диалог на различные темы.</p>
+        <!-- Рекламный блок -->
+        <section class="animate-on-scroll section-load" style="animation-delay: 0.15s">
+            <div class="ad-place">
+                <h3>Здесь могла быть ваша реклама!</h3>
+                <p>Это место идеально подходит для продвижения вашего продукта или услуги. Свяжитесь со мной для размещения рекламы.</p>
+                <a href="https://t.me/artemoska" class="btn" target="_blank">Заказать рекламу</a>
             </div>
-            
-            <div class="feature">
-                <h3>🔍 Поиск информации</h3>
-                <p>Может искать информацию в интернете, переводить тексты и давать ответы на вопросы.</p>
-            </div>
-            
-            <div class="feature">
-                <h3>🎵 Медиа-функции</h3>
-                <p>Поиск и рекомендации музыки, фильмов и сериалов с интеграцией с VK медиатекой.</p>
-            </div>
-            
-            <div class="feature">
-                <h3>📊 Аналитика</h3>
-                <p>Сбор статистики по группам и пользователям с генерацией отчетов.</p>
-            </div>
-            
-            <div class="feature">
-                <h3>⚙️ Администрирование</h3>
-                <p>Модерация бесед, автоматическое удаление спама и управление участниками.</p>
-            </div>
-        </div>
+        </section>
 
-        <div class="tech-stack">
-            <h2>Технологический стек</h2>
-            <ul>
-                <li>Python 3.9+ для основного кода бота</li>
-                <li>VK API для интеграции с ВКонтакте</li>
-                <li>Natural Language Processing (NLP) для обработки сообщений</li>
-                <li>PostgreSQL для хранения данных пользователей</li>
-                <li>Redis для кэширования и очередей задач</li>
-                <li>Docker для развертывания</li>
-            </ul>
+        <!-- Секция "Навыки" -->
+        <section class="animate-on-scroll section-load" style="animation-delay: 0.2s">
+            <h2>★ Навыки</h2>
+            <div class="skills-container">
+                <div class="skill-card">
+                    <h3><i class="fab fa-js"></i> JavaScript</h3>
+                    <p>Создание интерактивных веб-приложений, работа с API, анимации.</p>
+                    <div class="skill-level" data-level="90%">
+                        <div class="skill-level-bar" style="width: 90%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3><i class="fab fa-telegram"></i> Telegram Bots</h3>
+                    <p>Разработка ботов любой сложности на Node.js и Python.</p>
+                    <div class="skill-level" data-level="85%">
+                        <div class="skill-level-bar" style="width: 85%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3><i class="fab fa-html5"></i> HTML/CSS</h3>
+                    <p>Создание адаптивных и современных интерфейсов.</p>
+                    <div class="skill-level" data-level="80%">
+                        <div class="skill-level-bar" style="width: 80%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3><i class="fab fa-node-js"></i> Node.js</h3>
+                    <p>Серверная разработка, REST API, WebSockets.</p>
+                    <div class="skill-level" data-level="75%">
+                        <div class="skill-level-bar" style="width: 75%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3><i class="fas fa-gamepad"></i> Game Dev</h3>
+                    <p>Разработка браузерных игр на JavaScript.</p>
+                    <div class="skill-level" data-level="70%">
+                        <div class="skill-level-bar" style="width: 70%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3><i class="fas fa-magic"></i> Code Magic</h3>
+                    <p>Нестандартные решения и креативный подход.</p>
+                    <div class="skill-level" data-level="95%">
+                        <div class="skill-level-bar" style="width: 95%"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция "Проекты" -->
+        <section class="animate-on-scroll section-load" style="animation-delay: 0.3s">
+            <h2>★ Проекты</h2>
+            <div class="projects-container">
+                <div class="project-card">
+                    <div class="project-image">
+                        <i class="fab fa-telegram" style="color: var(--main-color);"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>RubetonChat</h3>
+                        <p>Многофункциональный Telegram чат с модерацией и развлекательными функциями.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">Telegram</span>
+                            <span class="project-tag">Node.js</span>
+                            <span class="project-tag">Bot API</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="rubeton.html" class="btn btn-outline">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <i class="fas fa-gamepad" style="color: var(--green);"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>Browser Game</h3>
+                        <p>Интерактивная браузерная игра с использованием Canvas и WebGL.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">JavaScript</span>
+                            <span class="project-tag">HTML5</span>
+                            <span class="project-tag">Game Dev</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="game.html" class="btn btn-outline">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <i class="fas fa-robot" style="color: var(--yellow);"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>VK Bot</h3>
+                        <p>Умный бот для ВКонтакте с интеграцией внешних API и базой данных.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">VK API</span>
+                            <span class="project-tag">Python</span>
+                            <span class="project-tag">MySQL</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="vkbot.html" class="btn btn-outline">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция "Запланированные проекты" -->
+        <section class="animate-on-scroll section-load" style="animation-delay: 0.4s">
+            <h2>★ Запланированные проекты</h2>
+            <p>Вот что я планирую реализовать в ближайшем будущем:</p>
             
-            <a href="https://vk.com/artemoska_bot" class="back-btn" target="_blank">Добавить бота в беседу</a>
+            <div class="timeline">
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2023 Q4</div>
+                        <h3>Telegram Mini Apps</h3>
+                        <p>Разработка мини-приложений для Telegram с интеграцией криптовалютных платежей.</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2024 Q1</div>
+                        <h3>AI Chat Bot</h3>
+                        <p>Создание интеллектуального чат-бота с использованием GPT-технологий.</p>
+                    </div>
+                </div>
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2024 Q2</div>
+                        <h3>Multiplayer Game</h3>
+                        <p>Разработка многопользовательской браузерной игры с реальным временем.</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2024 Q3</div>
+                        <h3>Dev Tools Package</h3>
+                        <p>Публикация набора инструментов для разработчиков Telegram ботов.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Виджеты -->
+        <section class="animate-on-scroll section-load" style="animation-delay: 0.5s">
+            <h2>★ Виджеты</h2>
+            <div class="widgets-container">
+                <div class="widget">
+                    <h3 class="widget-title"><i class="fas fa-code"></i> Последний код</h3>
+                    <div class="code-widget">
+                        <pre><code>function magicSpell() {
+  console.log("Abracadabra!");
+  return "✨ Magic happens!";
+}</code></pre>
+                    </div>
+                </div>
+                <div class="widget">
+                    <h3 class="widget-title"><i class="fas fa-trophy"></i> Достижения</h3>
+                    <ul>
+                        <li>1000+ пользователей ботов</li>
+                        <li>5 завершенных проектов</li>
+                        <li>3 довольных клиента</li>
+                        <li>2 года опыта</li>
+                    </ul>
+                </div>
+                <div class="widget">
+                    <h3 class="widget-title"><i class="fas fa-quote-left"></i> Цитата дня</h3>
+                    <blockquote>
+                        "Любая достаточно развитая технология неотличима от магии."
+                        <footer>- Артур Кларк</footer>
+                    </blockquote>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция "Контакты" -->
+        <section class="animate-on-scroll section-load" style="animation-delay: 0.6s">
+            <h2>★ Контакты</h2>
+            <p>Хотите сотрудничать или просто пообщаться? Я всегда открыт для новых идей и проектов!</p>
+            <div class="social-links">
+                <a href="https://t.me/artemoska" class="social-link" target="_blank">
+                    <i class="fab fa-telegram telegram"></i> Telegram
+                </a>
+                <a href="https://github.com/artemoska" class="social-link" target="_blank">
+                    <i class="fab fa-github github"></i> GitHub
+                </a>
+                <a href="mailto:your-email@example.com" class="social-link" target="_blank">
+                    <i class="fas fa-envelope email"></i> Email
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <!-- Футер -->
+    <footer>
+        <div class="footer-logo">ARTEMOSKA</div>
+        <p class="footer-text">"Превращаю идеи в цифровую реальность"</p>
+        <p class="copyright">© 2025 Artemoska. All rights reserved.</p>
+    </footer>
+
+    <!-- Интерактивная консоль -->
+    <div class="console-effect" id="console">
+        <div class="console-header">
+            <span>Artemoska Console</span>
+            <span class="console-close" onclick="document.getElementById('console').style.display='none'">×</span>
+        </div>
+        <div class="console-content">
+            <div>> Инициализация магии кода...</div>
+            <div>> Загрузка заклинаний JavaScript...</div>
+            <div>> Подключение к Telegram API...</div>
+            <div>> Готов к волшебству!</div>
+            <div class="console-input">> _<span class="console-cursor"></span></div>
         </div>
     </div>
 
-    <footer>
-        <p>© 2025 Artemoska. Все права защищены.</p>
-    </footer>
-
     <script>
-        // Демонстрация чата с ботом
-        const chatContainer = document.getElementById('chatContainer');
-        const messageInput = document.getElementById('messageInput');
-        const sendBtn = document.getElementById('sendBtn');
-        
-        // Ответы бота
-        const botResponses = [
-            "Интересный вопрос! Дайте мне подумать...",
-            "Я понял ваш запрос. Вот что я нашел: ...",
-            "К сожалению, я не могу помочь с этим. Попробуйте задать другой вопрос.",
-            "Вы можете найти больше информации на официальном сайте.",
-            "Хороший вопрос! Я рекомендую вам...",
-            "Спасибо за ваше сообщение! Как еще я могу помочь?",
-            "Я передам эту информацию администратору.",
-            "Вот список доступных команд: /help, /music, /search, /stats"
-        ];
-        
-        // Команды и ответы
-        const commands = {
-            "/help": "Доступные команды: /help, /music, /search, /stats, /admin",
-            "/music": "Вот популярная музыка на этой неделе: [список треков]",
-            "/search": "Что вы хотите найти? Уточните запрос.",
-            "/stats": "Статистика группы: 1500 участников, 50 онлайн",
-            "/admin": "Функции модерации: /ban, /warn, /mute"
-        };
-        
-        // Отправка сообщения
-        function sendMessage() {
-            const messageText = messageInput.value.trim();
-            if (!messageText) return;
+        // 1. Анимация частиц в шапке
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 30;
             
-            // Добавляем сообщение пользователя
-            addMessage(messageText, 'user');
-            
-            // Очищаем поле ввода
-            messageInput.value = '';
-            
-            // Имитируем задержку ответа бота
-            setTimeout(() => {
-                let response;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
                 
-                // Проверяем команды
-                if (messageText.startsWith('/')) {
-                    response = commands[messageText] || "Неизвестная команда. Введите /help для списка команд.";
-                } else {
-                    // Случайный ответ для обычных сообщений
-                    response = botResponses[Math.floor(Math.random() * botResponses.length)];
+                const size = Math.random() * 5 + 2;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const delay = Math.random() * 5;
+                const duration = Math.random() * 10 + 5;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.opacity = Math.random() * 0.5 + 0.1;
+                particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+                
+                container.appendChild(particle);
+            }
+        }
+
+        // 2. Анимация частиц фона
+        function createMagicParticles() {
+            const bg = document.getElementById('magicBg');
+            const particleCount = Math.floor(window.innerWidth / 3);
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'magic-particle';
+                
+                const size = Math.random() * 3 + 1;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const duration = Math.random() * 20 + 10;
+                const delay = Math.random() * 5;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.animation = `float ${duration}s linear ${delay}s infinite`;
+                
+                bg.appendChild(particle);
+            }
+        }
+
+        // 3. Анимация при прокрутке
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.animate-on-scroll');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+                
+                if (elementPosition < screenPosition) {
+                    element.classList.add('animated');
                 }
+            });
+        }
+
+        // 4. Консольный текст
+        function typeConsoleText() {
+            const phrases = [
+                "npm run magic",
+                "node spell.js",
+                "git push origin master",
+                "Инициализация заклинаний...",
+                "Заклинание готово!",
+                "Загрузка волшебства...",
+                "Подключение к магическому API...",
+                "Готов к работе!"
+            ];
+            
+            const consoleInput = document.querySelector('.console-input');
+            let currentPhrase = 0;
+            let currentChar = 0;
+            let isDeleting = false;
+            let isWaiting = false;
+            
+            function type() {
+                if (isWaiting) return;
                 
-                addMessage(response, 'bot');
-            }, 1000 + Math.random() * 2000);
-        }
-        
-        // Добавление сообщения в чат
-        function addMessage(text, sender) {
-            const now = new Date();
-            const timeString = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+                const currentText = phrases[currentPhrase];
+                
+                if (!isDeleting && currentChar < currentText.length) {
+                    consoleInput.innerHTML = `> ${currentText.substring(0, currentChar + 1)}<span class="console-cursor"></span>`;
+                    currentChar++;
+                    setTimeout(type, 100);
+                } else if (isDeleting && currentChar > 0) {
+                    consoleInput.innerHTML = `> ${currentText.substring(0, currentChar - 1)}<span class="console-cursor"></span>`;
+                    currentChar--;
+                    setTimeout(type, 50);
+                } else {
+                    if (!isDeleting && currentChar === currentText.length) {
+                        isWaiting = true;
+                        setTimeout(() => {
+                            isWaiting = false;
+                            isDeleting = true;
+                            setTimeout(type, 1000);
+                        }, 2000);
+                    } else if (isDeleting && currentChar === 0) {
+                        isDeleting = false;
+                        currentPhrase = (currentPhrase + 1) % phrases.length;
+                        setTimeout(type, 500);
+                    }
+                }
+            }
             
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${sender}-message`;
-            messageDiv.innerHTML = `
-                ${text}
-                <div class="message-time">${timeString}</div>
-            `;
-            
-            chatContainer.appendChild(messageDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
+            type();
         }
-        
-        // Обработчики событий
-        sendBtn.addEventListener('click', sendMessage);
-        messageInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendMessage();
+
+        // 5. Параллакс эффект для шапки
+        function setupParallax() {
+            const header = document.querySelector('header');
+            
+            window.addEventListener('scroll', () => {
+                const scrollValue = window.scrollY;
+                header.style.backgroundPositionY = `${scrollValue * 0.5}px`;
+            });
+        }
+
+        // 6. Анимация индикаторов навыков
+        function animateSkills() {
+            const skillBars = document.querySelectorAll('.skill-level-bar');
+            
+            skillBars.forEach(bar => {
+                const targetWidth = bar.style.width;
+                bar.style.width = '0';
+                
+                setTimeout(() => {
+                    bar.style.width = targetWidth;
+                }, 200);
+            });
+        }
+
+        // 7. Инициализация интерактивной консоли
+        function setupConsole() {
+            const consoleInput = document.querySelector('.console-input');
+            const consoleHistory = document.querySelector('.console-content');
+            const consoleCursor = document.querySelector('.console-cursor');
+            
+            const commands = {
+                help: "Доступные команды: about, skills, projects, contact, clear",
+                about: "Artemoska - разработчик ботов и веб-приложений. Специализация: JavaScript, Node.js, Telegram API.",
+                skills: "Основные навыки: JavaScript (90%), Telegram Bots (85%), HTML/CSS (80%), Node.js (75%), Game Dev (70%)",
+                projects: "Ключевые проекты: RubetonChat (Telegram бот), Browser Game (Canvas/WebGL), VK Bot (Python)",
+                contact: "Связь: Telegram @artemoska, GitHub: artemoska, Email: your-email@example.com",
+                clear: function() {
+                    consoleHistory.innerHTML = '';
+                    return "Консоль очищена";
+                }
+            };
+            
+            // Обработчик ввода команд
+            function processCommand(cmd) {
+                const lowerCmd = cmd.toLowerCase().trim();
+                
+                if (commands[lowerCmd]) {
+                    if (typeof commands[lowerCmd] === 'function') {
+                        return commands[lowerCmd]();
+                    } else {
+                        return commands[lowerCmd];
+                    }
+                } else {
+                    return `Команда "${cmd}" не найдена. Введите "help" для списка команд.`;
+                }
+            }
+            
+            // Клик по консоли для фокуса
+            consoleInput.addEventListener('click', function(e) {
+                e.stopPropagation();
+                consoleInput.focus();
+            });
+            
+            // Обработка нажатия Enter
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && consoleInput.textContent.includes('>')) {
+                    const command = consoleInput.textContent.replace('>', '').trim();
+                    if (command) {
+                        const response = processCommand(command);
+                        
+                        // Добавляем ввод пользователя в историю
+                        const userInput = document.createElement('div');
+                        userInput.textContent = `> ${command}`;
+                        consoleHistory.appendChild(userInput);
+                        
+                        // Добавляем ответ
+                        const responseElement = document.createElement('div');
+                        responseElement.textContent = response;
+                        consoleHistory.appendChild(responseElement);
+                        
+                        // Прокрутка вниз
+                        consoleHistory.scrollTop = consoleHistory.scrollHeight;
+                    }
+                    
+                    // Очищаем ввод
+                    consoleInput.innerHTML = '> <span class="console-cursor"></span>';
+                }
+            });
+        }
+
+        // 8. Анимация счетчиков статистики
+        function animateCounters() {
+            const projectsCount = document.getElementById('projects-count');
+            const clientsCount = document.getElementById('clients-count');
+            const botsCount = document.getElementById('bots-count');
+            const experienceYears = document.getElementById('experience-years');
+            
+            const targetValues = {
+                projects: 5,
+                clients: 3,
+                bots: 7,
+                experience: 2
+            };
+            
+            const duration = 2000; // 2 секунды
+            const interval = 50; // интервал обновления
+            const steps = duration / interval;
+            
+            function animateCounter(element, target) {
+                let current = 0;
+                const increment = target / steps;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    element.textContent = Math.floor(current);
+                }, interval);
+            }
+            
+            animateCounter(projectsCount, targetValues.projects);
+            animateCounter(clientsCount, targetValues.clients);
+            animateCounter(botsCount, targetValues.bots);
+            animateCounter(experienceYears, targetValues.experience);
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            createMagicParticles();
+            animateOnScroll();
+            typeConsoleText();
+            setupParallax();
+            animateSkills();
+            setupConsole();
+            animateCounters();
+            
+            // Задержка для анимации загрузки секций
+            document.querySelectorAll('.section-load').forEach((section, index) => {
+                section.style.animationDelay = `${index * 0.2}s`;
+            });
+            
+            // Обработчик скролла
+            window.addEventListener('scroll', animateOnScroll);
         });
-        
-        // Начальное сообщение
-        setTimeout(() => {
-            addMessage("Привет! Я умный бот Artemoska. Чем могу помочь?", 'bot');
-        }, 500);
+
+        // Ресайз окна - пересоздаем частицы фона
+        window.addEventListener('resize', function() {
+            const bg = document.getElementById('magicBg');
+            bg.innerHTML = '';
+            createMagicParticles();
+        });
     </script>
 </body>
 </html>
