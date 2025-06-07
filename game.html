@@ -32,6 +32,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            touch-action: none;
         }
 
         .game-container {
@@ -234,6 +235,166 @@
             transition: opacity 0.3s;
             pointer-events: none;
         }
+
+        /* Новые стили для улучшений */
+        .controls-info {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            z-index: 20;
+        }
+
+        .joystick {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            bottom: 20px;
+            left: 20px;
+            z-index: 20;
+            display: none;
+            touch-action: none;
+        }
+
+        .joystick-knob {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            top: 30px;
+            left: 30px;
+            transition: transform 0.1s;
+        }
+
+        .shoot-btn {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 0, 0, 0.3);
+            border-radius: 50%;
+            bottom: 20px;
+            right: 20px;
+            z-index: 20;
+            display: none;
+            touch-action: none;
+        }
+
+        .shoot-btn::after {
+            content: 'FIRE';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 14px;
+        }
+
+        /* Стили для рекламы */
+        .ad-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 40;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .ad-content {
+            background: linear-gradient(135deg, #8a2be2, #9d4edd);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 80%;
+            border: 3px solid var(--accent);
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.7);
+        }
+
+        .ad-content h2 {
+            color: var(--accent);
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .ad-content p {
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .ad-timer {
+            margin-top: 20px;
+            font-size: 18px;
+            color: var(--accent);
+        }
+
+        .skip-ad {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: var(--red);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            opacity: 0.5;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .skip-ad.active {
+            opacity: 1;
+            pointer-events: all;
+            background-color: var(--main-color);
+        }
+
+        /* Улучшенные эффекты */
+        .combo-counter {
+            position: absolute;
+            top: 100px;
+            left: 20px;
+            font-size: 16px;
+            color: var(--accent);
+            z-index: 20;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .level-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 16px;
+            color: var(--light);
+            z-index: 20;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 800px) {
+            .game-container {
+                width: 100vw;
+                height: 100vh;
+                border: none;
+                border-radius: 0;
+            }
+
+            .joystick, .shoot-btn {
+                display: block;
+            }
+
+            .controls-info {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -250,6 +411,24 @@
             <div class="health" id="health"></div>
         </div>
         
+        <div class="combo-counter" id="comboCounter">
+            COMBO x<span id="comboMultiplier">1</span>!
+        </div>
+        
+        <div class="level-indicator">
+            Level: <span id="level">1</span>
+        </div>
+        
+        <div class="controls-info">
+            WASD/Arrows to move | SPACE to shoot
+        </div>
+        
+        <div class="joystick" id="joystick">
+            <div class="joystick-knob" id="joystickKnob"></div>
+        </div>
+        
+        <div class="shoot-btn" id="shootBtn"></div>
+        
         <div class="game-over" id="gameOver">
             <h1>GAME OVER</h1>
             <div class="final-score">Your score: <span id="finalScore">0</span></div>
@@ -257,6 +436,16 @@
         </div>
         
         <div class="message" id="message"></div>
+        
+        <div class="ad-container" id="adContainer">
+            <div class="ad-content">
+                <h2>Хотите больше крутых игр?</h2>
+                <p>Посетите мой канал @artemoska в Telegram, где я публикую свои новые игры и проекты!</p>
+                <p>Там вы найдете эксклюзивные версии игр с дополнительными возможностями!</p>
+                <div class="ad-timer" id="adTimer">Реклама закончится через 5 сек</div>
+                <button class="skip-ad" id="skipAd">Пропустить рекламу</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -270,6 +459,15 @@
         const restartBtn = document.getElementById('restartBtn');
         const candyEffects = document.getElementById('candyEffects');
         const messageElement = document.getElementById('message');
+        const comboCounter = document.getElementById('comboCounter');
+        const comboMultiplier = document.getElementById('comboMultiplier');
+        const levelElement = document.getElementById('level');
+        const joystick = document.getElementById('joystick');
+        const joystickKnob = document.getElementById('joystickKnob');
+        const shootBtn = document.getElementById('shootBtn');
+        const adContainer = document.getElementById('adContainer');
+        const adTimer = document.getElementById('adTimer');
+        const skipAdBtn = document.getElementById('skipAd');
 
         // Game state
         let score = 0;
@@ -290,6 +488,20 @@
         let rapidFireEndTime = 0;
         let invincibleActive = false;
         let invincibleEndTime = 0;
+        let comboTime = 0;
+        let comboCount = 0;
+        let level = 1;
+        let enemiesDestroyed = 0;
+        let isMobile = false;
+        let joystickActive = false;
+        let joystickAngle = 0;
+        let joystickPower = 0;
+        let joystickStartX = 0;
+        let joystickStartY = 0;
+        let joystickCurrentX = 0;
+        let joystickCurrentY = 0;
+        let adCountdown = 5;
+        let adInterval;
 
         // Candy colors for effects
         const candyColors = [
@@ -310,7 +522,8 @@
             { type: 'double', color: '#FFE66D', duration: 10000 },
             { type: 'rapid', color: '#4ECDC4', duration: 8000 },
             { type: 'health', color: '#FF6B6B', duration: 0 },
-            { type: 'invincible', color: '#F7FFF7', duration: 5000 }
+            { type: 'invincible', color: '#F7FFF7', duration: 5000 },
+            { type: 'combo', color: '#FF9AA2', duration: 0 }
         ];
 
         // Player movement
@@ -322,60 +535,123 @@
             ' ': false // space for shooting
         };
 
+        // Check if mobile device
+        function checkMobile() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+
+        // Initialize mobile controls
+        function initMobileControls() {
+            isMobile = checkMobile();
+            
+            if (isMobile) {
+                joystick.style.display = 'block';
+                shootBtn.style.display = 'block';
+                
+                // Joystick events
+                joystick.addEventListener('touchstart', handleJoystickStart);
+                joystick.addEventListener('touchmove', handleJoystickMove);
+                joystick.addEventListener('touchend', handleJoystickEnd);
+                
+                // Shoot button events
+                shootBtn.addEventListener('touchstart', () => keys[' '] = true);
+                shootBtn.addEventListener('touchend', () => keys[' '] = false);
+            }
+        }
+
+        function handleJoystickStart(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = joystick.getBoundingClientRect();
+            
+            joystickStartX = rect.left + rect.width / 2;
+            joystickStartY = rect.top + rect.height / 2;
+            joystickCurrentX = touch.clientX;
+            joystickCurrentY = touch.clientY;
+            
+            joystickActive = true;
+            updateJoystick();
+        }
+
+        function handleJoystickMove(e) {
+            if (!joystickActive) return;
+            e.preventDefault();
+            
+            const touch = e.touches[0];
+            joystickCurrentX = touch.clientX;
+            joystickCurrentY = touch.clientY;
+            
+            updateJoystick();
+        }
+
+        function handleJoystickEnd() {
+            joystickActive = false;
+            joystickKnob.style.transform = 'translate(0, 0)';
+            
+            // Reset movement keys
+            keys.ArrowLeft = false;
+            keys.ArrowRight = false;
+            keys.ArrowUp = false;
+            keys.ArrowDown = false;
+        }
+
+        function updateJoystick() {
+            const dx = joystickCurrentX - joystickStartX;
+            const dy = joystickCurrentY - joystickStartY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const maxDistance = 30;
+            
+            if (distance > maxDistance) {
+                const angle = Math.atan2(dy, dx);
+                joystickCurrentX = joystickStartX + Math.cos(angle) * maxDistance;
+                joystickCurrentY = joystickStartY + Math.sin(angle) * maxDistance;
+            }
+            
+            // Update knob position
+            const knobX = joystickCurrentX - joystickStartX;
+            const knobY = joystickCurrentY - joystickStartY;
+            joystickKnob.style.transform = `translate(${knobX}px, ${knobY}px)`;
+            
+            // Calculate angle and power
+            joystickAngle = Math.atan2(dy, dx);
+            joystickPower = Math.min(1, distance / maxDistance);
+            
+            // Update movement keys based on angle
+            const angleDeg = joystickAngle * (180 / Math.PI);
+            
+            // Reset movement keys
+            keys.ArrowLeft = false;
+            keys.ArrowRight = false;
+            keys.ArrowUp = false;
+            keys.ArrowDown = false;
+            
+            // Set movement based on angle
+            if (angleDeg > -135 && angleDeg < -45) {
+                keys.ArrowUp = true;
+            } else if (angleDeg > 45 && angleDeg < 135) {
+                keys.ArrowDown = true;
+            }
+            
+            if (angleDeg > -45 && angleDeg < 45) {
+                keys.ArrowRight = true;
+            } else if (angleDeg > 135 || angleDeg < -135) {
+                keys.ArrowLeft = true;
+            }
+        }
+
         // Event listeners for keyboard
         document.addEventListener('keydown', (e) => {
             if (keys.hasOwnProperty(e.key)) {
                 keys[e.key] = true;
+                e.preventDefault();
             }
         });
 
         document.addEventListener('keyup', (e) => {
             if (keys.hasOwnProperty(e.key)) {
                 keys[e.key] = false;
+                e.preventDefault();
             }
-        });
-
-        // Touch controls for mobile
-        let touchStartX = 0;
-        let touchStartY = 0;
-
-        gameContainer.addEventListener('touchstart', (e) => {
-            touchStartX = e.touches[0].clientX;
-            touchStartY = e.touches[0].clientY;
-            keys[' '] = true; // Shoot on touch
-        });
-
-        gameContainer.addEventListener('touchmove', (e) => {
-            const touchX = e.touches[0].clientX;
-            const touchY = e.touches[0].clientY;
-            
-            // Determine movement direction
-            const xDiff = touchX - touchStartX;
-            const yDiff = touchY - touchStartY;
-            
-            // Reset all movement keys
-            keys.ArrowLeft = false;
-            keys.ArrowRight = false;
-            keys.ArrowUp = false;
-            keys.ArrowDown = false;
-            
-            // Set new movement based on touch
-            if (Math.abs(xDiff) > Math.abs(yDiff)) {
-                if (xDiff > 0) keys.ArrowRight = true;
-                else keys.ArrowLeft = true;
-            } else {
-                if (yDiff > 0) keys.ArrowDown = true;
-                else keys.ArrowUp = true;
-            }
-        });
-
-        gameContainer.addEventListener('touchend', () => {
-            // Reset all keys on touch end
-            keys.ArrowLeft = false;
-            keys.ArrowRight = false;
-            keys.ArrowUp = false;
-            keys.ArrowDown = false;
-            keys[' '] = false;
         });
 
         // Game loop
@@ -400,7 +676,7 @@
             }
             
             // Shooting
-            if (keys[' '] && timestamp - lastShotTime > (rapidFireActive ? shotDelay / 2 : shotDelay)) {
+            if (keys[' '] && timestamp - lastShotTime > (rapidFireActive ? shotDelay / 3 : shotDelay)) {
                 shoot();
                 lastShotTime = timestamp;
             }
@@ -438,6 +714,17 @@
             if (invincibleActive && currentTime > invincibleEndTime) {
                 invincibleActive = false;
                 showMessage("Invincibility Ended!");
+            }
+            
+            // Combo system
+            if (comboCount > 0 && currentTime > comboTime + 2000) {
+                comboCount = 0;
+                comboCounter.style.opacity = '0';
+            }
+            
+            // Level up
+            if (enemiesDestroyed >= level * 10) {
+                levelUp();
             }
             
             // Move bullets
@@ -522,10 +809,28 @@
                         enemyData.health--;
                         
                         if (enemyData.health <= 0) {
-                            const points = doublePointsActive ? enemyData.points * 2 : enemyData.points;
-                            addScore(points);
+                            let points = enemyData.points;
+                            
+                            // Apply combo multiplier
+                            if (comboCount > 0) {
+                                points *= Math.min(5, 1 + comboCount * 0.2);
+                            }
+                            
+                            // Double points power-up
+                            if (doublePointsActive) {
+                                points *= 2;
+                            }
+                            
+                            addScore(Math.round(points));
                             enemy.remove();
                             createCandyExplosion(enemy);
+                            enemiesDestroyed++;
+                            
+                            // Combo system
+                            comboCount++;
+                            comboTime = timestamp;
+                            comboMultiplier.textContent = Math.min(5, 1 + comboCount * 0.2).toFixed(1);
+                            comboCounter.style.opacity = '1';
                         } else {
                             enemy.dataset.enemy = JSON.stringify(enemyData);
                             // Visual feedback for hit
@@ -576,6 +881,8 @@
                 -90,
                 5
             );
+            
+            // Sound effect would go here
         }
 
         function spawnEnemy() {
@@ -591,10 +898,13 @@
             enemy.style.backgroundColor = enemyType.color;
             
             // Add some visual variety
-            if (Math.random() > 0.5) {
+            const enemyShape = Math.random();
+            if (enemyShape > 0.66) {
                 enemy.style.borderRadius = '50%';
-            } else {
+            } else if (enemyShape > 0.33) {
                 enemy.style.borderRadius = '10px';
+            } else {
+                enemy.style.clipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
             }
             
             gameContainer.appendChild(enemy);
@@ -610,6 +920,14 @@
             candy.style.left = (Math.random() * (containerRect.width - 30)) + 'px';
             candy.style.top = '-30px';
             candy.style.backgroundColor = candyColor;
+            
+            // Different shapes for candies
+            const candyShape = Math.random();
+            if (candyShape > 0.5) {
+                candy.style.borderRadius = '50%';
+            } else {
+                candy.style.borderRadius = '5px';
+            }
             
             gameContainer.appendChild(candy);
         }
@@ -645,6 +963,11 @@
                     powerUp.style.borderRadius = '50%';
                     powerUp.style.boxShadow = '0 0 15px white';
                     break;
+                case 'combo':
+                    powerUp.style.borderRadius = '5px';
+                    powerUp.style.boxShadow = '0 0 15px pink';
+                    powerUp.style.clipPath = 'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)';
+                    break;
             }
             
             gameContainer.appendChild(powerUp);
@@ -671,6 +994,13 @@
                     invincibleActive = true;
                     invincibleEndTime = currentTime + 5000;
                     showMessage("Invincibility Activated!");
+                    break;
+                case 'combo':
+                    comboCount += 5;
+                    comboTime = currentTime;
+                    comboMultiplier.textContent = Math.min(5, 1 + comboCount * 0.2).toFixed(1);
+                    comboCounter.style.opacity = '1';
+                    showMessage("Combo Boost!");
                     break;
             }
             
@@ -699,16 +1029,67 @@
                 gameContainer.style.boxShadow = '0 0 30px rgba(0, 0, 0, 0.5)';
             }, 300);
             
+            // Reset combo on damage
+            comboCount = 0;
+            comboCounter.style.opacity = '0';
+            
             // Check game over
             if (health <= 0) {
                 gameOver();
             }
         }
 
+        function levelUp() {
+            level++;
+            levelElement.textContent = level;
+            showMessage(`Level ${level} Unlocked!`);
+            
+            // Increase difficulty
+            playerSpeed = Math.min(10, 5 + level * 0.5);
+            enemySpawnRate = Math.max(500, 2000 - level * 100);
+            
+            // Visual effect
+            createCandyParticles(
+                gameContainer.offsetWidth / 2,
+                gameContainer.offsetHeight / 2,
+                100,
+                0,
+                360
+            );
+        }
+
         function gameOver() {
             gameRunning = false;
             finalScoreElement.textContent = score;
+            
+            // Show ad after delay
+            setTimeout(showAd, 1000);
+        }
+
+        function showAd() {
             gameOverScreen.style.display = 'flex';
+            adContainer.style.display = 'flex';
+            adCountdown = 5;
+            adTimer.textContent = `Реклама закончится через ${adCountdown} сек`;
+            
+            skipAdBtn.classList.remove('active');
+            skipAdBtn.disabled = true;
+            
+            adInterval = setInterval(() => {
+                adCountdown--;
+                adTimer.textContent = `Реклама закончится через ${adCountdown} сек`;
+                
+                if (adCountdown <= 0) {
+                    clearInterval(adInterval);
+                    skipAdBtn.classList.add('active');
+                    skipAdBtn.disabled = false;
+                }
+            }, 1000);
+        }
+
+        function hideAd() {
+            clearInterval(adInterval);
+            adContainer.style.display = 'none';
         }
 
         function createCandyExplosion(element) {
@@ -781,11 +1162,16 @@
             doublePointsActive = false;
             rapidFireActive = false;
             invincibleActive = false;
+            comboCount = 0;
+            level = 1;
+            enemiesDestroyed = 0;
             
             // Reset UI
             scoreElement.textContent = '0';
             healthElement.style.width = '100%';
             gameOverScreen.style.display = 'none';
+            comboCounter.style.opacity = '0';
+            levelElement.textContent = '1';
             
             // Clear all game elements
             document.querySelectorAll('.bullet, .enemy, .candy, .power-up, .candy-particle').forEach(el => el.remove());
@@ -799,7 +1185,18 @@
         }
 
         // Start game
-        restartBtn.addEventListener('click', initGame);
+        restartBtn.addEventListener('click', () => {
+            hideAd();
+            initGame();
+        });
+        
+        skipAdBtn.addEventListener('click', () => {
+            if (adCountdown <= 0) {
+                hideAd();
+            }
+        });
+        
+        initMobileControls();
         initGame();
     </script>
 </body>
