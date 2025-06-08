@@ -61,3 +61,959 @@
             </div>
         </div>
     </div>
+
+<script>
+    // Game elements
+    const player = document.getElementById('player');
+    const gameContainer = document.querySelector('.game-container');
+    const scoreElement = document.getElementById('score');
+    const bestScoreElement = document.getElementById('bestScore');
+    const healthElement = document.getElementById('health');
+    const gameOverScreen = document.getElementById('gameOver');
+    const finalScoreElement = document.getElementById('finalScore');
+    const restartBtn = document.getElementById('restartBtn');
+    const candyEffects = document.getElementById('candyEffects');
+    const messageElement = document.getElementById('message');
+    const comboCounter = document.getElementById('comboCounter');
+    const comboMultiplier = document.getElementById('comboMultiplier');
+    const levelElement = document.getElementById('level');
+    const weaponIndicator = document.getElementById('weaponIndicator');
+    const weaponName = document.getElementById('weaponName');
+    const joystick = document.getElementById('joystick');
+    const joystickKnob = document.getElementById('joystickKnob');
+    const shootBtn = document.getElementById('shootBtn');
+    const adContainer = document.getElementById('adContainer');
+    const adTimer = document.getElementById('adTimer');
+    const skipAdBtn = document.getElementById('skipAd');
+    const artemoskaLink = document.getElementById('artemoskaLink');
+    const saveNameInput = document.getElementById('saveName');
+    const saveBtn = document.getElementById('saveBtn');
+    const loadContainer = document.getElementById('loadContainer');
+    const savedGamesList = document.getElementById('savedGamesList');
+
+    // Game state
+    let score = 0;
+    let bestScore = localStorage.getItem('bestScore') || 0;
+    let health = 100;
+    let gameRunning = true;
+    let playerSpeed = 5;
+    let lastShotTime = 0;
+    let shotDelay = 300;
+    let enemySpawnRate = 2000;
+    let candySpawnRate = 3000;
+    let powerUpSpawnRate = 10000;
+    let doublePointsActive = false;
+    let doublePointsEndTime = 0;
+    let rapidFireActive = false;
+    let rapidFireEndTime = 0;
+    let invincibleActive = false;
+    let invincibleEndTime = 0;
+    let comboTime = 0;
+    let comboCount = 0;
+    let level = 1;
+    let enemiesDestroyed = 0;
+    let isMobile = false;
+    let joystickActive = false;
+    let joystickAngle = 0;
+    let joystickPower = 0;
+    let joystickStartX = 0;
+    let joystickStartY = 0;
+    let joystickCurrentX = 0;
+    let joystickCurrentY = 0;
+    let adCountdown = 5;
+    let adInterval;
+    let currentWeapon = 'basic';
+    let bossActive = false;
+    let bossHealth = 0;
+    let bossElement = null;
+    let bossSpawnScore = 100;
+    let trailParticles = [];
+
+    // Weapon types
+    const weapons = {
+        basic: { 
+            shotDelay: 300, 
+            damage: 1, 
+            color: '#FFE66D', 
+            name: 'Basic Gun',
+            effect: function(x, y) {
+                createCandyParticles(x, y, 5, -90, 10, 15);
+            }
+        },
+        laser: { 
+            shotDelay: 100, 
+            damage: 0.5, 
+            color: '#4ECDC4', 
+            name: 'Laser Beam',
+            effect: function(x, y) {
+                const laser = document.createElement('div');
+                laser.className = 'laser-beam';
+                laser.style.left = (x - 2) + 'px';
+                laser.style.top = y + 'px';
+                laser.style.backgroundColor = this.color;
+                gameContainer.appendChild(laser);
+                
+                setTimeout(() => {
+                    laser.remove();
+                }, 100);
+                
+                createCandyParticles(x, y, 3, -90, 30, 10, this.color);
+            }
+        },
+        shotgun: { 
+            shotDelay: 600, 
+            damage: 3, 
+            color: '#FF6B6B', 
+            name: 'Candy Shotgun',
+            effect: function(x, y) {
+                for (let i = 0; i < 5; i++) {
+                    const angle = -90 + (Math.random() * 30 - 15);
+                    createCandyParticles(x, y, 3, angle, 15, 20, this.color);
+                }
+            }
+        },
+        plasma: { 
+            shotDelay: 500, 
+            damage: 2, 
+            color: '#9d4edd', 
+            name: 'Plasma Blaster',
+            effect: function(x, y) {
+                createPlasmaBall(x, y);
+                createCandyParticles(x, y, 8, -90, 5, 10, this.color);
+            }
+        }
+    };
+
+    // Candy colors
+    const candyColors = [
+        '#FF9AA2', '#FFB7B2', '#FFDAC1', '#E2F0CB', 
+        '#B5EAD7', '#C7CEEA', '#F8B195', '#F67280',
+        '#9d4edd', '#ff9e00', '#00c2ff', '#a5ff00'
+    ];
+
+    // Enemy types
+    const enemyTypes = [
+        { color: '#FF9AA2', speed: 3, health: 1, points: 10, size: 70 },
+        { color: '#B5EAD7', speed: 5, health: 1, points: 20, size: 60 },
+        { color: '#C7CEEA', speed: 4, health: 2, points: 30, size: 80 },
+        { color: '#FFDAC1', speed: 6, health: 1, points: 40, size: 65 },
+        { color: '#F8B195', speed: 3.5, health: 3, points: 50, size: 90 }
+    ];
+
+    // Boss enemy
+    const bossType = { 
+        color: '#9d4edd', 
+        speed: 2, 
+        health: 50, 
+        points: 500, 
+        size: 200,
+        attackPattern: 'wave'
+    };
+
+    // Power-up types
+    const powerUpTypes = [
+        { type: 'double', color: '#FFE66D', duration: 10000, effect: 'Double Points' },
+        { type: 'rapid', color: '#4ECDC4', duration: 8000, effect: 'Rapid Fire' },
+        { type: 'health', color: '#FF6B6B', duration: 0, effect: '+30 Health' },
+        { type: 'invincible', color: '#F7FFF7', duration: 5000, effect: 'Invincibility' },
+        { type: 'combo', color: '#FF9AA2', duration: 0, effect: 'Combo Boost' },
+        { type: 'weapon', color: '#9d4edd', duration: 0, effect: 'Weapon Upgrade', weapon: 'laser' },
+        { type: 'weapon', color: '#ff9e00', duration: 0, effect: 'Weapon Upgrade', weapon: 'shotgun' },
+        { type: 'weapon', color: '#00c2ff', duration: 0, effect: 'Weapon Upgrade', weapon: 'plasma' }
+    ];
+
+    // Initialize mobile controls
+    function initMobileControls() {
+        isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
+        if (isMobile) {
+            joystick.style.display = 'block';
+            shootBtn.style.display = 'block';
+            
+            joystick.addEventListener('touchstart', handleJoystickStart);
+            joystick.addEventListener('touchmove', handleJoystickMove);
+            joystick.addEventListener('touchend', handleJoystickEnd);
+            
+            shootBtn.addEventListener('touchstart', () => keys[' '] = true);
+            shootBtn.addEventListener('touchend', () => keys[' '] = false);
+        }
+    }
+
+    // Joystick handling functions
+    function handleJoystickStart(e) {
+        e.preventDefault();
+        const touch = e.touches[0];
+        const rect = joystick.getBoundingClientRect();
+        
+        joystickStartX = rect.left + rect.width / 2;
+        joystickStartY = rect.top + rect.height / 2;
+        joystickCurrentX = touch.clientX;
+        joystickCurrentY = touch.clientY;
+        
+        joystickActive = true;
+        updateJoystick();
+    }
+
+    function handleJoystickMove(e) {
+        if (!joystickActive) return;
+        e.preventDefault();
+        
+        const touch = e.touches[0];
+        joystickCurrentX = touch.clientX;
+        joystickCurrentY = touch.clientY;
+        
+        updateJoystick();
+    }
+
+    function handleJoystickEnd() {
+        joystickActive = false;
+        joystickKnob.style.transform = 'translate(0, 0)';
+        
+        keys.ArrowLeft = false;
+        keys.ArrowRight = false;
+        keys.ArrowUp = false;
+        keys.ArrowDown = false;
+    }
+
+    function updateJoystick() {
+        const dx = joystickCurrentX - joystickStartX;
+        const dy = joystickCurrentY - joystickStartY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const maxDistance = 30;
+        
+        if (distance > maxDistance) {
+            const angle = Math.atan2(dy, dx);
+            joystickCurrentX = joystickStartX + Math.cos(angle) * maxDistance;
+            joystickCurrentY = joystickStartY + Math.sin(angle) * maxDistance;
+        }
+        
+        const knobX = joystickCurrentX - joystickStartX;
+        const knobY = joystickCurrentY - joystickStartY;
+        joystickKnob.style.transform = `translate(${knobX}px, ${knobY}px)`;
+        
+        joystickAngle = Math.atan2(dy, dx);
+        joystickPower = Math.min(1, distance / maxDistance);
+        
+        const angleDeg = joystickAngle * (180 / Math.PI);
+        
+        keys.ArrowLeft = false;
+        keys.ArrowRight = false;
+        keys.ArrowUp = false;
+        keys.ArrowDown = false;
+        
+        if (angleDeg > -135 && angleDeg < -45) {
+            keys.ArrowUp = true;
+        } else if (angleDeg > 45 && angleDeg < 135) {
+            keys.ArrowDown = true;
+        }
+        
+        if (angleDeg > -45 && angleDeg < 45) {
+            keys.ArrowRight = true;
+        } else if (angleDeg > 135 || angleDeg < -135) {
+            keys.ArrowLeft = true;
+        }
+    }
+
+    // Keyboard controls
+    const keys = {
+        ArrowLeft: false,
+        ArrowRight: false,
+        ArrowUp: false,
+        ArrowDown: false,
+        ' ': false
+    };
+
+    document.addEventListener('keydown', (e) => {
+        if (keys.hasOwnProperty(e.key)) {
+            keys[e.key] = true;
+            e.preventDefault();
+        }
+    });
+
+    document.addEventListener('keyup', (e) => {
+        if (keys.hasOwnProperty(e.key)) {
+            keys[e.key] = false;
+            e.preventDefault();
+        }
+    });
+
+    // Main game loop
+    function gameLoop(timestamp) {
+        if (!gameRunning) return;
+        
+        // Player movement
+        const playerRect = player.getBoundingClientRect();
+        const containerRect = gameContainer.getBoundingClientRect();
+        
+        if (keys.ArrowLeft && playerRect.left > containerRect.left + 10) {
+            player.style.left = (parseInt(player.style.left) - playerSpeed) + 'px';
+            createTrailParticles(playerRect, containerRect);
+        }
+        if (keys.ArrowRight && playerRect.right < containerRect.right - 10) {
+            player.style.left = (parseInt(player.style.left) + playerSpeed) + 'px';
+            createTrailParticles(playerRect, containerRect);
+        }
+        if (keys.ArrowUp && playerRect.top > containerRect.top + 10) {
+            player.style.top = (parseInt(player.style.top) - playerSpeed) + 'px';
+            createTrailParticles(playerRect, containerRect);
+        }
+        if (keys.ArrowDown && playerRect.bottom < containerRect.bottom - 10) {
+            player.style.top = (parseInt(player.style.top) + playerSpeed) + 'px';
+            createTrailParticles(playerRect, containerRect);
+        }
+        
+        // Shooting
+        const currentWeaponData = weapons[currentWeapon];
+        if (keys[' '] && timestamp - lastShotTime > (rapidFireActive ? currentWeaponData.shotDelay / 3 : currentWeaponData.shotDelay)) {
+            shoot();
+            lastShotTime = timestamp;
+        }
+        
+        // Spawn enemies
+        if (timestamp - lastEnemySpawn > enemySpawnRate) {
+            spawnEnemy();
+            lastEnemySpawn = timestamp;
+            enemySpawnRate = Math.max(500, enemySpawnRate - 10);
+        }
+        
+        // Spawn candies
+        if (timestamp - lastCandySpawn > candySpawnRate) {
+            spawnCandy();
+            lastCandySpawn = timestamp;
+        }
+        
+        // Spawn power-ups
+        if (timestamp - lastPowerUpSpawn > powerUpSpawnRate) {
+            spawnPowerUp();
+            lastPowerUpSpawn = timestamp;
+        }
+        
+        // Spawn boss
+        if (!bossActive && score >= bossSpawnScore) {
+            spawnBoss();
+            bossSpawnScore += 300;
+        }
+        
+        // Check power-up timers
+        const currentTime = timestamp;
+        if (doublePointsActive && currentTime > doublePointsEndTime) {
+            doublePointsActive = false;
+            showMessage("Double Points Ended!");
+        }
+        if (rapidFireActive && currentTime > rapidFireEndTime) {
+            rapidFireActive = false;
+            showMessage("Rapid Fire Ended!");
+        }
+        if (invincibleActive && currentTime > invincibleEndTime) {
+            invincibleActive = false;
+            showMessage("Invincibility Ended!");
+        }
+        
+        // Combo system
+        if (comboCount > 0 && currentTime > comboTime + 2000) {
+            comboCount = 0;
+            comboCounter.style.opacity = '0';
+        }
+        
+        // Level up
+        if (enemiesDestroyed >= level * 10) {
+            levelUp();
+        }
+        
+        // Move bullets
+        const bullets = document.querySelectorAll('.bullet');
+        bullets.forEach(bullet => {
+            const bulletTop = parseInt(bullet.style.top);
+            bullet.style.top = (bulletTop - 10) + 'px';
+            
+            if (bulletTop < 0) {
+                bullet.remove();
+            }
+        });
+        
+        // Move laser beams
+        const lasers = document.querySelectorAll('.laser-beam');
+        lasers.forEach(laser => {
+            const laserTop = parseInt(laser.style.top);
+            laser.style.top = (laserTop - 15) + 'px';
+            
+            if (laserTop < 0) {
+                laser.remove();
+            }
+        });
+        
+        // Move plasma balls
+        const plasmas = document.querySelectorAll('.plasma-ball');
+        plasmas.forEach(plasma => {
+            const plasmaTop = parseInt(plasma.style.top);
+            plasma.style.top = (plasmaTop - 8) + 'px';
+            
+            if (plasmaTop < 0) {
+                plasma.remove();
+            }
+        });
+        
+        // Move enemies
+        const enemies = document.querySelectorAll('.enemy');
+        enemies.forEach(enemy => {
+            const enemyData = JSON.parse(enemy.dataset.enemy);
+            const enemyTop = parseInt(enemy.style.top);
+            enemy.style.top = (enemyTop + enemyData.speed) + 'px';
+            
+            if (enemyTop > containerRect.height) {
+                enemy.remove();
+                if (!invincibleActive) {
+                    takeDamage(5);
+                }
+            }
+            
+            if (checkCollision(player, enemy) && !invincibleActive) {
+                enemy.remove();
+                takeDamage(10);
+                createCandyExplosion(enemy);
+            }
+        });
+        
+        // Move boss
+        if (bossElement) {
+            const bossRect = bossElement.getBoundingClientRect();
+            const bossTop = parseInt(bossElement.style.top);
+            
+            if (bossData.attackPattern === 'wave') {
+                const waveOffset = Math.sin(timestamp / 500) * 200;
+                bossElement.style.left = (containerRect.width/2 - 100 + waveOffset) + 'px';
+                bossElement.style.top = (bossTop + bossData.speed) + 'px';
+            }
+            
+            if (bossTop > containerRect.height) {
+                bossElement.remove();
+                bossActive = false;
+                bossElement = null;
+                if (!invincibleActive) {
+                    takeDamage(20);
+                }
+            }
+        }
+        
+        // Move candies
+        const candies = document.querySelectorAll('.candy');
+        candies.forEach(candy => {
+            const candyTop = parseInt(candy.style.top);
+            candy.style.top = (candyTop + 3) + 'px';
+            
+            if (candyTop > containerRect.height) {
+                candy.remove();
+            }
+            
+            if (checkCollision(player, candy)) {
+                candy.remove();
+                addScore(50);
+                createCandyExplosion(candy);
+            }
+        });
+        
+        // Move power-ups
+        const powerUps = document.querySelectorAll('.power-up');
+        powerUps.forEach(powerUp => {
+            const powerUpTop = parseInt(powerUp.style.top);
+            powerUp.style.top = (powerUpTop + 2) + 'px';
+            
+            if (powerUpTop > containerRect.height) {
+                powerUp.remove();
+            }
+            
+            if (checkCollision(player, powerUp)) {
+                const powerUpType = powerUp.dataset.type;
+                const weaponType = powerUp.dataset.weapon;
+                activatePowerUp(powerUpType, timestamp, weaponType);
+                powerUp.remove();
+                createCandyExplosion(powerUp);
+            }
+        });
+        
+        // Update trail particles
+        updateTrailParticles(timestamp);
+        
+        // Collision detection
+        detectCollisions(timestamp);
+        
+        requestAnimationFrame(gameLoop);
+    }
+
+<script>
+    // Game elements
+    const player = document.getElementById('player');
+    const gameContainer = document.querySelector('.game-container');
+    const scoreElement = document.getElementById('score');
+    const bestScoreElement = document.getElementById('bestScore');
+    const healthElement = document.getElementById('health');
+    const gameOverScreen = document.getElementById('gameOver');
+    const finalScoreElement = document.getElementById('finalScore');
+    const restartBtn = document.getElementById('restartBtn');
+    const candyEffects = document.getElementById('candyEffects');
+    const messageElement = document.getElementById('message');
+    const comboCounter = document.getElementById('comboCounter');
+    const comboMultiplier = document.getElementById('comboMultiplier');
+    const levelElement = document.getElementById('level');
+    const weaponIndicator = document.getElementById('weaponIndicator');
+    const weaponName = document.getElementById('weaponName');
+    const joystick = document.getElementById('joystick');
+    const joystickKnob = document.getElementById('joystickKnob');
+    const shootBtn = document.getElementById('shootBtn');
+    const adContainer = document.getElementById('adContainer');
+    const adTimer = document.getElementById('adTimer');
+    const skipAdBtn = document.getElementById('skipAd');
+    const artemoskaLink = document.getElementById('artemoskaLink');
+    const saveNameInput = document.getElementById('saveName');
+    const saveBtn = document.getElementById('saveBtn');
+    const loadContainer = document.getElementById('loadContainer');
+    const savedGamesList = document.getElementById('savedGamesList');
+
+    // Game state
+    let score = 0;
+    let bestScore = localStorage.getItem('bestScore') || 0;
+    let health = 100;
+    let gameRunning = true;
+    let playerSpeed = 5;
+    let lastShotTime = 0;
+    let shotDelay = 300;
+    let enemySpawnRate = 2000;
+    let candySpawnRate = 3000;
+    let powerUpSpawnRate = 10000;
+    let doublePointsActive = false;
+    let doublePointsEndTime = 0;
+    let rapidFireActive = false;
+    let rapidFireEndTime = 0;
+    let invincibleActive = false;
+    let invincibleEndTime = 0;
+    let comboTime = 0;
+    let comboCount = 0;
+    let level = 1;
+    let enemiesDestroyed = 0;
+    let isMobile = false;
+    let joystickActive = false;
+    let joystickAngle = 0;
+    let joystickPower = 0;
+    let joystickStartX = 0;
+    let joystickStartY = 0;
+    let joystickCurrentX = 0;
+    let joystickCurrentY = 0;
+    let adCountdown = 5;
+    let adInterval;
+    let currentWeapon = 'basic';
+    let bossActive = false;
+    let bossHealth = 0;
+    let bossElement = null;
+    let bossSpawnScore = 100;
+    let trailParticles = [];
+
+    // Weapon types
+    const weapons = {
+        basic: { 
+            shotDelay: 300, 
+            damage: 1, 
+            color: '#FFE66D', 
+            name: 'Basic Gun',
+            effect: function(x, y) {
+                createCandyParticles(x, y, 5, -90, 10, 15);
+            }
+        },
+        laser: { 
+            shotDelay: 100, 
+            damage: 0.5, 
+            color: '#4ECDC4', 
+            name: 'Laser Beam',
+            effect: function(x, y) {
+                const laser = document.createElement('div');
+                laser.className = 'laser-beam';
+                laser.style.left = (x - 2) + 'px';
+                laser.style.top = y + 'px';
+                laser.style.backgroundColor = this.color;
+                gameContainer.appendChild(laser);
+                
+                setTimeout(() => {
+                    laser.remove();
+                }, 100);
+                
+                createCandyParticles(x, y, 3, -90, 30, 10, this.color);
+            }
+        },
+        shotgun: { 
+            shotDelay: 600, 
+            damage: 3, 
+            color: '#FF6B6B', 
+            name: 'Candy Shotgun',
+            effect: function(x, y) {
+                for (let i = 0; i < 5; i++) {
+                    const angle = -90 + (Math.random() * 30 - 15);
+                    createCandyParticles(x, y, 3, angle, 15, 20, this.color);
+                }
+            }
+        },
+        plasma: { 
+            shotDelay: 500, 
+            damage: 2, 
+            color: '#9d4edd', 
+            name: 'Plasma Blaster',
+            effect: function(x, y) {
+                createPlasmaBall(x, y);
+                createCandyParticles(x, y, 8, -90, 5, 10, this.color);
+            }
+        }
+    };
+
+    // Candy colors
+    const candyColors = [
+        '#FF9AA2', '#FFB7B2', '#FFDAC1', '#E2F0CB', 
+        '#B5EAD7', '#C7CEEA', '#F8B195', '#F67280',
+        '#9d4edd', '#ff9e00', '#00c2ff', '#a5ff00'
+    ];
+
+    // Enemy types
+    const enemyTypes = [
+        { color: '#FF9AA2', speed: 3, health: 1, points: 10, size: 70 },
+        { color: '#B5EAD7', speed: 5, health: 1, points: 20, size: 60 },
+        { color: '#C7CEEA', speed: 4, health: 2, points: 30, size: 80 },
+        { color: '#FFDAC1', speed: 6, health: 1, points: 40, size: 65 },
+        { color: '#F8B195', speed: 3.5, health: 3, points: 50, size: 90 }
+    ];
+
+    // Boss enemy
+    const bossType = { 
+        color: '#9d4edd', 
+        speed: 2, 
+        health: 50, 
+        points: 500, 
+        size: 200,
+        attackPattern: 'wave'
+    };
+
+    // Power-up types
+    const powerUpTypes = [
+        { type: 'double', color: '#FFE66D', duration: 10000, effect: 'Double Points' },
+        { type: 'rapid', color: '#4ECDC4', duration: 8000, effect: 'Rapid Fire' },
+        { type: 'health', color: '#FF6B6B', duration: 0, effect: '+30 Health' },
+        { type: 'invincible', color: '#F7FFF7', duration: 5000, effect: 'Invincibility' },
+        { type: 'combo', color: '#FF9AA2', duration: 0, effect: 'Combo Boost' },
+        { type: 'weapon', color: '#9d4edd', duration: 0, effect: 'Weapon Upgrade', weapon: 'laser' },
+        { type: 'weapon', color: '#ff9e00', duration: 0, effect: 'Weapon Upgrade', weapon: 'shotgun' },
+        { type: 'weapon', color: '#00c2ff', duration: 0, effect: 'Weapon Upgrade', weapon: 'plasma' }
+    ];
+
+    // Initialize mobile controls
+    function initMobileControls() {
+        isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        
+        if (isMobile) {
+            joystick.style.display = 'block';
+            shootBtn.style.display = 'block';
+            
+            joystick.addEventListener('touchstart', handleJoystickStart);
+            joystick.addEventListener('touchmove', handleJoystickMove);
+            joystick.addEventListener('touchend', handleJoystickEnd);
+            
+            shootBtn.addEventListener('touchstart', () => keys[' '] = true);
+            shootBtn.addEventListener('touchend', () => keys[' '] = false);
+        }
+    }
+
+    // Joystick handling functions
+    function handleJoystickStart(e) {
+        e.preventDefault();
+        const touch = e.touches[0];
+        const rect = joystick.getBoundingClientRect();
+        
+        joystickStartX = rect.left + rect.width / 2;
+        joystickStartY = rect.top + rect.height / 2;
+        joystickCurrentX = touch.clientX;
+        joystickCurrentY = touch.clientY;
+        
+        joystickActive = true;
+        updateJoystick();
+    }
+
+    function handleJoystickMove(e) {
+        if (!joystickActive) return;
+        e.preventDefault();
+        
+        const touch = e.touches[0];
+        joystickCurrentX = touch.clientX;
+        joystickCurrentY = touch.clientY;
+        
+        updateJoystick();
+    }
+
+    function handleJoystickEnd() {
+        joystickActive = false;
+        joystickKnob.style.transform = 'translate(0, 0)';
+        
+        keys.ArrowLeft = false;
+        keys.ArrowRight = false;
+        keys.ArrowUp = false;
+        keys.ArrowDown = false;
+    }
+
+    function updateJoystick() {
+        const dx = joystickCurrentX - joystickStartX;
+        const dy = joystickCurrentY - joystickStartY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const maxDistance = 30;
+        
+        if (distance > maxDistance) {
+            const angle = Math.atan2(dy, dx);
+            joystickCurrentX = joystickStartX + Math.cos(angle) * maxDistance;
+            joystickCurrentY = joystickStartY + Math.sin(angle) * maxDistance;
+        }
+        
+        const knobX = joystickCurrentX - joystickStartX;
+        const knobY = joystickCurrentY - joystickStartY;
+        joystickKnob.style.transform = `translate(${knobX}px, ${knobY}px)`;
+        
+        joystickAngle = Math.atan2(dy, dx);
+        joystickPower = Math.min(1, distance / maxDistance);
+        
+        const angleDeg = joystickAngle * (180 / Math.PI);
+        
+        keys.ArrowLeft = false;
+        keys.ArrowRight = false;
+        keys.ArrowUp = false;
+        keys.ArrowDown = false;
+        
+        if (angleDeg > -135 && angleDeg < -45) {
+            keys.ArrowUp = true;
+        } else if (angleDeg > 45 && angleDeg < 135) {
+            keys.ArrowDown = true;
+        }
+        
+        if (angleDeg > -45 && angleDeg < 45) {
+            keys.ArrowRight = true;
+        } else if (angleDeg > 135 || angleDeg < -135) {
+            keys.ArrowLeft = true;
+        }
+    }
+
+    // Keyboard controls
+    const keys = {
+        ArrowLeft: false,
+        ArrowRight: false,
+        ArrowUp: false,
+        ArrowDown: false,
+        ' ': false
+    };
+
+    document.addEventListener('keydown', (e) => {
+        if (keys.hasOwnProperty(e.key)) {
+            keys[e.key] = true;
+            e.preventDefault();
+        }
+    });
+
+    document.addEventListener('keyup', (e) => {
+        if (keys.hasOwnProperty(e.key)) {
+            keys[e.key] = false;
+            e.preventDefault();
+        }
+    });
+
+    // Main game loop
+    function gameLoop(timestamp) {
+        if (!gameRunning) return;
+        
+        // Player movement
+        const playerRect = player.getBoundingClientRect();
+        const containerRect = gameContainer.getBoundingClientRect();
+        
+        if (keys.ArrowLeft && playerRect.left > containerRect.left + 10) {
+            player.style.left = (parseInt(player.style.left) - playerSpeed) + 'px';
+            createTrailParticles(playerRect, containerRect);
+        }
+        if (keys.ArrowRight && playerRect.right < containerRect.right - 10) {
+            player.style.left = (parseInt(player.style.left) + playerSpeed) + 'px';
+            createTrailParticles(playerRect, containerRect);
+        }
+        if (keys.ArrowUp && playerRect.top > containerRect.top + 10) {
+            player.style.top = (parseInt(player.style.top) - playerSpeed) + 'px';
+            createTrailParticles(playerRect, containerRect);
+        }
+        if (keys.ArrowDown && playerRect.bottom < containerRect.bottom - 10) {
+            player.style.top = (parseInt(player.style.top) + playerSpeed) + 'px';
+            createTrailParticles(playerRect, containerRect);
+        }
+        
+        // Shooting
+        const currentWeaponData = weapons[currentWeapon];
+        if (keys[' '] && timestamp - lastShotTime > (rapidFireActive ? currentWeaponData.shotDelay / 3 : currentWeaponData.shotDelay)) {
+            shoot();
+            lastShotTime = timestamp;
+        }
+        
+        // Spawn enemies
+        if (timestamp - lastEnemySpawn > enemySpawnRate) {
+            spawnEnemy();
+            lastEnemySpawn = timestamp;
+            enemySpawnRate = Math.max(500, enemySpawnRate - 10);
+        }
+        
+        // Spawn candies
+        if (timestamp - lastCandySpawn > candySpawnRate) {
+            spawnCandy();
+            lastCandySpawn = timestamp;
+        }
+        
+        // Spawn power-ups
+        if (timestamp - lastPowerUpSpawn > powerUpSpawnRate) {
+            spawnPowerUp();
+            lastPowerUpSpawn = timestamp;
+        }
+        
+        // Spawn boss
+        if (!bossActive && score >= bossSpawnScore) {
+            spawnBoss();
+            bossSpawnScore += 300;
+        }
+        
+        // Check power-up timers
+        const currentTime = timestamp;
+        if (doublePointsActive && currentTime > doublePointsEndTime) {
+            doublePointsActive = false;
+            showMessage("Double Points Ended!");
+        }
+        if (rapidFireActive && currentTime > rapidFireEndTime) {
+            rapidFireActive = false;
+            showMessage("Rapid Fire Ended!");
+        }
+        if (invincibleActive && currentTime > invincibleEndTime) {
+            invincibleActive = false;
+            showMessage("Invincibility Ended!");
+        }
+        
+        // Combo system
+        if (comboCount > 0 && currentTime > comboTime + 2000) {
+            comboCount = 0;
+            comboCounter.style.opacity = '0';
+        }
+        
+        // Level up
+        if (enemiesDestroyed >= level * 10) {
+            levelUp();
+        }
+        
+        // Move bullets
+        const bullets = document.querySelectorAll('.bullet');
+        bullets.forEach(bullet => {
+            const bulletTop = parseInt(bullet.style.top);
+            bullet.style.top = (bulletTop - 10) + 'px';
+            
+            if (bulletTop < 0) {
+                bullet.remove();
+            }
+        });
+        
+        // Move laser beams
+        const lasers = document.querySelectorAll('.laser-beam');
+        lasers.forEach(laser => {
+            const laserTop = parseInt(laser.style.top);
+            laser.style.top = (laserTop - 15) + 'px';
+            
+            if (laserTop < 0) {
+                laser.remove();
+            }
+        });
+        
+        // Move plasma balls
+        const plasmas = document.querySelectorAll('.plasma-ball');
+        plasmas.forEach(plasma => {
+            const plasmaTop = parseInt(plasma.style.top);
+            plasma.style.top = (plasmaTop - 8) + 'px';
+            
+            if (plasmaTop < 0) {
+                plasma.remove();
+            }
+        });
+        
+        // Move enemies
+        const enemies = document.querySelectorAll('.enemy');
+        enemies.forEach(enemy => {
+            const enemyData = JSON.parse(enemy.dataset.enemy);
+            const enemyTop = parseInt(enemy.style.top);
+            enemy.style.top = (enemyTop + enemyData.speed) + 'px';
+            
+            if (enemyTop > containerRect.height) {
+                enemy.remove();
+                if (!invincibleActive) {
+                    takeDamage(5);
+                }
+            }
+            
+            if (checkCollision(player, enemy) && !invincibleActive) {
+                enemy.remove();
+                takeDamage(10);
+                createCandyExplosion(enemy);
+            }
+        });
+        
+        // Move boss
+        if (bossElement) {
+            const bossRect = bossElement.getBoundingClientRect();
+            const bossTop = parseInt(bossElement.style.top);
+            
+            if (bossData.attackPattern === 'wave') {
+                const waveOffset = Math.sin(timestamp / 500) * 200;
+                bossElement.style.left = (containerRect.width/2 - 100 + waveOffset) + 'px';
+                bossElement.style.top = (bossTop + bossData.speed) + 'px';
+            }
+            
+            if (bossTop > containerRect.height) {
+                bossElement.remove();
+                bossActive = false;
+                bossElement = null;
+                if (!invincibleActive) {
+                    takeDamage(20);
+                }
+            }
+        }
+        
+        // Move candies
+        const candies = document.querySelectorAll('.candy');
+        candies.forEach(candy => {
+            const candyTop = parseInt(candy.style.top);
+            candy.style.top = (candyTop + 3) + 'px';
+            
+            if (candyTop > containerRect.height) {
+                candy.remove();
+            }
+            
+            if (checkCollision(player, candy)) {
+                candy.remove();
+                addScore(50);
+                createCandyExplosion(candy);
+            }
+        });
+        
+        // Move power-ups
+        const powerUps = document.querySelectorAll('.power-up');
+        powerUps.forEach(powerUp => {
+            const powerUpTop = parseInt(powerUp.style.top);
+            powerUp.style.top = (powerUpTop + 2) + 'px';
+            
+            if (powerUpTop > containerRect.height) {
+                powerUp.remove();
+            }
+            
+            if (checkCollision(player, powerUp)) {
+                const powerUpType = powerUp.dataset.type;
+                const weaponType = powerUp.dataset.weapon;
+                activatePowerUp(powerUpType, timestamp, weaponType);
+                powerUp.remove();
+                createCandyExplosion(powerUp);
+            }
+        });
+        
+        // Update trail particles
+        updateTrailParticles(timestamp);
+        
+        // Collision detection
+        detectCollisions(timestamp);
+        
+        requestAnimationFrame(gameLoop);
+    }
