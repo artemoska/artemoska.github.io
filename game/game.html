@@ -14,7 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Candy Race Gun Extreme</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <style>
+        <style>
         :root {
             --main-color: #FF6B6B;
             --secondary-color: #4ECDC4;
@@ -705,9 +705,32 @@
             transition: opacity 0.3s;
         }
     </style>
+
+        .new-game-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            background-color: var(--neon-pink);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            cursor: pointer;
+            z-index: 20;
+            transition: all 0.3s;
+        }
+        
+        .new-game-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px var(--neon-pink);
+        }
+    </style>
 </head>
 <body>
     <div class="game-container">
+      <div class="game-container">
         <div class="road"></div>
         <div class="player" id="player"></div>
         <div class="shield" id="shield"></div>
@@ -789,8 +812,95 @@
         </div>
     </div>
 
+        <button class="new-game-btn" id="newGameBtn">NEW GAME</button>
+
+    </div>
+
     <script>
-        // Game elements
+        // Добавляем переменную для щита
+        let shieldActive = false;
+        let shieldTimeout;
+        
+        // Инициализация новой кнопки
+        const newGameBtn = document.getElementById('newGameBtn');
+        newGameBtn.addEventListener('click', () => {
+            if (confirm('Начать новую игру? Текущий прогресс будет потерян.')) {
+                localStorage.removeItem('candyRaceSave');
+                initGame();
+            }
+        });
+        
+        // Обновляем функцию activatePowerUp для щита
+        function activatePowerUp(type, currentTime) {
+            switch(type) {
+                // ... другие power-ups ...
+                case 'shield':
+                    if (shieldActive) {
+                        clearTimeout(shieldTimeout);
+                    }
+                    shieldActive = true;
+                    shield.style.display = 'block';
+                    shield.style.left = player.style.left;
+                    shield.style.top = player.style.top;
+                    showMessage("Shield Activated!");
+                    shieldTimeout = setTimeout(() => {
+                        if (shieldActive) {
+                            shieldActive = false;
+                            shield.style.display = 'none';
+                            showMessage("Shield Expired!");
+                        }
+                    }, 10000);
+                    break;
+                // ... другие power-ups ...
+            }
+            
+            createCandyExplosion(document.querySelector(`.power-up[data-type="${type}"]`));
+        }
+        
+        // Обновляем проверку столкновений с врагами
+        function checkCollisionWithEnemy(enemy) {
+            if (checkCollision(player, enemy) && !invincibleActive) {
+                if (shieldActive) {
+                    // Shield absorbs damage
+                    enemy.remove();
+                    createCandyExplosion(enemy);
+                    shieldActive = false;
+                    shield.style.display = 'none';
+                    clearTimeout(shieldTimeout);
+                    showMessage("Shield Broken!");
+                } else {
+                    enemy.remove();
+                    takeDamage(10);
+                    createCandyExplosion(enemy);
+                }
+            }
+        }
+        
+        // В игровом цикле заменяем проверку столкновений
+        enemies.forEach(enemy => {
+            const enemyData = JSON.parse(enemy.dataset.enemy);
+            const enemyTop = parseInt(enemy.style.top);
+            enemy.style.top = (enemyTop + enemyData.speed) + 'px';
+            
+            if (enemyTop > containerRect.height) {
+                enemy.remove();
+                if (!invincibleActive && !shieldActive) {
+                    takeDamage(5);
+                }
+            }
+            
+            checkCollisionWithEnemy(enemy);
+        });
+        
+        // В функции initGame сбрасываем состояние щита
+        function initGame() {
+            // ... предыдущий код ...
+            shieldActive = false;
+            clearTimeout(shieldTimeout);
+            shield.style.display = 'none';
+            // ... остальной код ...
+        }
+// Game elements
         const player = document.getElementById('player');
         const gameContainer = document.querySelector('.game-container');
         const scoreElement = document.getElementById('score');
