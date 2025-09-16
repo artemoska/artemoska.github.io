@@ -12,7 +12,7 @@
     
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Artemoska | Dark Magic Developer</title>
+  <title>Artemoska | Web Developer</title>
   <meta name="description" content="Artemoska - разработчик Telegram ботов, веб-приложений и игр. Создаю магию с помощью JavaScript.">
   <meta name="keywords" content="Artemoska, программист, разработчик, Telegram боты, JavaScript, портфолио">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -44,21 +44,29 @@
 
     /* Кастомный скроллбар */
     ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
+      width: 12px;
+      height: 12px;
     }
     
     ::-webkit-scrollbar-track {
       background: var(--gray-light);
+      border-radius: 10px;
     }
     
     ::-webkit-scrollbar-thumb {
-      background: var(--gray-dark);
-      border-radius: 4px;
+      background: var(--primary);
+      border-radius: 10px;
+      border: 3px solid var(--gray-light);
     }
     
     ::-webkit-scrollbar-thumb:hover {
-      background: var(--primary);
+      background: var(--primary-dark);
+    }
+    
+    /* Для Firefox */
+    html {
+      scrollbar-width: thin;
+      scrollbar-color: var(--primary) var(--gray-light);
     }
 
     body {
@@ -103,14 +111,66 @@
       100% { transform: perspective(500px) rotateX(60deg) translateY(40px); }
     }
 
-    /* Шапка */
+    /* Индикатор прогресса прокрутки */
+    .progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      z-index: 10000;
+    }
+    
+    .progress-bar {
+      height: 4px;
+      background: var(--primary);
+      width: 0%;
+      transition: width 0.3s ease;
+      box-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary);
+    }
+
+    /* Кнопка "Наверх" */
+    .scroll-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      z-index: 999;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    }
+    
+    .scroll-to-top.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .scroll-to-top:hover {
+      background: var(--primary-dark);
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+    }
+
+    /* Шапка с фиксированной навигацией */
     header {
-      background: linear-gradient(to bottom, rgba(255,255,255,0.95), rgba(249,250,251,0.95));
-      padding: 3rem 1rem;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 1.5rem 1rem;
       text-align: center;
       border-bottom: 1px solid var(--gray);
-      position: relative;
-      overflow: hidden;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
       backdrop-filter: blur(10px);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     }
@@ -118,20 +178,28 @@
     .header-content {
       position: relative;
       z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .brand-logo {
-      font-size: 2.5rem;
+      font-size: 2.2rem;
       font-weight: 700;
       color: var(--primary);
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
       display: inline-block;
       letter-spacing: -1px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     h1 {
       color: var(--dark);
-      font-size: 2.2rem;
+      font-size: 2rem;
       margin-bottom: 0.5rem;
       font-weight: 600;
     }
@@ -141,6 +209,43 @@
       font-size: 1.1rem;
       margin-bottom: 1rem;
       font-weight: 400;
+    }
+
+    /* Навигация */
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .nav-link {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      padding: 0.5rem 0;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+    
+    .nav-link:hover {
+      color: var(--primary);
+    }
+    
+    .nav-link:hover::after {
+      width: 100%;
     }
 
     /* Основное содержимое */
@@ -153,10 +258,10 @@
     /* Секции */
     section {
       background: white;
-      margin: 2rem 0;
+      margin: 3rem 0;
       padding: 2.5rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
       position: relative;
       overflow: hidden;
       transition: all 0.3s ease;
@@ -164,7 +269,7 @@
     }
 
     section:hover {
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
       transform: translateY(-5px);
     }
 
@@ -172,7 +277,7 @@
       color: var(--dark);
       margin-bottom: 1.5rem;
       font-size: 1.8rem;
-      font-weight: 600;
+      font-weight: 700;
       position: relative;
       display: inline-block;
     }
@@ -216,12 +321,14 @@
 
     /* Кнопки */
     .btn {
-      display: inline-block;
-      padding: 0.8rem 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.9rem 1.7rem;
       background: var(--primary);
       color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       font-family: 'Inter', sans-serif;
       font-size: 0.95rem;
       font-weight: 500;
@@ -236,13 +343,17 @@
 
     .btn:hover {
       background: var(--primary-dark);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 15px rgba(99, 102, 241, 0.2);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(99, 102, 241, 0.25);
+    }
+
+    .btn i {
+      margin-right: 0.5rem;
     }
 
     .btn-outline {
       background: transparent;
-      border: 1px solid var(--primary);
+      border: 2px solid var(--primary);
       color: var(--primary);
     }
 
@@ -263,10 +374,10 @@
     .social-link {
       display: flex;
       align-items: center;
-      padding: 0.8rem 1.5rem;
+      padding: 0.9rem 1.5rem;
       background: white;
       color: var(--text);
-      border-radius: 8px;
+      border-radius: 10px;
       text-decoration: none;
       transition: all 0.3s ease;
       border: 1px solid var(--gray);
@@ -277,7 +388,7 @@
       background: var(--primary);
       color: white;
       transform: translateY(-3px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
       border-color: var(--primary);
     }
 
@@ -297,16 +408,16 @@
     /* Навыки */
     .skills-container {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.8rem;
       margin-top: 2rem;
     }
 
     .skill-card {
       background: white;
       border: 1px solid var(--gray);
-      border-radius: 10px;
-      padding: 1.5rem;
+      border-radius: 12px;
+      padding: 1.8rem;
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
@@ -314,7 +425,7 @@
 
     .skill-card:hover {
       border-color: var(--primary);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
     }
 
     .skill-card h3 {
@@ -327,15 +438,15 @@
 
     .skill-card h3 i {
       margin-right: 0.8rem;
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       color: var(--primary);
     }
 
     .skill-level {
-      height: 8px;
+      height: 10px;
       background: var(--gray-light);
-      border-radius: 4px;
-      margin-top: 1rem;
+      border-radius: 5px;
+      margin-top: 1.2rem;
       overflow: hidden;
       position: relative;
     }
@@ -344,85 +455,88 @@
       content: attr(data-level);
       position: absolute;
       right: 5px;
-      top: -20px;
-      font-size: 0.7rem;
+      top: -22px;
+      font-size: 0.75rem;
       color: var(--text-light);
+      font-weight: 500;
     }
 
     .skill-level-bar {
       height: 100%;
       background: linear-gradient(to right, var(--primary), var(--primary-light));
-      border-radius: 4px;
+      border-radius: 5px;
       width: 0;
       transition: width 1.5s ease-out;
     }
 
     .skill-card:hover .skill-level-bar {
-      box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+      box-shadow: 0 0 12px rgba(99, 102, 241, 0.3);
     }
 
     /* Проекты */
     .projects-container {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 2rem;
+      grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+      gap: 2.2rem;
       margin-top: 2rem;
     }
 
     .project-card {
       background: white;
       border: 1px solid var(--gray);
-      border-radius: 12px;
+      border-radius: 14px;
       overflow: hidden;
       transition: all 0.3s ease;
       position: relative;
     }
 
     .project-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
       border-color: var(--primary-light);
     }
 
     .project-image {
-      height: 180px;
+      height: 200px;
       background: var(--gray-light);
       display: flex;
       align-items: center;
       justify-content: center;
       color: var(--primary);
-      font-size: 3rem;
+      font-size: 3.2rem;
       position: relative;
       overflow: hidden;
     }
 
     .project-content {
-      padding: 1.5rem;
+      padding: 1.8rem;
     }
 
     .project-content h3 {
       color: var(--dark);
       margin-bottom: 0.8rem;
       font-weight: 600;
+      font-size: 1.3rem;
     }
 
     .project-content p {
       color: var(--text-light);
       font-size: 0.95rem;
       margin-bottom: 1.5rem;
+      line-height: 1.7;
     }
 
     .project-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1.5rem;
+      gap: 0.6rem;
+      margin-bottom: 1.8rem;
     }
 
     .project-tag {
       background: rgba(99, 102, 241, 0.1);
       color: var(--primary);
-      padding: 0.3rem 0.8rem;
+      padding: 0.4rem 0.9rem;
       border-radius: 20px;
       font-size: 0.8rem;
       transition: all 0.3s ease;
@@ -442,17 +556,20 @@
     footer {
       background: white;
       text-align: center;
-      padding: 3rem 1rem;
+      padding: 4rem 1rem;
       border-top: 1px solid var(--gray);
-      margin-top: 3rem;
+      margin-top: 4rem;
     }
 
     .footer-logo {
-      font-size: 2rem;
+      font-size: 2.2rem;
       font-weight: 700;
       color: var(--primary);
       margin-bottom: 1.5rem;
       display: inline-block;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .footer-text {
@@ -461,12 +578,13 @@
       max-width: 600px;
       margin-left: auto;
       margin-right: auto;
+      font-size: 1.1rem;
     }
 
     .copyright {
       color: var(--text-light);
       opacity: 0.8;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
     }
 
     /* Анимации */
@@ -478,8 +596,8 @@
     /* Эффекты при прокрутке */
     .animate-on-scroll {
       opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.6s ease;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
     }
 
     .animate-on-scroll.animated {
@@ -490,49 +608,65 @@
     /* Консоль */
     .console-effect {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
+      bottom: 30px;
+      right: 30px;
       background: white;
       border: 1px solid var(--gray);
-      border-radius: 12px;
-      padding: 1rem;
-      max-width: 300px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border-radius: 14px;
+      padding: 1.2rem;
+      width: 320px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
       z-index: 1000;
       font-size: 0.9rem;
       line-height: 1.5;
       font-family: 'Inter', monospace;
+      transition: all 0.3s ease;
+    }
+    
+    .console-effect:hover {
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
     }
 
     .console-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.8rem;
       color: var(--primary);
       font-weight: 600;
+      font-size: 1rem;
     }
 
     .console-close {
       cursor: pointer;
       color: var(--text-light);
       transition: all 0.3s ease;
+      font-size: 1.2rem;
     }
 
     .console-close:hover {
       color: var(--danger);
+      transform: scale(1.1);
     }
 
     .console-content {
       color: var(--text);
       max-height: 200px;
       overflow-y: auto;
+      padding-right: 5px;
+    }
+    
+    .console-content div {
+      margin-bottom: 0.5rem;
+      font-family: 'Fira Code', monospace;
     }
 
     .console-input {
       color: var(--primary);
       position: relative;
       font-weight: 500;
+      margin-top: 0.5rem;
+      font-family: 'Fira Code', monospace;
     }
 
     .console-cursor {
@@ -550,46 +684,11 @@
       50% { opacity: 0; }
     }
 
-    /* Статистика */
-    .stats-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 1.5rem;
-      margin-top: 2rem;
-    }
-
-    .stat-card {
-      background: white;
-      border: 1px solid var(--gray);
-      border-radius: 10px;
-      padding: 1.5rem;
-      text-align: center;
-      transition: all 0.3s ease;
-    }
-
-    .stat-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-      border-color: var(--primary);
-    }
-
-    .stat-number {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 0.5rem;
-    }
-
-    .stat-label {
-      color: var(--text-light);
-      font-size: 0.9rem;
-    }
-
     /* Таймлайн */
     .timeline {
       position: relative;
       max-width: 1200px;
-      margin: 2rem auto;
+      margin: 2.5rem auto;
     }
 
     .timeline::after {
@@ -613,12 +712,12 @@
     .timeline-item::after {
       content: '';
       position: absolute;
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
       background: var(--primary);
       border: 3px solid white;
       border-radius: 50%;
-      top: 15px;
+      top: 16px;
       z-index: 1;
       box-shadow: 0 0 0 3px var(--primary-light);
     }
@@ -632,68 +731,69 @@
     }
 
     .left::after {
-      right: -8px;
+      right: -9px;
     }
 
     .right::after {
-      left: -8px;
+      left: -9px;
     }
 
     .timeline-content {
-      padding: 20px;
+      padding: 22px;
       background: white;
       border: 1px solid var(--gray);
-      border-radius: 10px;
+      border-radius: 12px;
       position: relative;
       transition: all 0.3s ease;
     }
 
     .timeline-content:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
       border-color: var(--primary-light);
     }
 
     .timeline-date {
       color: var(--primary);
       font-weight: 600;
-      margin-bottom: 0.5rem;
-      font-size: 0.9rem;
+      margin-bottom: 0.6rem;
+      font-size: 0.95rem;
     }
 
     /* Виджеты */
     .widgets-container {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 2rem;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2.2rem;
       margin-top: 2rem;
     }
 
     .widget {
       background: white;
       border: 1px solid var(--gray);
-      border-radius: 10px;
-      padding: 1.5rem;
+      border-radius: 12px;
+      padding: 1.8rem;
       transition: all 0.3s ease;
     }
 
     .widget:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
       border-color: var(--primary-light);
     }
 
     .widget-title {
       color: var(--dark);
-      margin-bottom: 1rem;
+      margin-bottom: 1.2rem;
       display: flex;
       align-items: center;
       font-weight: 600;
+      font-size: 1.2rem;
     }
 
     .widget-title i {
       margin-right: 0.8rem;
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       color: var(--primary);
     }
 
@@ -701,38 +801,47 @@
     .ad-place {
       background: rgba(99, 102, 241, 0.05);
       border: 2px dashed var(--primary-light);
-      border-radius: 10px;
-      padding: 2rem;
+      border-radius: 14px;
+      padding: 2.5rem;
       text-align: center;
-      margin: 2rem 0;
+      margin: 2.5rem 0;
       transition: all 0.3s ease;
     }
 
     .ad-place:hover {
       background: rgba(99, 102, 241, 0.1);
-      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.1);
+      box-shadow: 0 12px 25px rgba(99, 102, 241, 0.1);
+      transform: translateY(-3px);
     }
 
     .ad-place h3 {
       color: var(--primary);
-      margin-bottom: 1rem;
-      font-size: 1.5rem;
+      margin-bottom: 1.2rem;
+      font-size: 1.6rem;
       font-weight: 600;
     }
 
     .ad-place p {
       color: var(--text-light);
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.8rem;
+      font-size: 1.05rem;
     }
 
     /* Адаптивность */
+    @media (max-width: 1024px) {
+      .projects-container {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      }
+    }
+
     @media (max-width: 768px) {
       .container {
-        padding: 1rem;
+        padding: 1.5rem;
       }
 
       section {
-        padding: 1.5rem;
+        padding: 2rem;
+        margin: 2.5rem 0;
       }
 
       .skills-container, .projects-container, .widgets-container {
@@ -748,12 +857,14 @@
       }
 
       .brand-logo, .footer-logo {
-        font-size: 1.8rem;
+        font-size: 1.9rem;
       }
       
       .console-effect {
-        max-width: 250px;
-        font-size: 0.8rem;
+        width: calc(100% - 40px);
+        right: 20px;
+        bottom: 20px;
+        font-size: 0.85rem;
       }
 
       .timeline::after {
@@ -777,14 +888,53 @@
       .right {
         left: 0%;
       }
-
-      .stats-container {
-        grid-template-columns: repeat(2, 1fr);
+      
+      .nav-links {
+        gap: 1rem;
+      }
+      
+      .nav-link {
+        font-size: 0.9rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .container {
+        padding: 1rem;
+      }
+      
+      section {
+        padding: 1.5rem;
+      }
+      
+      .btn, .social-link {
+        width: 100%;
+        justify-content: center;
+        margin-right: 0;
+      }
+      
+      .project-links {
+        flex-direction: column;
+      }
+      
+      .nav-links {
+        flex-direction: column;
+        gap: 0.8rem;
       }
     }
   </style>
 </head>
 <body>
+  <!-- Индикатор прогресса прокрутки -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+  
+  <!-- Кнопка "Наверх" -->
+  <div class="scroll-to-top" id="scrollToTop">
+    <i class="fas fa-arrow-up"></i>
+  </div>
+
   <!-- Геометрический фон -->
   <div class="geometric-bg"></div>
   
@@ -794,36 +944,24 @@
       <div class="brand-logo">ARTEMOSKA</div>
       <h1>Привет, я Artemoska!</h1>
       <p class="header-subtitle">Добро пожаловать в моё портфолио</p>
+      
+      <div class="nav-links">
+        <a href="#about" class="nav-link">Обо мне</a>
+        <a href="#skills" class="nav-link">Навыки</a>
+        <a href="#projects" class="nav-link">Проекты</a>
+        <a href="#plans" class="nav-link">Планы</a>
+        <a href="#contacts" class="nav-link">Контакты</a>
+      </div>
     </div>
   </header>
 
   <!-- Основное содержимое -->
   <div class="container">
     <!-- Секция "Обо мне" -->
-    <section class="animate-on-scroll" style="animation-delay: 0.1s">
+    <section id="about" class="animate-on-scroll">
       <h2>Обо мне</h2>
       <p>Привет! Я Artemoska — программист, админ RubetonChat и создатель проектов.</p>
       <p>Делаю игры, Telegram и VK ботов, веб-приложения и просто магию на JavaScript.</p>
-      
-      <!-- Виджет статистики -->
-      <div class="stats-container">
-        <div class="stat-card">
-          <div class="stat-number" id="projects-count">0</div>
-          <div class="stat-label">Завершенных проектов</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number" id="clients-count">0</div>
-          <div class="stat-label">Довольных клиентов</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number" id="bots-count">0</div>
-          <div class="stat-label">Созданных ботов</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number" id="experience-years">0</div>
-          <div class="stat-label">Лет опыта</div>
-        </div>
-      </div>
       
       <div class="social-links">
         <a href="https://t.me/artemoska" class="social-link" target="_blank">
@@ -836,16 +974,18 @@
     </section>
 
     <!-- Рекламный блок -->
-    <section class="animate-on-scroll" style="animation-delay: 0.15s">
+    <section class="animate-on-scroll">
       <div class="ad-place">
         <h3>Здесь могла быть ваша реклама!</h3>
         <p>Это место идеально подходит для продвижения вашего продукта или услуги. Свяжитесь со мной для размещения рекламы.</p>
-        <a href="https://t.me/artemoska" class="btn" target="_blank">Заказать рекламу</a>
+        <a href="https://t.me/artemoska" class="btn" target="_blank">
+          <i class="fas fa-ad"></i> Заказать рекламу
+        </a>
       </div>
     </section>
 
     <!-- Секция "Навыки" -->
-    <section class="animate-on-scroll" style="animation-delay: 0.2s">
+    <section id="skills" class="animate-on-scroll">
       <h2>Навыки</h2>
       <div class="skills-container">
         <div class="skill-card">
@@ -894,12 +1034,12 @@
     </section>
 
     <!-- Секция "Проекты" -->
-    <section class="animate-on-scroll" style="animation-delay: 0.3s">
+    <section id="projects" class="animate-on-scroll">
       <h2>Проекты</h2>
       <div class="projects-container">
         <div class="project-card">
           <div class="project-image">
-            <i class="fab fa-telegram" style="color: var(--primary);"></i>
+            <i class="fab fa-telegram"></i>
           </div>
           <div class="project-content">
             <h3>RubetonChat</h3>
@@ -910,13 +1050,15 @@
               <span class="project-tag">Bot API</span>
             </div>
             <div class="project-links">
-              <a href="rubeton.html" class="btn btn-outline">Подробнее</a>
+              <a href="rubeton.html" class="btn btn-outline">
+                <i class="fas fa-external-link-alt"></i> Подробнее
+              </a>
             </div>
           </div>
         </div>
         <div class="project-card">
           <div class="project-image">
-            <i class="fas fa-gamepad" style="color: var(--primary);"></i>
+            <i class="fas fa-gamepad"></i>
           </div>
           <div class="project-content">
             <h3>Browser Game</h3>
@@ -927,13 +1069,15 @@
               <span class="project-tag">Game Dev</span>
             </div>
             <div class="project-links">
-              <a href="game/game.html" class="btn btn-outline">Подробнее</a>
+              <a href="game/game.html" class="btn btn-outline">
+                <i class="fas fa-external-link-alt"></i> Подробнее
+              </a>
             </div>
           </div>
         </div>
         <div class="project-card">
           <div class="project-image">
-            <i class="fas fa-robot" style="color: var(--primary);"></i>
+            <i class="fas fa-robot"></i>
           </div>
           <div class="project-content">
             <h3>VK Bot</h3>
@@ -944,7 +1088,9 @@
               <span class="project-tag">MySQL</span>
             </div>
             <div class="project-links">
-              <a href="vkbot.html" class="btn btn-outline">Подробнее</a>
+              <a href="vkbot.html" class="btn btn-outline">
+                <i class="fas fa-external-link-alt"></i> Подробнее
+              </a>
             </div>
           </div>
         </div>
@@ -952,7 +1098,7 @@
     </section>
 
     <!-- Секция "Запланированные проекты" -->
-    <section class="animate-on-scroll" style="animation-delay: 0.4s">
+    <section id="plans" class="animate-on-scroll">
       <h2>Запланированные проекты</h2>
       <p>Вот что я планирую реализовать в ближайшем будущем:</p>
       
@@ -989,7 +1135,7 @@
     </section>
 
     <!-- Виджеты -->
-    <section class="animate-on-scroll" style="animation-delay: 0.5s">
+    <section class="animate-on-scroll">
       <h2>Виджеты</h2>
       <div class="widgets-container">
         <div class="widget">
@@ -1021,7 +1167,7 @@
     </section>
 
     <!-- Секция "Контакты" -->
-    <section class="animate-on-scroll" style="animation-delay: 0.6s">
+    <section id="contacts" class="animate-on-scroll">
       <h2>Контакты</h2>
       <p>Хотите сотрудничать или просто пообщаться? Я всегда открыт для новых идей и проектов!</p>
       <div class="social-links">
@@ -1061,7 +1207,49 @@
   </div>
 
   <script>
-    // 1. Анимация при прокрутке
+    // 1. Индикатор прогресса прокрутки
+    function updateProgressBar() {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById("progressBar").style.width = scrolled + "%";
+    }
+    
+    window.onscroll = function() {
+      updateProgressBar();
+      
+      // Показать/скрыть кнопку "Наверх"
+      const scrollToTopBtn = document.getElementById("scrollToTop");
+      if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
+        scrollToTopBtn.classList.add("visible");
+      } else {
+        scrollToTopBtn.classList.remove("visible");
+      }
+    };
+    
+    // 2. Кнопка "Наверх"
+    document.getElementById("scrollToTop").addEventListener("click", function() {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
+    
+    // 3. Плавная прокрутка для навигации
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        
+        window.scrollTo({
+          top: targetElement.offsetTop - 100,
+          behavior: "smooth"
+        });
+      });
+    });
+
+    // 4. Анимация при прокрутке
     function animateOnScroll() {
       const elements = document.querySelectorAll('.animate-on-scroll');
       
@@ -1075,7 +1263,7 @@
       });
     }
 
-    // 2. Консольный текст
+    // 5. Консольный текст
     function typeConsoleText() {
       const phrases = [
         "npm run magic",
@@ -1126,7 +1314,7 @@
       type();
     }
 
-    // 3. Анимация индикаторов навыков
+    // 6. Анимация индикаторов навыков
     function animateSkills() {
       const skillBars = document.querySelectorAll('.skill-level-bar');
       
@@ -1140,7 +1328,7 @@
       });
     }
 
-    // 4. Инициализация интерактивной консоли
+    // 7. Инициализация интерактивной консоли
     function setupConsole() {
       const consoleInput = document.querySelector('.console-input');
       const consoleHistory = document.querySelector('.console-content');
@@ -1205,51 +1393,12 @@
       });
     }
 
-    // 5. Анимация счетчиков статистики
-    function animateCounters() {
-      const projectsCount = document.getElementById('projects-count');
-      const clientsCount = document.getElementById('clients-count');
-      const botsCount = document.getElementById('bots-count');
-      const experienceYears = document.getElementById('experience-years');
-      
-      const targetValues = {
-        projects: 5,
-        clients: 3,
-        bots: 7,
-        experience: 2
-      };
-      
-      const duration = 2000; // 2 секунды
-      const interval = 50; // интервал обновления
-      const steps = duration / interval;
-      
-      function animateCounter(element, target) {
-        let current = 0;
-        const increment = target / steps;
-        
-        const timer = setInterval(() => {
-          current += increment;
-          if (current >= target) {
-            current = target;
-            clearInterval(timer);
-          }
-          element.textContent = Math.floor(current);
-        }, interval);
-      }
-      
-      animateCounter(projectsCount, targetValues.projects);
-      animateCounter(clientsCount, targetValues.clients);
-      animateCounter(botsCount, targetValues.bots);
-      animateCounter(experienceYears, targetValues.experience);
-    }
-
     // Инициализация при загрузке страницы
     document.addEventListener('DOMContentLoaded', () => {
       animateOnScroll();
       typeConsoleText();
       animateSkills();
       setupConsole();
-      animateCounters();
       
       // Обработчик скролла
       window.addEventListener('scroll', animateOnScroll);
