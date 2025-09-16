@@ -1,1615 +1,1259 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-
   <!-- Google tag (gtag.js) -->
-   <script async src="https://www.googletagmanager.com/gtag/js?id=G-TZY49R07HS"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TZY49R07HS"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-TZY49R07HS'); // Этот код отправляет данные в GA4 при загрузке ЛЮБОЙ страницы
+    gtag('config', 'G-TZY49R07HS');
   </script>
-
     
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Artemoska | Dark Magic Developer</title>
-    <meta name="description" content="Artemoska - разработчик Telegram ботов, веб-приложений и игр. Создаю магию с помощью JavaScript.">
-    <meta name="keywords" content="Artemoska, программист, разработчик, Telegram боты, JavaScript, портфолио">
-    <link href="https://fonts.googleapis.com/css2?family=Ubuntu+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --main-color: #8a2be2;
-            --dark: #0d0a10;
-            --darker: #07050a;
-            --gray: #16121d;
-            --light-gray: #302a3a;
-            --text: #f0e6ff;
-            --green: #9d4edd;
-            --red: #ff4d6d;
-            --yellow: #ffd166;
-            --blue: #4d9de0;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        /* Кастомный скроллбар */
-        ::-webkit-scrollbar {
-            width: 10px;
-            height: 10px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: var(--darker);
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: var(--main-color);
-            border-radius: 5px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--green);
-        }
-
-        body {
-            background-color: var(--dark);
-            color: var(--text);
-            font-family: 'Ubuntu Mono', monospace;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* Анимированный фон с частицами */
-        .magic-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            background: radial-gradient(ellipse at bottom, var(--darker) 0%, var(--dark) 100%);
-            overflow: hidden;
-        }
-        
-        .magic-particle {
-            position: absolute;
-            background: rgba(138, 43, 226, 0.3);
-            border-radius: 50%;
-            pointer-events: none;
-            filter: blur(1px);
-        }
-
-        /* Терминальный эффект */
-        .terminal-effect {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(22, 18, 29, 0.8),
-                rgba(22, 18, 29, 0.8) 1px,
-                transparent 1px,
-                transparent 2px
-            );
-            pointer-events: none;
-            z-index: -1;
-            opacity: 0.3;
-        }
-
-        /* Магический шар */
-        .magic-ball {
-            width: 150px;
-            height: 150px;
-            background: radial-gradient(circle at 30% 30%, 
-                                      rgba(138, 43, 226, 0.8), 
-                                      rgba(157, 78, 221, 0.4));
-            border-radius: 50%;
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            filter: blur(25px);
-            z-index: -1;
-            animation: float-ball 8s ease-in-out infinite;
-            opacity: 0.5;
-        }
-        
-        @keyframes float-ball {
-            0%, 100% { transform: translate(0, 0); }
-            25% { transform: translate(20px, -20px); }
-            50% { transform: translate(0, -40px); }
-            75% { transform: translate(-20px, -20px); }
-        }
-
-        /* Шапка с параллаксом */
-        header {
-            background: linear-gradient(to bottom, var(--darker), var(--gray));
-            padding: 3rem 1rem;
-            text-align: center;
-            border-bottom: 3px solid var(--main-color);
-            position: relative;
-            overflow: hidden;
-            background-attachment: fixed;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-
-        .particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-        }
-
-        .particle {
-            position: absolute;
-            background-color: var(--main-color);
-            border-radius: 50%;
-            opacity: 0.3;
-        }
-
-        .header-content {
-            position: relative;
-            z-index: 1;
-            transform: translateZ(0);
-        }
-
-        .brand-logo {
-            font-size: 3rem;
-            color: var(--main-color);
-            text-shadow: 0 0 15px rgba(138, 43, 226, 0.7);
-            margin-bottom: 1rem;
-            animation: pulse 3s infinite, neon-glow 1.5s ease-in-out infinite alternate;
-            font-weight: bold;
-            letter-spacing: 2px;
-            background: linear-gradient(90deg, var(--main-color), var(--green));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: inline-block;
-        }
-
-        /* Неоновая подсветка */
-        @keyframes neon-glow {
-            from { text-shadow: 0 0 5px var(--main-color); }
-            to { text-shadow: 0 0 10px var(--main-color), 
-                             0 0 20px var(--main-color), 
-                             0 0 30px var(--main-color); }
-        }
-
-        h1 {
-            color: var(--main-color);
-            text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            position: relative;
-            display: inline-block;
-            animation: neon-glow 1.5s ease-in-out infinite alternate;
-        }
-
-        h1::after {
-            content: '_';
-            animation: blink 1s infinite;
-            color: var(--main-color);
-            position: absolute;
-            right: -15px;
-        }
-
-        .header-subtitle {
-            color: var(--text);
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 5px rgba(240, 230, 255, 0.3);
-        }
-
-        /* Основное содержимое */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        /* 3D-эффект для секций */
-        section {
-            background: var(--gray);
-            margin: 2rem 0;
-            padding: 2rem;
-            border: 1px solid var(--light-gray);
-            border-radius: 5px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            transform-style: preserve-3d;
-            transform: perspective(1000px);
-        }
-
-        section:hover {
-            transform: perspective(1000px) rotateX(2deg) rotateY(2deg) translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 5px;
-            height: 100%;
-            background: linear-gradient(to bottom, var(--main-color), var(--green));
-        }
-
-        /* Анимация загрузки секций */
-        .section-load {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeIn 0.8s ease-out forwards;
-        }
-        
-        @keyframes fadeIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        h2 {
-            color: var(--green);
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
-            position: relative;
-            display: inline-block;
-            animation: neon-glow 1.5s ease-in-out infinite alternate;
-        }
-
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 50px;
-            height: 3px;
-            background: var(--main-color);
-            animation: width-grow 1.5s ease-in-out infinite alternate;
-        }
-        
-        @keyframes width-grow {
-            to { width: 100px; }
-        }
-
-        p {
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
-        }
-
-        ul {
-            list-style-type: none;
-            margin-bottom: 1.5rem;
-        }
-
-        li {
-            margin-bottom: 0.8rem;
-            position: relative;
-            padding-left: 1.5rem;
-        }
-
-        li::before {
-            content: '▹';
-            position: absolute;
-            left: 0;
-            color: var(--main-color);
-        }
-
-        /* Кнопки с улучшенной анимацией */
-        .btn {
-            display: inline-block;
-            padding: 0.8rem 1.5rem;
-            background: var(--main-color);
-            color: var(--text);
-            border: none;
-            border-radius: 4px;
-            font-family: 'Ubuntu Mono', monospace;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            margin-right: 1rem;
-            margin-bottom: 1rem;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transform: translateZ(0);
-        }
-
-        .btn:hover {
-            background: #7b1fa2;
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: all 0.5s ease;
-        }
-
-        .btn:hover::before {
-            left: 100%;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 1px solid var(--main-color);
-            color: var(--main-color);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-outline::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(138, 43, 226, 0.1), transparent);
-            transition: all 0.5s ease;
-        }
-
-        .btn-outline:hover::before {
-            left: 100%;
-        }
-
-        .btn-outline:hover {
-            background: rgba(138, 43, 226, 0.1);
-            box-shadow: 0 0 10px rgba(138, 43, 226, 0.3);
-        }
-
-        /* Социальные сети */
-        .social-links {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .social-link {
-            display: flex;
-            align-items: center;
-            padding: 0.8rem 1.5rem;
-            background: var(--gray);
-            color: var(--text);
-            border-radius: 4px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            border: 1px solid var(--light-gray);
-            transform: translateZ(0);
-        }
-
-        .social-link:hover {
-            background: var(--light-gray);
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .social-link i {
-            margin-right: 0.8rem;
-            font-size: 1.2rem;
-            transition: transform 0.3s ease;
-        }
-
-        .social-link:hover i {
-            transform: scale(1.2);
-        }
-
-        .telegram { color: #0088cc; }
-        .github { color: var(--text); }
-        .email { color: var(--red); }
-
-        /* Навыки с анимированными индикаторами */
-        .skills-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .skill-card {
-            background: var(--gray);
-            border: 1px solid var(--light-gray);
-            border-radius: 5px;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-            position: relative;
-            transform-style: preserve-3d;
-            transform: perspective(500px);
-            overflow: hidden;
-        }
-
-        .skill-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), transparent);
-            z-index: -1;
-        }
-
-        .skill-card:hover {
-            border-color: var(--main-color);
-            box-shadow: 0 5px 20px rgba(138, 43, 226, 0.3);
-            transform: perspective(500px) rotateX(5deg) rotateY(5deg);
-        }
-
-        .skill-card h3 {
-            color: var(--main-color);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .skill-card h3 i {
-            margin-right: 0.8rem;
-            font-size: 1.5rem;
-        }
-
-        .skill-level {
-            height: 8px;
-            background: var(--light-gray);
-            border-radius: 4px;
-            margin-top: 1rem;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .skill-level::before {
-            content: attr(data-level);
-            position: absolute;
-            right: 5px;
-            top: -20px;
-            font-size: 0.7rem;
-            color: var(--text);
-        }
-
-        .skill-level-bar {
-            height: 100%;
-            background: linear-gradient(to right, var(--main-color), var(--green));
-            border-radius: 4px;
-            width: 0;
-            transition: width 1.5s ease-out, box-shadow 0.3s ease;
-        }
-
-        .skill-card:hover .skill-level-bar {
-            box-shadow: 0 0 10px var(--main-color);
-        }
-
-        /* Проекты с эффектом наклона */
-        .projects-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-            perspective: 1000px;
-        }
-
-        .project-card {
-            background: var(--gray);
-            border: 1px solid var(--light-gray);
-            border-radius: 5px;
-            overflow: hidden;
-            transition: all 0.5s ease;
-            position: relative;
-            transform-style: preserve-3d;
-        }
-
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), transparent);
-            z-index: -1;
-        }
-
-        .project-card:hover {
-            transform: rotateX(5deg) rotateY(5deg) translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-        }
-
-        .project-image {
-            height: 180px;
-            background: var(--darker);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--light-gray);
-            font-size: 3rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-image::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), rgba(157, 78, 221, 0.1));
-            transition: all 0.5s ease;
-        }
-
-        .project-card:hover .project-image::after {
-            background: linear-gradient(135deg, rgba(138, 43, 226, 0.2), rgba(157, 78, 221, 0.2));
-        }
-
-        .project-content {
-            padding: 1.5rem;
-            transform: translateZ(30px);
-        }
-
-        .project-content h3 {
-            color: var(--main-color);
-            margin-bottom: 0.8rem;
-            transition: all 0.3s ease;
-        }
-
-        .project-card:hover .project-content h3 {
-            text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
-        }
-
-        .project-content p {
-            color: var(--text);
-            opacity: 0.8;
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .project-card:hover .project-content p {
-            opacity: 1;
-        }
-
-        .project-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .project-tag {
-            background: rgba(138, 43, 226, 0.1);
-            color: var(--main-color);
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            transition: all 0.3s ease;
-        }
-
-        .project-card:hover .project-tag {
-            background: rgba(138, 43, 226, 0.2);
-            box-shadow: 0 0 5px rgba(138, 43, 226, 0.3);
-        }
-
-        .project-links {
-            display: flex;
-            gap: 1rem;
-        }
-
-        /* Футер с анимированным градиентом */
-        footer {
-            background: linear-gradient(to top, var(--darker), var(--gray));
-            text-align: center;
-            padding: 3rem 1rem;
-            border-top: 3px solid var(--main-color);
-            margin-top: 3rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none"/><path d="M20,20 L80,20 L80,80 L20,80 Z" stroke="%238a2be2" stroke-width="0.5" fill="none"/></svg>');
-            opacity: 0.05;
-            pointer-events: none;
-            animation: bg-move 20s linear infinite;
-        }
-        
-        @keyframes bg-move {
-            from { background-position: 0 0; }
-            to { background-position: 100px 100px; }
-        }
-
-        .footer-logo {
-            font-size: 2.5rem;
-            color: var(--main-color);
-            text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
-            margin-bottom: 1.5rem;
-            font-weight: bold;
-            background: linear-gradient(90deg, var(--main-color), var(--green));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: inline-block;
-            animation: neon-glow 1.5s ease-in-out infinite alternate;
-        }
-
-        .footer-text {
-            color: var(--text);
-            opacity: 0.7;
-            margin-bottom: 1.5rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            position: relative;
-        }
-
-        .copyright {
-            color: var(--text);
-            opacity: 0.5;
-            font-size: 0.9rem;
-        }
-
-        /* Анимации */
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        @keyframes slideIn {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        /* Эффекты при прокрутке */
-        .animate-on-scroll {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s ease;
-        }
-
-        .animate-on-scroll.animated {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Улучшенная консоль */
-        .console-effect {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(13, 10, 16, 0.95);
-            border: 1px solid var(--main-color);
-            border-radius: 5px;
-            padding: 1rem;
-            max-width: 300px;
-            box-shadow: 0 0 20px rgba(138, 43, 226, 0.5);
-            z-index: 1000;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            transform: translateZ(0);
-            backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
-        }
-
-        .console-effect:hover {
-            box-shadow: 0 0 30px rgba(138, 43, 226, 0.7);
-            transform: translateY(-5px);
-        }
-
-        .console-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-            color: var(--main-color);
-            text-shadow: 0 0 5px var(--main-color);
-        }
-
-        .console-close {
-            cursor: pointer;
-            color: var(--red);
-            transition: all 0.3s ease;
-        }
-
-        .console-close:hover {
-            transform: scale(1.2);
-            color: var(--main-color);
-        }
-
-        .console-content {
-            color: var(--green);
-            font-family: 'Ubuntu Mono', monospace;
-            max-height: 200px;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: var(--main-color) var(--dark);
-        }
-
-        .console-content::-webkit-scrollbar {
-            width: 5px;
-        }
-
-        .console-content::-webkit-scrollbar-thumb {
-            background: var(--main-color);
-            border-radius: 5px;
-        }
-
-        .console-input {
-            color: var(--main-color);
-            position: relative;
-        }
-
-        .console-cursor {
-            display: inline-block;
-            width: 10px;
-            height: 16px;
-            background: var(--main-color);
-            vertical-align: middle;
-            margin-left: 2px;
-            animation: blink 1s infinite;
-            box-shadow: 0 0 5px var(--main-color);
-        }
-
-        /* Новые стили для виджетов */
-        .widgets-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .widget {
-            background: var(--gray);
-            border: 1px solid var(--light-gray);
-            border-radius: 5px;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .widget::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), transparent);
-            z-index: -1;
-        }
-
-        .widget:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .widget-title {
-            color: var(--main-color);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .widget-title i {
-            margin-right: 0.8rem;
-            font-size: 1.5rem;
-        }
-
-        /* Стили для рекламного блока */
-        .ad-place {
-            background: linear-gradient(135deg, rgba(138, 43, 226, 0.2), rgba(157, 78, 221, 0.1));
-            border: 2px dashed var(--main-color);
-            border-radius: 5px;
-            padding: 2rem;
-            text-align: center;
-            margin: 2rem 0;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .ad-place:hover {
-            background: linear-gradient(135deg, rgba(138, 43, 226, 0.3), rgba(157, 78, 221, 0.2));
-            box-shadow: 0 0 20px rgba(138, 43, 226, 0.3);
-        }
-
-        .ad-place h3 {
-            color: var(--main-color);
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-
-        .ad-place p {
-            color: var(--text);
-            opacity: 0.8;
-            margin-bottom: 1.5rem;
-        }
-
-        .ad-place .btn {
-            margin-top: 1rem;
-        }
-
-        /* Стили для запланированных проектов */
-        .timeline {
-            position: relative;
-            max-width: 1200px;
-            margin: 2rem auto;
-        }
-
-        .timeline::after {
-            content: '';
-            position: absolute;
-            width: 3px;
-            background: var(--main-color);
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            margin-left: -1.5px;
-            box-shadow: 0 0 10px var(--main-color);
-        }
-
-        .timeline-item {
-            padding: 10px 40px;
-            position: relative;
-            width: 50%;
-            box-sizing: border-box;
-        }
-
-        .timeline-item::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: var(--main-color);
-            border-radius: 50%;
-            top: 15px;
-            z-index: 1;
-            box-shadow: 0 0 10px var(--main-color);
-        }
-
-        .left {
-            left: 0;
-        }
-
-        .right {
-            left: 50%;
-        }
-
-        .left::after {
-            right: -10px;
-        }
-
-        .right::after {
-            left: -10px;
-        }
-
-        .timeline-content {
-            padding: 20px;
-            background: var(--gray);
-            border: 1px solid var(--light-gray);
-            border-radius: 5px;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .timeline-content:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            border-color: var(--main-color);
-        }
-
-        .timeline-date {
-            color: var(--main-color);
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Статистика */
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .stat-card {
-            background: var(--gray);
-            border: 1px solid var(--light-gray);
-            border-radius: 5px;
-            padding: 1.5rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), transparent);
-            z-index: -1;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            border-color: var(--main-color);
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: var(--main-color);
-            margin-bottom: 0.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover .stat-number {
-            text-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
-        }
-
-        .stat-label {
-            color: var(--text);
-            opacity: 0.8;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover .stat-label {
-            opacity: 1;
-        }
-
-        /* Адаптивность */
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-
-            section {
-                padding: 1.5rem;
-            }
-
-            .skills-container, .projects-container, .widgets-container {
-                grid-template-columns: 1fr;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
-
-            .header-subtitle {
-                font-size: 1rem;
-            }
-
-            .brand-logo, .footer-logo {
-                font-size: 2rem;
-            }
-            
-            .console-effect {
-                max-width: 250px;
-                font-size: 0.8rem;
-            }
-
-            .timeline::after {
-                left: 31px;
-            }
-
-            .timeline-item {
-                width: 100%;
-                padding-left: 70px;
-                padding-right: 25px;
-            }
-
-            .timeline-item::after {
-                left: 21px;
-            }
-
-            .left::after, .right::after {
-                left: 21px;
-            }
-
-            .right {
-                left: 0%;
-            }
-
-            .stats-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artemoska | Dark Magic Developer</title>
+  <meta name="description" content="Artemoska - разработчик Telegram ботов, веб-приложений и игр. Создаю магию с помощью JavaScript.">
+  <meta name="keywords" content="Artemoska, программист, разработчик, Telegram боты, JavaScript, портфолио">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-light: #818cf8;
+      --primary-dark: #4f46e5;
+      --dark: #1f2937;
+      --darker: #111827;
+      --light: #f9fafb;
+      --gray-light: #f3f4f6;
+      --gray: #e5e7eb;
+      --gray-dark: #9ca3af;
+      --text: #374151;
+      --text-light: #6b7280;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --info: #3b82f6;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Кастомный скроллбар */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: var(--gray-light);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: var(--gray-dark);
+      border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary);
+    }
+
+    body {
+      background-color: var(--light);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Анимированный фон с тонкими линиями */
+    .geometric-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      background-color: var(--light);
+      opacity: 1;
+      overflow: hidden;
+    }
+    
+    .geometric-bg::before {
+      content: '';
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+      background-image: 
+        linear-gradient(var(--gray) 1px, transparent 1px),
+        linear-gradient(90deg, var(--gray) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.3;
+      transform: perspective(500px) rotateX(60deg);
+      animation: grid-move 20s linear infinite;
+    }
+    
+    @keyframes grid-move {
+      0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
+      100% { transform: perspective(500px) rotateX(60deg) translateY(40px); }
+    }
+
+    /* Шапка */
+    header {
+      background: linear-gradient(to bottom, rgba(255,255,255,0.95), rgba(249,250,251,0.95));
+      padding: 3rem 1rem;
+      text-align: center;
+      border-bottom: 1px solid var(--gray);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand-logo {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      display: inline-block;
+      letter-spacing: -1px;
+    }
+
+    h1 {
+      color: var(--dark);
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+
+    .header-subtitle {
+      color: var(--text-light);
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      font-weight: 400;
+    }
+
+    /* Основное содержимое */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Секции */
+    section {
+      background: white;
+      margin: 2rem 0;
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 1px solid var(--gray);
+    }
+
+    section:hover {
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+      transform: translateY(-5px);
+    }
+
+    h2 {
+      color: var(--dark);
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+      font-weight: 600;
+      position: relative;
+      display: inline-block;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 40px;
+      height: 3px;
+      background: var(--primary);
+      border-radius: 3px;
+    }
+
+    p {
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    ul {
+      list-style-type: none;
+      margin-bottom: 1.5rem;
+    }
+
+    li {
+      margin-bottom: 0.8rem;
+      position: relative;
+      padding-left: 1.5rem;
+      color: var(--text);
+    }
+
+    li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    /* Кнопки */
+    .btn {
+      display: inline-block;
+      padding: 0.8rem 1.5rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      margin-right: 1rem;
+      margin-bottom: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(99, 102, 241, 0.2);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Социальные сети */
+    .social-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      padding: 0.8rem 1.5rem;
+      background: white;
+      color: var(--text);
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: 1px solid var(--gray);
+      font-weight: 500;
+    }
+
+    .social-link:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      border-color: var(--primary);
+    }
+
+    .social-link i {
+      margin-right: 0.8rem;
+      font-size: 1.2rem;
+    }
+
+    .telegram { color: var(--info); }
+    .github { color: var(--dark); }
+    .email { color: var(--danger); }
+
+    .social-link:hover i {
+      color: white !important;
+    }
+
+    /* Навыки */
+    .skills-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .skill-card {
+      background: white;
+      border: 1px solid var(--gray);
+      border-radius: 10px;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skill-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .skill-card h3 {
+      color: var(--dark);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+    }
+
+    .skill-card h3 i {
+      margin-right: 0.8rem;
+      font-size: 1.5rem;
+      color: var(--primary);
+    }
+
+    .skill-level {
+      height: 8px;
+      background: var(--gray-light);
+      border-radius: 4px;
+      margin-top: 1rem;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .skill-level::before {
+      content: attr(data-level);
+      position: absolute;
+      right: 5px;
+      top: -20px;
+      font-size: 0.7rem;
+      color: var(--text-light);
+    }
+
+    .skill-level-bar {
+      height: 100%;
+      background: linear-gradient(to right, var(--primary), var(--primary-light));
+      border-radius: 4px;
+      width: 0;
+      transition: width 1.5s ease-out;
+    }
+
+    .skill-card:hover .skill-level-bar {
+      box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+    }
+
+    /* Проекты */
+    .projects-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .project-card {
+      background: white;
+      border: 1px solid var(--gray);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .project-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      border-color: var(--primary-light);
+    }
+
+    .project-image {
+      height: 180px;
+      background: var(--gray-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-content {
+      padding: 1.5rem;
+    }
+
+    .project-content h3 {
+      color: var(--dark);
+      margin-bottom: 0.8rem;
+      font-weight: 600;
+    }
+
+    .project-content p {
+      color: var(--text-light);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .project-tag {
+      background: rgba(99, 102, 241, 0.1);
+      color: var(--primary);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .project-card:hover .project-tag {
+      background: rgba(99, 102, 241, 0.2);
+    }
+
+    .project-links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    /* Футер */
+    footer {
+      background: white;
+      text-align: center;
+      padding: 3rem 1rem;
+      border-top: 1px solid var(--gray);
+      margin-top: 3rem;
+    }
+
+    .footer-logo {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      display: inline-block;
+    }
+
+    .footer-text {
+      color: var(--text-light);
+      margin-bottom: 1.5rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .copyright {
+      color: var(--text-light);
+      opacity: 0.8;
+      font-size: 0.9rem;
+    }
+
+    /* Анимации */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Эффекты при прокрутке */
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
+    }
+
+    .animate-on-scroll.animated {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Консоль */
+    .console-effect {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: white;
+      border: 1px solid var(--gray);
+      border-radius: 12px;
+      padding: 1rem;
+      max-width: 300px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      font-family: 'Inter', monospace;
+    }
+
+    .console-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .console-close {
+      cursor: pointer;
+      color: var(--text-light);
+      transition: all 0.3s ease;
+    }
+
+    .console-close:hover {
+      color: var(--danger);
+    }
+
+    .console-content {
+      color: var(--text);
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .console-input {
+      color: var(--primary);
+      position: relative;
+      font-weight: 500;
+    }
+
+    .console-cursor {
+      display: inline-block;
+      width: 8px;
+      height: 16px;
+      background: var(--primary);
+      vertical-align: middle;
+      margin-left: 2px;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* Статистика */
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .stat-card {
+      background: white;
+      border: 1px solid var(--gray);
+      border-radius: 10px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      border-color: var(--primary);
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+
+    /* Таймлайн */
+    .timeline {
+      position: relative;
+      max-width: 1200px;
+      margin: 2rem auto;
+    }
+
+    .timeline::after {
+      content: '';
+      position: absolute;
+      width: 2px;
+      background: var(--gray);
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      margin-left: -1px;
+    }
+
+    .timeline-item {
+      padding: 10px 40px;
+      position: relative;
+      width: 50%;
+      box-sizing: border-box;
+    }
+
+    .timeline-item::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: var(--primary);
+      border: 3px solid white;
+      border-radius: 50%;
+      top: 15px;
+      z-index: 1;
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    .left {
+      left: 0;
+    }
+
+    .right {
+      left: 50%;
+    }
+
+    .left::after {
+      right: -8px;
+    }
+
+    .right::after {
+      left: -8px;
+    }
+
+    .timeline-content {
+      padding: 20px;
+      background: white;
+      border: 1px solid var(--gray);
+      border-radius: 10px;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .timeline-content:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      border-color: var(--primary-light);
+    }
+
+    .timeline-date {
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    /* Виджеты */
+    .widgets-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .widget {
+      background: white;
+      border: 1px solid var(--gray);
+      border-radius: 10px;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .widget:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      border-color: var(--primary-light);
+    }
+
+    .widget-title {
+      color: var(--dark);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+    }
+
+    .widget-title i {
+      margin-right: 0.8rem;
+      font-size: 1.5rem;
+      color: var(--primary);
+    }
+
+    /* Рекламный блок */
+    .ad-place {
+      background: rgba(99, 102, 241, 0.05);
+      border: 2px dashed var(--primary-light);
+      border-radius: 10px;
+      padding: 2rem;
+      text-align: center;
+      margin: 2rem 0;
+      transition: all 0.3s ease;
+    }
+
+    .ad-place:hover {
+      background: rgba(99, 102, 241, 0.1);
+      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.1);
+    }
+
+    .ad-place h3 {
+      color: var(--primary);
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .ad-place p {
+      color: var(--text-light);
+      margin-bottom: 1.5rem;
+    }
+
+    /* Адаптивность */
+    @media (max-width: 768px) {
+      .container {
+        padding: 1rem;
+      }
+
+      section {
+        padding: 1.5rem;
+      }
+
+      .skills-container, .projects-container, .widgets-container {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .header-subtitle {
+        font-size: 1rem;
+      }
+
+      .brand-logo, .footer-logo {
+        font-size: 1.8rem;
+      }
+      
+      .console-effect {
+        max-width: 250px;
+        font-size: 0.8rem;
+      }
+
+      .timeline::after {
+        left: 31px;
+      }
+
+      .timeline-item {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+      }
+
+      .timeline-item::after {
+        left: 21px;
+      }
+
+      .left::after, .right::after {
+        left: 21px;
+      }
+
+      .right {
+        left: 0%;
+      }
+
+      .stats-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Анимированный фон с частицами -->
-    <div class="magic-bg" id="magicBg"></div>
-    
-    <!-- Магический шар в углу -->
-    <div class="magic-ball"></div>
-    
-    <!-- Терминальный эффект -->
-    <div class="terminal-effect"></div>
-    
-    <!-- Шапка с параллаксом -->
-    <header>
-        <div class="particles" id="particles"></div>
-        <div class="header-content">
-            <div class="brand-logo">ARTEMOSKA</div>
-            <h1>☆ Привет, я Artemoska! ☆</h1>
-            <p class="header-subtitle">Добро пожаловать в мою берлогу)</p>
+  <!-- Геометрический фон -->
+  <div class="geometric-bg"></div>
+  
+  <!-- Шапка -->
+  <header>
+    <div class="header-content">
+      <div class="brand-logo">ARTEMOSKA</div>
+      <h1>Привет, я Artemoska!</h1>
+      <p class="header-subtitle">Добро пожаловать в моё портфолио</p>
+    </div>
+  </header>
+
+  <!-- Основное содержимое -->
+  <div class="container">
+    <!-- Секция "Обо мне" -->
+    <section class="animate-on-scroll" style="animation-delay: 0.1s">
+      <h2>Обо мне</h2>
+      <p>Привет! Я Artemoska — программист, админ RubetonChat и создатель проектов.</p>
+      <p>Делаю игры, Telegram и VK ботов, веб-приложения и просто магию на JavaScript.</p>
+      
+      <!-- Виджет статистики -->
+      <div class="stats-container">
+        <div class="stat-card">
+          <div class="stat-number" id="projects-count">0</div>
+          <div class="stat-label">Завершенных проектов</div>
         </div>
-    </header>
+        <div class="stat-card">
+          <div class="stat-number" id="clients-count">0</div>
+          <div class="stat-label">Довольных клиентов</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="bots-count">0</div>
+          <div class="stat-label">Созданных ботов</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="experience-years">0</div>
+          <div class="stat-label">Лет опыта</div>
+        </div>
+      </div>
+      
+      <div class="social-links">
+        <a href="https://t.me/artemoska" class="social-link" target="_blank">
+          <i class="fab fa-telegram telegram"></i> Telegram: @artemoska
+        </a>
+        <a href="https://t.me/tonxui" class="social-link" target="_blank">
+          <i class="fab fa-telegram telegram"></i> Telegram: @tonxui
+        </a>
+      </div>
+    </section>
 
-    <!-- Основное содержимое -->
-    <div class="container">
-        <!-- Секция "Обо мне" -->
-        <section class="animate-on-scroll section-load" style="animation-delay: 0.1s">
-            <h2>★ Обо мне</h2>
-            <p>Привет! Я Artemoska — программист, админ RubetonChat и создатель проектов.</p>
-            <p>Делаю игры, Telegram и VK ботов, веб-приложения и просто магию на JavaScript.</p>
-            
-            <!-- Виджет статистики -->
-            <div class="stats-container">
-                <div class="stat-card">
-                    <div class="stat-number" id="projects-count">0</div>
-                    <div class="stat-label">Завершенных проектов</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="clients-count">0</div>
-                    <div class="stat-label">Довольных клиентов</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="bots-count">0</div>
-                    <div class="stat-label">Созданных ботов</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="experience-years">0</div>
-                    <div class="stat-label">Лет опыта</div>
-                </div>
-            </div>
-            
-            <div class="social-links">
-                <a href="https://t.me/artemoska" class="social-link" target="_blank">
-                    <i class="fab fa-telegram telegram"></i> Telegram: @artemoska
-                </a>
-                <a href="https://t.me/tonxui" class="social-link" target="_blank">
-                    <i class="fab fa-telegram telegram"></i> Telegram: @tonxui
-                </a>
-            </div>
-        </section>
+    <!-- Рекламный блок -->
+    <section class="animate-on-scroll" style="animation-delay: 0.15s">
+      <div class="ad-place">
+        <h3>Здесь могла быть ваша реклама!</h3>
+        <p>Это место идеально подходит для продвижения вашего продукта или услуги. Свяжитесь со мной для размещения рекламы.</p>
+        <a href="https://t.me/artemoska" class="btn" target="_blank">Заказать рекламу</a>
+      </div>
+    </section>
 
-        <!-- Рекламный блок -->
-        <section class="animate-on-scroll section-load" style="animation-delay: 0.15s">
-            <div class="ad-place">
-                <h3>Здесь могла быть ваша реклама!</h3>
-                <p>Это место идеально подходит для продвижения вашего продукта или услуги. Свяжитесь со мной для размещения рекламы.</p>
-                <a href="https://t.me/artemoska" class="btn" target="_blank">Заказать рекламу</a>
-            </div>
-        </section>
+    <!-- Секция "Навыки" -->
+    <section class="animate-on-scroll" style="animation-delay: 0.2s">
+      <h2>Навыки</h2>
+      <div class="skills-container">
+        <div class="skill-card">
+          <h3><i class="fab fa-js"></i> JavaScript</h3>
+          <p>Создание интерактивных веб-приложений, работа с API, анимации.</p>
+          <div class="skill-level" data-level="90%">
+            <div class="skill-level-bar" style="width: 90%"></div>
+          </div>
+        </div>
+        <div class="skill-card">
+          <h3><i class="fab fa-telegram"></i> Telegram Bots</h3>
+          <p>Разработка ботов любой сложности на Node.js и Python.</p>
+          <div class="skill-level" data-level="85%">
+            <div class="skill-level-bar" style="width: 85%"></div>
+          </div>
+        </div>
+        <div class="skill-card">
+          <h3><i class="fab fa-html5"></i> HTML/CSS</h3>
+          <p>Создание адаптивных и современных интерфейсов.</p>
+          <div class="skill-level" data-level="80%">
+            <div class="skill-level-bar" style="width: 80%"></div>
+          </div>
+        </div>
+        <div class="skill-card">
+          <h3><i class="fab fa-node-js"></i> Node.js</h3>
+          <p>Серверная разработка, REST API, WebSockets.</p>
+          <div class="skill-level" data-level="75%">
+            <div class="skill-level-bar" style="width: 75%"></div>
+          </div>
+        </div>
+        <div class="skill-card">
+          <h3><i class="fas fa-gamepad"></i> Game Dev</h3>
+          <p>Разработка браузерных игр на JavaScript.</p>
+          <div class="skill-level" data-level="70%">
+            <div class="skill-level-bar" style="width: 70%"></div>
+          </div>
+        </div>
+        <div class="skill-card">
+          <h3><i class="fas fa-magic"></i> Code Magic</h3>
+          <p>Нестандартные решения и креативный подход.</p>
+          <div class="skill-level" data-level="95%">
+            <div class="skill-level-bar" style="width: 95%"></div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        <!-- Секция "Навыки" -->
-        <section class="animate-on-scroll section-load" style="animation-delay: 0.2s">
-            <h2>★ Навыки</h2>
-            <div class="skills-container">
-                <div class="skill-card">
-                    <h3><i class="fab fa-js"></i> JavaScript</h3>
-                    <p>Создание интерактивных веб-приложений, работа с API, анимации.</p>
-                    <div class="skill-level" data-level="90%">
-                        <div class="skill-level-bar" style="width: 90%"></div>
-                    </div>
-                </div>
-                <div class="skill-card">
-                    <h3><i class="fab fa-telegram"></i> Telegram Bots</h3>
-                    <p>Разработка ботов любой сложности на Node.js и Python.</p>
-                    <div class="skill-level" data-level="85%">
-                        <div class="skill-level-bar" style="width: 85%"></div>
-                    </div>
-                </div>
-                <div class="skill-card">
-                    <h3><i class="fab fa-html5"></i> HTML/CSS</h3>
-                    <p>Создание адаптивных и современных интерфейсов.</p>
-                    <div class="skill-level" data-level="80%">
-                        <div class="skill-level-bar" style="width: 80%"></div>
-                    </div>
-                </div>
-                <div class="skill-card">
-                    <h3><i class="fab fa-node-js"></i> Node.js</h3>
-                    <p>Серверная разработка, REST API, WebSockets.</p>
-                    <div class="skill-level" data-level="75%">
-                        <div class="skill-level-bar" style="width: 75%"></div>
-                    </div>
-                </div>
-                <div class="skill-card">
-                    <h3><i class="fas fa-gamepad"></i> Game Dev</h3>
-                    <p>Разработка браузерных игр на JavaScript.</p>
-                    <div class="skill-level" data-level="70%">
-                        <div class="skill-level-bar" style="width: 70%"></div>
-                    </div>
-                </div>
-                <div class="skill-card">
-                    <h3><i class="fas fa-magic"></i> Code Magic</h3>
-                    <p>Нестандартные решения и креативный подход.</p>
-                    <div class="skill-level" data-level="95%">
-                        <div class="skill-level-bar" style="width: 95%"></div>
-                    </div>
-                </div>
+    <!-- Секция "Проекты" -->
+    <section class="animate-on-scroll" style="animation-delay: 0.3s">
+      <h2>Проекты</h2>
+      <div class="projects-container">
+        <div class="project-card">
+          <div class="project-image">
+            <i class="fab fa-telegram" style="color: var(--primary);"></i>
+          </div>
+          <div class="project-content">
+            <h3>RubetonChat</h3>
+            <p>Многофункциональный Telegram чат с модерацией и развлекательными функциями.</p>
+            <div class="project-tags">
+              <span class="project-tag">Telegram</span>
+              <span class="project-tag">Node.js</span>
+              <span class="project-tag">Bot API</span>
             </div>
-        </section>
-
-        <!-- Секция "Проекты" -->
-        <section class="animate-on-scroll section-load" style="animation-delay: 0.3s">
-            <h2>★ Проекты</h2>
-            <div class="projects-container">
-                <div class="project-card">
-                    <div class="project-image">
-                        <i class="fab fa-telegram" style="color: var(--main-color);"></i>
-                    </div>
-                    <div class="project-content">
-                        <h3>RubetonChat</h3>
-                        <p>Многофункциональный Telegram чат с модерацией и развлекательными функциями.</p>
-                        <div class="project-tags">
-                            <span class="project-tag">Telegram</span>
-                            <span class="project-tag">Node.js</span>
-                            <span class="project-tag">Bot API</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="rubeton.html" class="btn btn-outline">Подробнее</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-image">
-                        <i class="fas fa-gamepad" style="color: var(--green);"></i>
-                    </div>
-                    <div class="project-content">
-                        <h3>Browser Game</h3>
-                        <p>Интерактивная браузерная игра с использованием Canvas и WebGL.</p>
-                        <div class="project-tags">
-                            <span class="project-tag">JavaScript</span>
-                            <span class="project-tag">HTML5</span>
-                            <span class="project-tag">Game Dev</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="game/game.html" class="btn btn-outline">Подробнее</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-image">
-                        <i class="fas fa-robot" style="color: var(--yellow);"></i>
-                    </div>
-                    <div class="project-content">
-                        <h3>VK Bot</h3>
-                        <p>Умный бот для ВКонтакте с интеграцией внешних API и базой данных.</p>
-                        <div class="project-tags">
-                            <span class="project-tag">VK API</span>
-                            <span class="project-tag">Python</span>
-                            <span class="project-tag">MySQL</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="vkbot.html" class="btn btn-outline">Подробнее</a>
-                        </div>
-                    </div>
-                </div>
+            <div class="project-links">
+              <a href="rubeton.html" class="btn btn-outline">Подробнее</a>
             </div>
-        </section>
-
-        <!-- Секция "Запланированные проекты" -->
-        <section class="animate-on-scroll section-load" style="animation-delay: 0.4s">
-            <h2>★ Запланированные проекты</h2>
-            <p>Вот что я планирую реализовать в ближайшем будущем:</p>
-            
-            <div class="timeline">
-                <div class="timeline-item left">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2023 Q4</div>
-                        <h3>Telegram Mini Apps</h3>
-                        <p>Разработка мини-приложений для Telegram с интеграцией криптовалютных платежей.</p>
-                    </div>
-                </div>
-                <div class="timeline-item right">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2024 Q1</div>
-                        <h3>AI Chat Bot</h3>
-                        <p>Создание интеллектуального чат-бота с использованием GPT-технологий.</p>
-                    </div>
-                </div>
-                <div class="timeline-item left">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2024 Q2</div>
-                        <h3>Multiplayer Game</h3>
-                        <p>Разработка многопользовательской браузерной игры с реальным временем.</p>
-                    </div>
-                </div>
-                <div class="timeline-item right">
-                    <div class="timeline-content">
-                        <div class="timeline-date">2024 Q3</div>
-                        <h3>Dev Tools Package</h3>
-                        <p>Публикация набора инструментов для разработчиков Telegram ботов.</p>
-                    </div>
-                </div>
+          </div>
+        </div>
+        <div class="project-card">
+          <div class="project-image">
+            <i class="fas fa-gamepad" style="color: var(--primary);"></i>
+          </div>
+          <div class="project-content">
+            <h3>Browser Game</h3>
+            <p>Интерактивная браузерная игра с использованием Canvas и WebGL.</p>
+            <div class="project-tags">
+              <span class="project-tag">JavaScript</span>
+              <span class="project-tag">HTML5</span>
+              <span class="project-tag">Game Dev</span>
             </div>
-        </section>
+            <div class="project-links">
+              <a href="game/game.html" class="btn btn-outline">Подробнее</a>
+            </div>
+          </div>
+        </div>
+        <div class="project-card">
+          <div class="project-image">
+            <i class="fas fa-robot" style="color: var(--primary);"></i>
+          </div>
+          <div class="project-content">
+            <h3>VK Bot</h3>
+            <p>Умный бот для ВКонтакте с интеграцией внешних API и базой данных.</p>
+            <div class="project-tags">
+              <span class="project-tag">VK API</span>
+              <span class="project-tag">Python</span>
+              <span class="project-tag">MySQL</span>
+            </div>
+            <div class="project-links">
+              <a href="vkbot.html" class="btn btn-outline">Подробнее</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        <!-- Виджеты -->
-        <section class="animate-on-scroll section-load" style="animation-delay: 0.5s">
-            <h2>★ Виджеты</h2>
-            <div class="widgets-container">
-                <div class="widget">
-                    <h3 class="widget-title"><i class="fas fa-code"></i> Последний код</h3>
-                    <div class="code-widget">
-                        <pre><code>function magicSpell() {
+    <!-- Секция "Запланированные проекты" -->
+    <section class="animate-on-scroll" style="animation-delay: 0.4s">
+      <h2>Запланированные проекты</h2>
+      <p>Вот что я планирую реализовать в ближайшем будущем:</p>
+      
+      <div class="timeline">
+        <div class="timeline-item left">
+          <div class="timeline-content">
+            <div class="timeline-date">2023 Q4</div>
+            <h3>Telegram Mini Apps</h3>
+            <p>Разработка мини-приложений для Telegram с интеграцией криптовалютных платежей.</p>
+          </div>
+        </div>
+        <div class="timeline-item right">
+          <div class="timeline-content">
+            <div class="timeline-date">2024 Q1</div>
+            <h3>AI Chat Bot</h3>
+            <p>Создание интеллектуального чат-бота с использованием GPT-технологий.</p>
+          </div>
+        </div>
+        <div class="timeline-item left">
+          <div class="timeline-content">
+            <div class="timeline-date">2024 Q2</div>
+            <h3>Multiplayer Game</h3>
+            <p>Разработка многопользовательской браузерной игры с реальным временем.</p>
+          </div>
+        </div>
+        <div class="timeline-item right">
+          <div class="timeline-content">
+            <div class="timeline-date">2024 Q3</div>
+            <h3>Dev Tools Package</h3>
+            <p>Публикация набора инструментов для разработчиков Telegram ботов.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Виджеты -->
+    <section class="animate-on-scroll" style="animation-delay: 0.5s">
+      <h2>Виджеты</h2>
+      <div class="widgets-container">
+        <div class="widget">
+          <h3 class="widget-title"><i class="fas fa-code"></i> Последний код</h3>
+          <div class="code-widget">
+            <pre><code>function magicSpell() {
   console.log("Abracadabra!");
   return "✨ Magic happens!";
 }</code></pre>
-                    </div>
-                </div>
-                <div class="widget">
-                    <h3 class="widget-title"><i class="fas fa-trophy"></i> Достижения</h3>
-                    <ul>
-                        <li>1000+ пользователей ботов</li>
-                        <li>5 завершенных проектов</li>
-                        <li>3 довольных клиента</li>
-                        <li>2 года опыта</li>
-                    </ul>
-                </div>
-                <div class="widget">
-                    <h3 class="widget-title"><i class="fas fa-quote-left"></i> Цитата дня</h3>
-                    <blockquote>
-                        "Любая достаточно развитая технология неотличима от магии."
-                        <footer>- Артур Кларк</footer>
-                    </blockquote>
-                </div>
-            </div>
-        </section>
-
-        <!-- Секция "Контакты" -->
-        <section class="animate-on-scroll section-load" style="animation-delay: 0.6s">
-            <h2>★ Контакты</h2>
-            <p>Хотите сотрудничать или просто пообщаться? Я всегда открыт для новых идей и проектов!</p>
-            <div class="social-links">
-                <a href="https://t.me/artemoska" class="social-link" target="_blank">
-                    <i class="fab fa-telegram telegram"></i> Telegram
-                </a>
-                <a href="https://github.com/artemoska" class="social-link" target="_blank">
-                    <i class="fab fa-github github"></i> GitHub
-                </a>
-                <a href="mailto:your-email@example.com" class="social-link" target="_blank">
-                    <i class="fas fa-envelope email"></i> Email
-                </a>
-            </div>
-        </section>
-    </div>
-
-    <!-- Футер -->
-    <footer>
-        <div class="footer-logo">ARTEMOSKA</div>
-        <p class="footer-text">"Превращаю идеи в цифровую реальность"</p>
-        <p class="copyright">© 2025 Artemoska. All rights reserved.</p>
-    </footer>
-
-    <!-- Интерактивная консоль -->
-    <div class="console-effect" id="console">
-        <div class="console-header">
-            <span>Artemoska Console</span>
-            <span class="console-close" onclick="document.getElementById('console').style.display='none'">×</span>
+          </div>
         </div>
-        <div class="console-content">
-            <div>> Инициализация магии кода...</div>
-            <div>> Загрузка заклинаний JavaScript...</div>
-            <div>> Подключение к Telegram API...</div>
-            <div>> Готов к волшебству!</div>
-            <div class="console-input">> _<span class="console-cursor"></span></div>
+        <div class="widget">
+          <h3 class="widget-title"><i class="fas fa-trophy"></i> Достижения</h3>
+          <ul>
+            <li>1000+ пользователей ботов</li>
+            <li>5 завершенных проектов</li>
+            <li>3 довольных клиента</li>
+            <li>2 года опыта</li>
+          </ul>
         </div>
+        <div class="widget">
+          <h3 class="widget-title"><i class="fas fa-quote-left"></i> Цитата дня</h3>
+          <blockquote>
+            "Любая достаточно развитая технология неотличима от магии."
+            <footer>- Артур Кларк</footer>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <!-- Секция "Контакты" -->
+    <section class="animate-on-scroll" style="animation-delay: 0.6s">
+      <h2>Контакты</h2>
+      <p>Хотите сотрудничать или просто пообщаться? Я всегда открыт для новых идей и проектов!</p>
+      <div class="social-links">
+        <a href="https://t.me/artemoska" class="social-link" target="_blank">
+          <i class="fab fa-telegram telegram"></i> Telegram
+        </a>
+        <a href="https://github.com/artemoska" class="social-link" target="_blank">
+          <i class="fab fa-github github"></i> GitHub
+        </a>
+        <a href="mailto:your-email@example.com" class="social-link" target="_blank">
+          <i class="fas fa-envelope email"></i> Email
+        </a>
+      </div>
+    </section>
+  </div>
+
+  <!-- Футер -->
+  <footer>
+    <div class="footer-logo">ARTEMOSKA</div>
+    <p class="footer-text">"Превращаю идеи в цифровую реальность"</p>
+    <p class="copyright">© 2025 Artemoska. All rights reserved.</p>
+  </footer>
+
+  <!-- Интерактивная консоль -->
+  <div class="console-effect" id="console">
+    <div class="console-header">
+      <span>Artemoska Console</span>
+      <span class="console-close" onclick="document.getElementById('console').style.display='none'">×</span>
     </div>
+    <div class="console-content">
+      <div>> Инициализация магии кода...</div>
+      <div>> Загрузка заклинаний JavaScript...</div>
+      <div>> Подключение к Telegram API...</div>
+      <div>> Готов к волшебству!</div>
+      <div class="console-input">> _<span class="console-cursor"></span></div>
+    </div>
+  </div>
 
-    <script>
-        // 1. Анимация частиц в шапке
-        function createParticles() {
-            const container = document.getElementById('particles');
-            const particleCount = 30;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                
-                const size = Math.random() * 5 + 2;
-                const posX = Math.random() * 100;
-                const posY = Math.random() * 100;
-                const delay = Math.random() * 5;
-                const duration = Math.random() * 10 + 5;
-                
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.left = `${posX}%`;
-                particle.style.top = `${posY}%`;
-                particle.style.opacity = Math.random() * 0.5 + 0.1;
-                particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
-                
-                container.appendChild(particle);
-            }
+  <script>
+    // 1. Анимация при прокрутке
+    function animateOnScroll() {
+      const elements = document.querySelectorAll('.animate-on-scroll');
+      
+      elements.forEach(element => {
+        const elementPosition = element.getBoundingClientRect().top;
+        const screenPosition = window.innerHeight / 1.3;
+        
+        if (elementPosition < screenPosition) {
+          element.classList.add('animated');
         }
+      });
+    }
 
-        // 2. Анимация частиц фона
-        function createMagicParticles() {
-            const bg = document.getElementById('magicBg');
-            const particleCount = Math.floor(window.innerWidth / 3);
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'magic-particle';
-                
-                const size = Math.random() * 3 + 1;
-                const posX = Math.random() * 100;
-                const posY = Math.random() * 100;
-                const duration = Math.random() * 20 + 10;
-                const delay = Math.random() * 5;
-                
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.left = `${posX}%`;
-                particle.style.top = `${posY}%`;
-                particle.style.animation = `float ${duration}s linear ${delay}s infinite`;
-                
-                bg.appendChild(particle);
-            }
+    // 2. Консольный текст
+    function typeConsoleText() {
+      const phrases = [
+        "npm run magic",
+        "node spell.js",
+        "git push origin master",
+        "Инициализация заклинаний...",
+        "Заклинание готово!",
+        "Загрузка волшебства...",
+        "Подключение к магическому API...",
+        "Готов к работе!"
+      ];
+      
+      const consoleInput = document.querySelector('.console-input');
+      let currentPhrase = 0;
+      let currentChar = 0;
+      let isDeleting = false;
+      let isWaiting = false;
+      
+      function type() {
+        if (isWaiting) return;
+        
+        const currentText = phrases[currentPhrase];
+        
+        if (!isDeleting && currentChar < currentText.length) {
+          consoleInput.innerHTML = `> ${currentText.substring(0, currentChar + 1)}<span class="console-cursor"></span>`;
+          currentChar++;
+          setTimeout(type, 100);
+        } else if (isDeleting && currentChar > 0) {
+          consoleInput.innerHTML = `> ${currentText.substring(0, currentChar - 1)}<span class="console-cursor"></span>`;
+          currentChar--;
+          setTimeout(type, 50);
+        } else {
+          if (!isDeleting && currentChar === currentText.length) {
+            isWaiting = true;
+            setTimeout(() => {
+              isWaiting = false;
+              isDeleting = true;
+              setTimeout(type, 1000);
+            }, 2000);
+          } else if (isDeleting && currentChar === 0) {
+            isDeleting = false;
+            currentPhrase = (currentPhrase + 1) % phrases.length;
+            setTimeout(type, 500);
+          }
         }
+      }
+      
+      type();
+    }
 
-        // 3. Анимация при прокрутке
-        function animateOnScroll() {
-            const elements = document.querySelectorAll('.animate-on-scroll');
-            
-            elements.forEach(element => {
-                const elementPosition = element.getBoundingClientRect().top;
-                const screenPosition = window.innerHeight / 1.3;
-                
-                if (elementPosition < screenPosition) {
-                    element.classList.add('animated');
-                }
-            });
+    // 3. Анимация индикаторов навыков
+    function animateSkills() {
+      const skillBars = document.querySelectorAll('.skill-level-bar');
+      
+      skillBars.forEach(bar => {
+        const targetWidth = bar.style.width;
+        bar.style.width = '0';
+        
+        setTimeout(() => {
+          bar.style.width = targetWidth;
+        }, 200);
+      });
+    }
+
+    // 4. Инициализация интерактивной консоли
+    function setupConsole() {
+      const consoleInput = document.querySelector('.console-input');
+      const consoleHistory = document.querySelector('.console-content');
+      
+      const commands = {
+        help: "Доступные команды: about, skills, projects, contact, clear",
+        about: "Artemoska - разработчик ботов и веб-приложений. Специализация: JavaScript, Node.js, Telegram API.",
+        skills: "Основные навыки: JavaScript (90%), Telegram Bots (85%), HTML/CSS (80%), Node.js (75%), Game Dev (70%)",
+        projects: "Ключевые проекты: RubetonChat (Telegram бот), Browser Game (Canvas/WebGL), VK Bot (Python)",
+        contact: "Связь: Telegram @artemoska, GitHub: artemoska, Email: your-email@example.com",
+        clear: function() {
+          consoleHistory.innerHTML = '';
+          return "Консоль очищена";
         }
-
-        // 4. Консольный текст
-        function typeConsoleText() {
-            const phrases = [
-                "npm run magic",
-                "node spell.js",
-                "git push origin master",
-                "Инициализация заклинаний...",
-                "Заклинание готово!",
-                "Загрузка волшебства...",
-                "Подключение к магическому API...",
-                "Готов к работе!"
-            ];
-            
-            const consoleInput = document.querySelector('.console-input');
-            let currentPhrase = 0;
-            let currentChar = 0;
-            let isDeleting = false;
-            let isWaiting = false;
-            
-            function type() {
-                if (isWaiting) return;
-                
-                const currentText = phrases[currentPhrase];
-                
-                if (!isDeleting && currentChar < currentText.length) {
-                    consoleInput.innerHTML = `> ${currentText.substring(0, currentChar + 1)}<span class="console-cursor"></span>`;
-                    currentChar++;
-                    setTimeout(type, 100);
-                } else if (isDeleting && currentChar > 0) {
-                    consoleInput.innerHTML = `> ${currentText.substring(0, currentChar - 1)}<span class="console-cursor"></span>`;
-                    currentChar--;
-                    setTimeout(type, 50);
-                } else {
-                    if (!isDeleting && currentChar === currentText.length) {
-                        isWaiting = true;
-                        setTimeout(() => {
-                            isWaiting = false;
-                            isDeleting = true;
-                            setTimeout(type, 1000);
-                        }, 2000);
-                    } else if (isDeleting && currentChar === 0) {
-                        isDeleting = false;
-                        currentPhrase = (currentPhrase + 1) % phrases.length;
-                        setTimeout(type, 500);
-                    }
-                }
-            }
-            
-            type();
+      };
+      
+      // Обработчик ввода команд
+      function processCommand(cmd) {
+        const lowerCmd = cmd.toLowerCase().trim();
+        
+        if (commands[lowerCmd]) {
+          if (typeof commands[lowerCmd] === 'function') {
+            return commands[lowerCmd]();
+          } else {
+            return commands[lowerCmd];
+          }
+        } else {
+          return `Команда "${cmd}" не найдена. Введите "help" для списка команд.`;
         }
-
-        // 5. Параллакс эффект для шапки
-        function setupParallax() {
-            const header = document.querySelector('header');
+      }
+      
+      // Клик по консоли для фокуса
+      consoleInput.addEventListener('click', function(e) {
+        e.stopPropagation();
+        consoleInput.focus();
+      });
+      
+      // Обработка нажатия Enter
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && consoleInput.textContent.includes('>')) {
+          const command = consoleInput.textContent.replace('>', '').trim();
+          if (command) {
+            const response = processCommand(command);
             
-            window.addEventListener('scroll', () => {
-                const scrollValue = window.scrollY;
-                header.style.backgroundPositionY = `${scrollValue * 0.5}px`;
-            });
+            // Добавляем ввод пользователя в историю
+            const userInput = document.createElement('div');
+            userInput.textContent = `> ${command}`;
+            consoleHistory.appendChild(userInput);
+            
+            // Добавляем ответ
+            const responseElement = document.createElement('div');
+            responseElement.textContent = response;
+            consoleHistory.appendChild(responseElement);
+            
+            // Прокрутка вниз
+            consoleHistory.scrollTop = consoleHistory.scrollHeight;
+          }
+          
+          // Очищаем ввод
+          consoleInput.innerHTML = '> <span class="console-cursor"></span>';
         }
+      });
+    }
 
-        // 6. Анимация индикаторов навыков
-        function animateSkills() {
-            const skillBars = document.querySelectorAll('.skill-level-bar');
-            
-            skillBars.forEach(bar => {
-                const targetWidth = bar.style.width;
-                bar.style.width = '0';
-                
-                setTimeout(() => {
-                    bar.style.width = targetWidth;
-                }, 200);
-            });
-        }
+    // 5. Анимация счетчиков статистики
+    function animateCounters() {
+      const projectsCount = document.getElementById('projects-count');
+      const clientsCount = document.getElementById('clients-count');
+      const botsCount = document.getElementById('bots-count');
+      const experienceYears = document.getElementById('experience-years');
+      
+      const targetValues = {
+        projects: 5,
+        clients: 3,
+        bots: 7,
+        experience: 2
+      };
+      
+      const duration = 2000; // 2 секунды
+      const interval = 50; // интервал обновления
+      const steps = duration / interval;
+      
+      function animateCounter(element, target) {
+        let current = 0;
+        const increment = target / steps;
+        
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= target) {
+            current = target;
+            clearInterval(timer);
+          }
+          element.textContent = Math.floor(current);
+        }, interval);
+      }
+      
+      animateCounter(projectsCount, targetValues.projects);
+      animateCounter(clientsCount, targetValues.clients);
+      animateCounter(botsCount, targetValues.bots);
+      animateCounter(experienceYears, targetValues.experience);
+    }
 
-        // 7. Инициализация интерактивной консоли
-        function setupConsole() {
-            const consoleInput = document.querySelector('.console-input');
-            const consoleHistory = document.querySelector('.console-content');
-            const consoleCursor = document.querySelector('.console-cursor');
-            
-            const commands = {
-                help: "Доступные команды: about, skills, projects, contact, clear",
-                about: "Artemoska - разработчик ботов и веб-приложений. Специализация: JavaScript, Node.js, Telegram API.",
-                skills: "Основные навыки: JavaScript (90%), Telegram Bots (85%), HTML/CSS (80%), Node.js (75%), Game Dev (70%)",
-                projects: "Ключевые проекты: RubetonChat (Telegram бот), Browser Game (Canvas/WebGL), VK Bot (Python)",
-                contact: "Связь: Telegram @artemoska, GitHub: artemoska, Email: your-email@example.com",
-                clear: function() {
-                    consoleHistory.innerHTML = '';
-                    return "Консоль очищена";
-                }
-            };
-            
-            // Обработчик ввода команд
-            function processCommand(cmd) {
-                const lowerCmd = cmd.toLowerCase().trim();
-                
-                if (commands[lowerCmd]) {
-                    if (typeof commands[lowerCmd] === 'function') {
-                        return commands[lowerCmd]();
-                    } else {
-                        return commands[lowerCmd];
-                    }
-                } else {
-                    return `Команда "${cmd}" не найдена. Введите "help" для списка команд.`;
-                }
-            }
-            
-            // Клик по консоли для фокуса
-            consoleInput.addEventListener('click', function(e) {
-                e.stopPropagation();
-                consoleInput.focus();
-            });
-            
-            // Обработка нажатия Enter
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && consoleInput.textContent.includes('>')) {
-                    const command = consoleInput.textContent.replace('>', '').trim();
-                    if (command) {
-                        const response = processCommand(command);
-                        
-                        // Добавляем ввод пользователя в историю
-                        const userInput = document.createElement('div');
-                        userInput.textContent = `> ${command}`;
-                        consoleHistory.appendChild(userInput);
-                        
-                        // Добавляем ответ
-                        const responseElement = document.createElement('div');
-                        responseElement.textContent = response;
-                        consoleHistory.appendChild(responseElement);
-                        
-                        // Прокрутка вниз
-                        consoleHistory.scrollTop = consoleHistory.scrollHeight;
-                    }
-                    
-                    // Очищаем ввод
-                    consoleInput.innerHTML = '> <span class="console-cursor"></span>';
-                }
-            });
-        }
-
-        // 8. Анимация счетчиков статистики
-        function animateCounters() {
-            const projectsCount = document.getElementById('projects-count');
-            const clientsCount = document.getElementById('clients-count');
-            const botsCount = document.getElementById('bots-count');
-            const experienceYears = document.getElementById('experience-years');
-            
-            const targetValues = {
-                projects: 5,
-                clients: 3,
-                bots: 7,
-                experience: 2
-            };
-            
-            const duration = 2000; // 2 секунды
-            const interval = 50; // интервал обновления
-            const steps = duration / interval;
-            
-            function animateCounter(element, target) {
-                let current = 0;
-                const increment = target / steps;
-                
-                const timer = setInterval(() => {
-                    current += increment;
-                    if (current >= target) {
-                        current = target;
-                        clearInterval(timer);
-                    }
-                    element.textContent = Math.floor(current);
-                }, interval);
-            }
-            
-            animateCounter(projectsCount, targetValues.projects);
-            animateCounter(clientsCount, targetValues.clients);
-            animateCounter(botsCount, targetValues.bots);
-            animateCounter(experienceYears, targetValues.experience);
-        }
-
-        // Инициализация при загрузке страницы
-        document.addEventListener('DOMContentLoaded', () => {
-            createParticles();
-            createMagicParticles();
-            animateOnScroll();
-            typeConsoleText();
-            setupParallax();
-            animateSkills();
-            setupConsole();
-            animateCounters();
-            
-            // Задержка для анимации загрузки секций
-            document.querySelectorAll('.section-load').forEach((section, index) => {
-                section.style.animationDelay = `${index * 0.2}s`;
-            });
-            
-            // Обработчик скролла
-            window.addEventListener('scroll', animateOnScroll);
-        });
-
-        // Ресайз окна - пересоздаем частицы фона
-        window.addEventListener('resize', function() {
-            const bg = document.getElementById('magicBg');
-            bg.innerHTML = '';
-            createMagicParticles();
-        });
-    </script>
+    // Инициализация при загрузке страницы
+    document.addEventListener('DOMContentLoaded', () => {
+      animateOnScroll();
+      typeConsoleText();
+      animateSkills();
+      setupConsole();
+      animateCounters();
+      
+      // Обработчик скролла
+      window.addEventListener('scroll', animateOnScroll);
+    });
+  </script>
 </body>
 </html>
