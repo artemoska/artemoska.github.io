@@ -1043,4 +1043,59 @@
             const user = {
                 id: 'user_' + Date.now(),
                 email: email,
-                authMethod: 'email
+                authMethod: 'email',
+                profile: {
+                    name: email.split('@')[0],
+                    avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(email.split('@')[0])}&background=6366f1&color=fff&bold=true&size=128`
+                },
+                createdAt: new Date().toISOString(),
+                lastLogin: new Date().toISOString()
+            };
+            
+            // Сохраняем пользователя
+            localStorage.setItem(`user_${email}`, JSON.stringify(user));
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            
+            // Удаляем временные данные
+            localStorage.removeItem(`pending_${email}`);
+            
+            // Интеграция с auth-fix.js если она загружена
+            if (typeof window.AuthSystem !== 'undefined') {
+                window.AuthSystem.loginWithEmail({
+                    email: email,
+                    profile: user.profile
+                });
+            }
+            
+            console.log('✅ Пользователь создан:', email);
+            return user;
+        }
+
+        // Сброс полей кода
+        function resetCodeInputs() {
+            const codeInputs = document.querySelectorAll('.code-input');
+            codeInputs.forEach(input => {
+                input.value = '';
+                input.classList.remove('filled', 'error');
+                input.style.borderColor = '';
+                input.style.backgroundColor = '';
+            });
+            
+            setTimeout(() => {
+                document.getElementById('code1').focus();
+            }, 100);
+        }
+
+        // Возврат к email
+        function backToEmail() {
+            showStep(1);
+        }
+
+        // Экспортируем функции
+        window.sendCode = sendCode;
+        window.resendCode = resendCode;
+        window.verifyCode = verifyCode;
+        window.backToEmail = backToEmail;
+    </script>
+</body>
+</html>
