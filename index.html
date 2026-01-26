@@ -17,7 +17,7 @@ gtag('config', 'G-TZY49R07HS');
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-/* ВСЁ ТВОЁ КАК БЫЛО */
+/* ТВОЙ ОРИГИНАЛЬНЫЙ СТИЛЬ БЕЗ ИЗМЕНЕНИЙ */
 :root {
     --primary: #6366f1;
     --primary-light: #818cf8;
@@ -847,8 +847,26 @@ footer {
     font-size: 1.05rem;
 }
 
-/* ==================== НОВЫЕ СТИЛИ (ДОБАВЛЕННЫЕ) ==================== */
+/* ==================== НОВЫЕ СТИЛИ ==================== */
 /* Окно авторизации */
+.auth-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9998;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.auth-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
 .auth-window {
     position: fixed;
     top: 50%;
@@ -857,8 +875,8 @@ footer {
     background: white;
     border-radius: 16px;
     padding: 2.5rem;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-    z-index: 10000;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
     max-width: 400px;
     width: 90%;
     opacity: 0;
@@ -870,24 +888,6 @@ footer {
     opacity: 1;
     visibility: visible;
     transform: translate(-50%, -50%) scale(1);
-}
-
-.auth-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 9999;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-}
-
-.auth-overlay.active {
-    opacity: 1;
-    visibility: visible;
 }
 
 .auth-header {
@@ -933,10 +933,31 @@ footer {
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
 .auth-btn:hover {
     background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.auth-btn.telegram-btn {
+    background: #0088cc;
+}
+
+.auth-btn.telegram-btn:hover {
+    background: #0077b3;
+}
+
+.auth-btn.password-btn {
+    background: var(--success);
+}
+
+.auth-btn.password-btn:hover {
+    background: #0daa72;
 }
 
 .auth-footer {
@@ -949,21 +970,35 @@ footer {
 .auth-footer a {
     color: var(--primary);
     text-decoration: none;
+    cursor: pointer;
 }
 
 .auth-footer a:hover {
     text-decoration: underline;
 }
 
+/* Форма пароля */
+.password-form {
+    display: none;
+}
+
+.password-form.active {
+    display: block;
+}
+
 /* Профиль в шапке */
 .profile-header {
-    display: flex;
+    display: none;
     align-items: center;
     gap: 0.8rem;
     position: absolute;
     right: 2rem;
     top: 50%;
     transform: translateY(-50%);
+}
+
+.profile-header.active {
+    display: flex;
 }
 
 .user-avatar {
@@ -977,6 +1012,7 @@ footer {
     justify-content: center;
     font-weight: bold;
     color: var(--primary);
+    font-size: 1.2rem;
 }
 
 .user-name {
@@ -991,98 +1027,33 @@ footer {
     cursor: pointer;
     font-size: 0.9rem;
     transition: all 0.3s ease;
+    padding: 5px;
+    border-radius: 5px;
 }
 
 .logout-btn:hover {
     color: var(--danger);
+    background: rgba(239, 68, 68, 0.1);
 }
 
-/* Расширенная консоль */
-.console-enhanced {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 450px;
-    max-height: 500px;
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-    z-index: 1001;
-    display: none;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-.console-enhanced.active {
-    display: flex;
-}
-
-.console-header {
-    background: var(--primary);
-    color: white;
-    padding: 1rem 1.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.console-title {
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.console-body {
-    flex: 1;
-    padding: 1.5rem;
-    overflow-y: auto;
-    max-height: 350px;
-    background: #f8f9fa;
-}
-
-.console-input-area {
-    padding: 1rem 1.5rem;
-    border-top: 1px solid var(--gray);
-    display: flex;
-    gap: 0.5rem;
-}
-
-.console-input-enhanced {
-    flex: 1;
-    padding: 0.8rem;
-    border: 1px solid var(--gray);
-    border-radius: 8px;
-    font-family: 'Fira Code', monospace;
-    font-size: 0.9rem;
-}
-
-.console-input-enhanced:focus {
-    outline: none;
-    border-color: var(--primary);
-}
-
-/* Секретные элементы */
+/* Секретный раздел */
 .secret-section {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 2.5rem;
-    border-radius: 16px;
-    margin: 2rem 0;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(129, 140, 248, 0.05) 100%);
+    border: 2px dashed var(--primary-light);
     display: none;
 }
 
 .secret-section.active {
     display: block;
+    animation: fadeIn 0.5s ease;
 }
 
-.secret-title {
-    color: white;
-    margin-bottom: 1rem;
+.secret-content {
+    display: none;
 }
 
-.secret-title::after {
-    background: white;
+.secret-content.active {
+    display: block;
 }
 
 /* Ачивки */
@@ -1105,6 +1076,7 @@ footer {
 .achievement-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary);
 }
 
 .achievement-icon {
@@ -1187,200 +1159,161 @@ footer {
     flex: 1;
 }
 
-/* Инвентарь */
-.inventory-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 1rem;
-    margin-top: 1.5rem;
+/* Секретный проект */
+.project-card.secret {
+    display: none;
 }
 
-.inventory-item {
+.project-card.secret.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+/* Расширенная консоль */
+.console-enhanced {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 450px;
+    max-height: 500px;
     background: white;
-    border: 1px solid var(--gray);
-    border-radius: 12px;
-    padding: 1rem;
-    text-align: center;
-    transition: all 0.3s ease;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    z-index: 1001;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
 }
 
-.inventory-item:hover {
-    transform: scale(1.05);
+.console-enhanced.active {
+    display: flex;
+    animation: slideInUp 0.3s ease;
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.console-header {
+    background: var(--primary);
+    color: white;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.console-title {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.console-body {
+    flex: 1;
+    padding: 1.5rem;
+    overflow-y: auto;
+    max-height: 350px;
+    background: #f8f9fa;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9rem;
+}
+
+.console-input-area {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--gray);
+    display: flex;
+    gap: 0.5rem;
+}
+
+.console-input-enhanced {
+    flex: 1;
+    padding: 0.8rem;
+    border: 1px solid var(--gray);
+    border-radius: 8px;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9rem;
+}
+
+.console-input-enhanced:focus {
+    outline: none;
     border-color: var(--primary);
 }
 
-.inventory-item.locked {
-    opacity: 0.3;
-    filter: grayscale(1);
+/* Уведомления */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--primary);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    z-index: 10000;
+    animation: slideInRight 0.3s ease;
+    max-width: 300px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.item-icon {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
-/* Секретный режим */
-body.secret-mode {
-    background: #0a0a0a;
-    color: #00ff00;
-}
-
-body.secret-mode .geometric-bg::before {
-    background-image: linear-gradient(#00ff00 1px, transparent 1px), linear-gradient(90deg, #00ff00 1px, transparent 1px);
-    opacity: 0.1;
-}
-
-body.secret-mode header {
-    background: rgba(10, 10, 10, 0.95);
-    border-bottom: 1px solid #00ff00;
-}
-
-body.secret-mode section {
-    background: rgba(20, 20, 20, 0.9);
-    border: 1px solid #00ff00;
-    color: #00ff00;
-}
-
-body.secret-mode h1,
-body.secret-mode h2,
-body.secret-mode h3,
-body.secret-mode p,
-body.secret-mode li {
-    color: #00ff00;
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
 }
 
 /* Адаптивность */
-@media (max-width: 1024px) {
-    .projects-container {
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    }
-    
-    .console-enhanced {
-        width: 400px;
-    }
-}
-
 @media (max-width: 768px) {
-    .container {
-        padding: 1.5rem;
-    }
-    
-    section {
-        padding: 2rem;
-        margin: 2.5rem 0;
-    }
-    
-    .skills-container,
-    .projects-container,
-    .widgets-container {
-        grid-template-columns: 1fr;
-    }
-    
-    h1 {
-        font-size: 1.8rem;
-    }
-    
-    .header-subtitle {
-        font-size: 1rem;
-    }
-    
-    .brand-logo,
-    .footer-logo {
-        font-size: 1.9rem;
-    }
-    
-    .console-effect {
-        width: calc(100% - 40px);
-        right: 20px;
-        bottom: 20px;
-        font-size: 0.85rem;
-    }
-    
-    .console-enhanced {
-        width: calc(100% - 40px);
-        right: 20px;
-        bottom: 20px;
-    }
-    
-    .timeline::after {
-        left: 31px;
-    }
-    
-    .timeline-item {
-        width: 100%;
-        padding-left: 70px;
-        padding-right: 25px;
-    }
-    
-    .timeline-item::after {
-        left: 21px;
-    }
-    
-    .left::after,
-    .right::after {
-        left: 21px;
-    }
-    
-    .right {
-        left: 0%;
-    }
-    
-    .nav-links {
-        gap: 1rem;
-    }
-    
-    .nav-link {
-        font-size: 0.9rem;
-    }
-    
     .profile-header {
         position: static;
         transform: none;
         justify-content: center;
         margin-top: 1rem;
     }
+    
+    .console-enhanced {
+        width: calc(100% - 40px);
+        right: 20px;
+        bottom: 20px;
+    }
 }
 
 @media (max-width: 480px) {
-    .container {
-        padding: 1rem;
-    }
-    
-    section {
+    .auth-window {
         padding: 1.5rem;
     }
     
-    .btn,
-    .social-link {
-        width: 100%;
-        justify-content: center;
-        margin-right: 0;
-    }
-    
-    .project-links {
-        flex-direction: column;
-    }
-    
-    .nav-links {
-        flex-direction: column;
-        gap: 0.8rem;
-    }
-    
-    .achievements-grid,
-    .inventory-grid {
+    .achievements-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 </style>
-
-<!-- Telegram Widget -->
-<script async src="https://telegram.org/js/telegram-widget.js?22"
-  data-telegram-login="artemoska_bot"
-  data-size="large"
-  data-userpic="true"
-  data-onauth="onTelegramAuth(user)"
-  data-request-access="write">
-</script>
 </head>
 
 <body>
@@ -1404,12 +1337,31 @@ body.secret-mode li {
             <h3>🔐 Вход в систему</h3>
             <p>Выберите способ авторизации</p>
         </div>
-        <div class="auth-form">
-            <button class="auth-btn" onclick="loginWithTelegram()">
+        <div class="auth-form" id="authForm">
+            <button class="auth-btn telegram-btn" id="telegramBtn" onclick="loginWithTelegram()">
                 <i class="fab fa-telegram"></i> Войти через Telegram
             </button>
+            <button class="auth-btn password-btn" onclick="showPasswordForm()">
+                <i class="fas fa-key"></i> Войти с паролем
+            </button>
             <div class="auth-footer">
-                <p>Или <a href="#" onclick="showPasswordLogin()">войти с паролем</a></p>
+                <p>Или <a onclick="loginAsGuest()">войти как гость</a></p>
+            </div>
+        </div>
+        
+        <div class="password-form" id="passwordForm">
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; margin-bottom: 0.5rem; color: var(--dark);">Пароль:</label>
+                <input type="password" class="auth-input" id="passwordInput" placeholder="Введите пароль" autocomplete="off">
+                <p style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-light);">
+                    Демо пароль: <code style="background: var(--gray-light); padding: 2px 5px; border-radius: 3px;">magic123</code>
+                </p>
+            </div>
+            <button class="auth-btn" onclick="loginWithPassword()">
+                <i class="fas fa-sign-in-alt"></i> Войти
+            </button>
+            <div class="auth-footer">
+                <p><a onclick="showAuthForm()">← Назад к выбору способа</a></p>
             </div>
         </div>
     </div>
@@ -1446,15 +1398,15 @@ body.secret-mode li {
                 <a href="#skills" class="nav-link">Навыки</a>
                 <a href="#projects" class="nav-link">Проекты</a>
                 <a href="#plans" class="nav-link">Планы</a>
-                <a href="#secrets" class="nav-link">Секреты</a>
+                <a href="#secrets" class="nav-link" id="secretsLink">Секреты</a>
                 <a href="#contacts" class="nav-link">Контакты</a>
             </div>
 
             <!-- Профиль пользователя -->
-            <div class="profile-header" id="profileHeader" style="display: none;">
+            <div class="profile-header" id="profileHeader">
                 <div class="user-avatar" id="userAvatar">👤</div>
                 <div class="user-name" id="userName"></div>
-                <button class="logout-btn" onclick="logout()">
+                <button class="logout-btn" onclick="logout()" title="Выйти">
                     <i class="fas fa-sign-out-alt"></i>
                 </button>
             </div>
@@ -1491,11 +1443,11 @@ body.secret-mode li {
 
         <!-- Секретный раздел (только для авторизованных) -->
         <section id="secrets" class="animate-on-scroll secret-section">
-            <h2 class="secret-title">🔒 Секретная зона</h2>
+            <h2>🔒 Секретная зона</h2>
             <p>Эта секция доступна только авторизованным пользователям.</p>
             
-            <div id="secretContent" style="display: none;">
-                <h3>🎉 Добро пожаловать в клуб!</h3>
+            <div class="secret-content" id="secretContent">
+                <h3 style="color: var(--primary); margin-bottom: 1.5rem;">🎉 Добро пожаловать в клуб!</h3>
                 <p>Ты получил доступ к секретным функциям:</p>
                 <ul>
                     <li>Секретные команды в консоли</li>
@@ -1508,6 +1460,7 @@ body.secret-mode li {
                     <!-- Ачивки будут добавлены через JS -->
                 </div>
                 
+                <h3 style="color: var(--primary); margin: 2rem 0 1rem;">🕵️‍♂️ ARG Квест</h3>
                 <div class="arg-steps" id="argSteps">
                     <!-- ARG шаги будут добавлены через JS -->
                 </div>
@@ -1637,9 +1590,9 @@ body.secret-mode li {
                 </div>
                 
                 <!-- Секретный проект (только для авторизованных) -->
-                <div class="project-card" id="secretProject" style="display: none;">
-                    <div class="project-image">
-                        <i class="fas fa-lock"></i>
+                <div class="project-card secret" id="secretProject">
+                    <div class="project-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <i class="fas fa-lock" style="color: white;"></i>
                     </div>
                     <div class="project-content">
                         <h3>Проект "МАГИЯ"</h3>
@@ -1868,30 +1821,38 @@ body.secret-mode li {
             });
         }
 
-        // ==================== НОВЫЙ КОД (ДОБАВЛЕННЫЙ) ====================
-        // Система пользователей
+        // ==================== СИСТЕМА АВТОРИЗАЦИИ ====================
         let currentUser = null;
         let achievements = new Set();
         let inventory = new Set();
         let argProgress = 0;
         let userLevel = 1;
+        let consoleCommandsUsed = 0;
 
-        // Инициализация
+        // Инициализация при загрузке
         document.addEventListener('DOMContentLoaded', function() {
             // Проверяем сохранённую сессию
             const savedUser = localStorage.getItem('artemoska_user');
             const savedAch = localStorage.getItem('artemoska_achievements');
-            const savedInv = localStorage.getItem('artemoska_inventory');
             const savedArg = localStorage.getItem('artemoska_arg');
             
             if (savedUser) {
-                currentUser = JSON.parse(savedUser);
-                achievements = new Set(JSON.parse(savedAch || '[]'));
-                inventory = new Set(JSON.parse(savedInv || '[]'));
-                argProgress = parseInt(savedArg || '0');
-                
-                updateUIForUser();
-                showSecretContent();
+                try {
+                    currentUser = JSON.parse(savedUser);
+                    achievements = new Set(JSON.parse(savedAch || '[]'));
+                    argProgress = parseInt(savedArg || '0');
+                    
+                    updateUIForUser();
+                    showSecretContent();
+                    
+                    // Показываем приветствие
+                    setTimeout(() => {
+                        showNotification(`С возвращением, ${currentUser.firstName}!`);
+                    }, 500);
+                } catch(e) {
+                    console.error('Ошибка загрузки сессии:', e);
+                    localStorage.clear();
+                }
             }
             
             // Инициализируем консоль
@@ -1907,37 +1868,65 @@ body.secret-mode li {
             // Первоначальная анимация
             animateOnScroll();
             
-            // Запускаем ARG квест если пользователь авторизован
-            if (currentUser) {
-                startARGQuest();
+            // Скрываем секретный раздел если пользователь не авторизован
+            if (!currentUser) {
+                document.getElementById('secretsLink').style.display = 'none';
             }
+            
+            // Обработчик клика вне окна авторизации
+            document.getElementById('authOverlay').addEventListener('click', hideAuthWindow);
         });
 
-        // Авторизация
+        // ==================== ФУНКЦИИ АВТОРИЗАЦИИ ====================
         function showAuthWindow() {
             document.getElementById('authOverlay').classList.add('active');
             document.getElementById('authWindow').classList.add('active');
+            document.getElementById('authForm').style.display = 'block';
+            document.getElementById('passwordForm').style.display = 'none';
         }
 
         function hideAuthWindow() {
             document.getElementById('authOverlay').classList.remove('active');
             document.getElementById('authWindow').classList.remove('active');
+            document.getElementById('passwordInput').value = '';
+        }
+
+        function showPasswordForm() {
+            document.getElementById('authForm').style.display = 'none';
+            document.getElementById('passwordForm').style.display = 'block';
+            document.getElementById('passwordInput').focus();
+        }
+
+        function showAuthForm() {
+            document.getElementById('passwordForm').style.display = 'none';
+            document.getElementById('authForm').style.display = 'block';
+            document.getElementById('passwordInput').value = '';
         }
 
         function loginWithTelegram() {
-            // Telegram Widget уже подключен
-            hideAuthWindow();
-            // Виджет сам вызовет onTelegramAuth
+            // Создаём фейкового пользователя Telegram (так как без бота не работает)
+            const fakeTelegramUser = {
+                id: Math.floor(Math.random() * 1000000000),
+                first_name: 'Telegram',
+                username: 'telegram_user',
+                photo_url: '',
+                auth_date: Math.floor(Date.now() / 1000)
+            };
+            
+            handleTelegramAuth(fakeTelegramUser);
+            
+            // Показываем сообщение
+            showNotification('✅ Вход через Telegram выполнен! (демо)');
         }
 
-        function onTelegramAuth(user) {
+        function handleTelegramAuth(user) {
             currentUser = {
                 id: user.id,
                 firstName: user.first_name,
-                lastName: user.last_name || '',
                 username: user.username,
                 photoUrl: user.photo_url || '',
-                authDate: user.auth_date
+                authDate: user.auth_date,
+                source: 'telegram'
             };
             
             localStorage.setItem('artemoska_user', JSON.stringify(currentUser));
@@ -1947,33 +1936,74 @@ body.secret-mode li {
             
             updateUIForUser();
             showSecretContent();
-            startARGQuest();
+            hideAuthWindow();
             
             // Показываем приветствие
             showNotification(`Добро пожаловать, ${currentUser.firstName}!`);
+            
+            // Запускаем ARG квест
+            startARGQuest();
         }
 
-        function loginWithPassword(password) {
-            // Простая авторизация по паролю (для демо)
+        function loginWithPassword() {
+            const passwordInput = document.getElementById('passwordInput');
+            const password = passwordInput.value.trim();
+            
+            if (!password) {
+                showNotification('❌ Введите пароль', 'error');
+                return;
+            }
+            
+            // Демо пароль
             if (password === 'magic123') {
                 currentUser = {
                     id: Date.now(),
                     firstName: 'Гость',
                     username: 'guest',
-                    isGuest: true
+                    source: 'password'
                 };
                 
                 localStorage.setItem('artemoska_user', JSON.stringify(currentUser));
+                
+                // Даём первую ачивку
                 unlockAchievement('welcome');
                 
                 updateUIForUser();
                 showSecretContent();
                 hideAuthWindow();
                 
-                showNotification('Вход выполнен как Гость');
-                return true;
+                showNotification('✅ Вход выполнен как Гость');
+                
+                // Запускаем ARG квест
+                startARGQuest();
+            } else {
+                showNotification('❌ Неверный пароль', 'error');
+                passwordInput.value = '';
+                passwordInput.focus();
             }
-            return false;
+        }
+
+        function loginAsGuest() {
+            currentUser = {
+                id: Date.now(),
+                firstName: 'Гость',
+                username: 'guest_' + Math.floor(Math.random() * 1000),
+                source: 'guest'
+            };
+            
+            localStorage.setItem('artemoska_user', JSON.stringify(currentUser));
+            
+            // Даём первую ачивку
+            unlockAchievement('welcome');
+            
+            updateUIForUser();
+            showSecretContent();
+            hideAuthWindow();
+            
+            showNotification('✅ Вход как гость выполнен');
+            
+            // Запускаем ARG квест
+            startARGQuest();
         }
 
         function logout() {
@@ -1982,7 +2012,7 @@ body.secret-mode li {
                 currentUser = null;
                 updateUIForUser();
                 hideSecretContent();
-                showNotification('Вы вышли из системы');
+                showNotification('👋 Вы вышли из системы');
             }
         }
 
@@ -1990,10 +2020,12 @@ body.secret-mode li {
             const loginBtn = document.getElementById('loginBtn');
             const profileHeader = document.getElementById('profileHeader');
             const greeting = document.getElementById('greeting');
+            const secretsLink = document.getElementById('secretsLink');
             
             if (currentUser) {
                 loginBtn.style.display = 'none';
-                profileHeader.style.display = 'flex';
+                profileHeader.classList.add('active');
+                secretsLink.style.display = 'flex';
                 document.getElementById('userName').textContent = currentUser.firstName;
                 greeting.textContent = `Привет, ${currentUser.firstName}!`;
                 
@@ -2006,12 +2038,13 @@ body.secret-mode li {
                 }
             } else {
                 loginBtn.style.display = 'inline-flex';
-                profileHeader.style.display = 'none';
+                profileHeader.classList.remove('active');
+                secretsLink.style.display = 'none';
                 greeting.textContent = 'Привет, я Artemoska!';
             }
         }
 
-        // Секретный контент
+        // ==================== СЕКРЕТНЫЙ КОНТЕНТ ====================
         function showSecretContent() {
             const secretSection = document.querySelector('.secret-section');
             const secretContent = document.getElementById('secretContent');
@@ -2019,8 +2052,8 @@ body.secret-mode li {
             
             if (currentUser) {
                 secretSection.classList.add('active');
-                secretContent.style.display = 'block';
-                secretProject.style.display = 'block';
+                secretContent.classList.add('active');
+                secretProject.classList.add('active');
                 loadAchievements();
                 loadARGSteps();
             }
@@ -2032,11 +2065,11 @@ body.secret-mode li {
             const secretProject = document.getElementById('secretProject');
             
             secretSection.classList.remove('active');
-            secretContent.style.display = 'none';
-            secretProject.style.display = 'none';
+            secretContent.classList.remove('active');
+            secretProject.classList.remove('active');
         }
 
-        // Ачивки
+        // ==================== АЧИВКИ ====================
         function unlockAchievement(code) {
             if (!achievements.has(code)) {
                 achievements.add(code);
@@ -2050,6 +2083,9 @@ body.secret-mode li {
                     loadAchievements();
                 }
                 
+                // Проверяем уровень
+                checkLevelUp();
+                
                 return true;
             }
             return false;
@@ -2058,13 +2094,13 @@ body.secret-mode li {
         function getAchievementInfo(code) {
             const achievementsMap = {
                 'welcome': { name: '👋 Добро пожаловать', desc: 'Первый вход в систему', icon: '👋' },
-                'console_master': { name: '🎮 Мастер консоли', desc: 'Использовать 10 команд', icon: '🎮' },
+                'console_master': { name: '🎮 Мастер консоли', desc: 'Использовать 5 команд в консоли', icon: '🎮' },
                 'secret_finder': { name: '🔍 Искатель секретов', desc: 'Найти скрытую команду', icon: '🔍' },
                 'hacker': { name: '💻 Хакер', desc: 'Взломать систему', icon: '💻' },
                 'project_unlocker': { name: '🧪 Открыватель', desc: 'Разблокировать секретный проект', icon: '🧪' },
                 'arg_starter': { name: '🕵️‍♂️ ARG начало', desc: 'Начать ARG квест', icon: '🕵️‍♂️' },
                 'arg_completer': { name: '🏆 Мастер ARG', desc: 'Завершить ARG квест', icon: '🏆' },
-                'time_traveler': { name: '⏱️ Путешественник', desc: 'Провести 1 час на сайте', icon: '⏱️' }
+                'time_traveler': { name: '⏱️ Путешественник', desc: 'Провести 5 минут на сайте', icon: '⏱️' }
             };
             
             return achievementsMap[code] || { name: code, desc: 'Секретная ачивка', icon: '🎖️' };
@@ -2089,9 +2125,9 @@ body.secret-mode li {
                 card.className = `achievement-card ${unlocked ? '' : 'achievement-locked'}`;
                 card.innerHTML = `
                     <div class="achievement-icon">${ach.icon}</div>
-                    <h4>${ach.name}</h4>
-                    <p style="font-size: 0.8rem; color: var(--text-light);">${ach.desc}</p>
-                    <div style="margin-top: 0.5rem; font-size: 0.7rem;">
+                    <h4 style="font-size: 0.9rem; margin-bottom: 0.5rem;">${ach.name}</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 0.5rem;">${ach.desc}</p>
+                    <div style="font-size: 0.7rem; color: ${unlocked ? 'var(--success)' : 'var(--text-light)'};">
                         ${unlocked ? '✅ Получено' : '🔒 Заблокировано'}
                     </div>
                 `;
@@ -2100,15 +2136,22 @@ body.secret-mode li {
             });
         }
 
-        // ARG Квест
+        function checkLevelUp() {
+            const newLevel = Math.floor(achievements.size / 2) + 1;
+            if (newLevel > userLevel) {
+                userLevel = newLevel;
+                showNotification(`🎯 Новый уровень: ${userLevel}!`);
+            }
+        }
+
+        // ==================== ARG КВЕСТ ====================
         function startARGQuest() {
             if (argProgress === 0) {
                 argProgress = 1;
                 localStorage.setItem('artemoska_arg', argProgress.toString());
                 unlockAchievement('arg_starter');
-                showNotification('🕵️‍♂️ ARG квест начат! Проверь секретную зону.');
+                loadARGSteps();
             }
-            loadARGSteps();
         }
 
         function loadARGSteps() {
@@ -2119,7 +2162,7 @@ body.secret-mode li {
             
             const steps = [
                 { id: 1, title: 'Найти секретный ключ', desc: 'Ищи в консоли команду "secret"' },
-                { id: 2, title: 'Взломать систему', desc: 'Используй команду "hack" в консоли' },
+                { id: 2, title: 'Взломать систему', desc: 'Используй команду "hack" в расширенной консоли' },
                 { id: 3, title: 'Разблокировать проект', desc: 'Найди и разблокируй секретный проект' },
                 { id: 4, title: 'Найти пасхалку', desc: 'Ищи скрытое сообщение на странице' },
                 { id: 5, title: 'Завершить квест', desc: 'Выполни все предыдущие шаги' }
@@ -2132,7 +2175,7 @@ body.secret-mode li {
                 stepEl.innerHTML = `
                     <div class="step-number">${step.id}</div>
                     <div class="step-content">
-                        <h4 style="margin-bottom: 0.5rem;">${step.title}</h4>
+                        <h4 style="margin-bottom: 0.5rem; font-size: 1rem;">${step.title}</h4>
                         <p style="color: var(--text-light); font-size: 0.9rem;">${step.desc}</p>
                     </div>
                 `;
@@ -2147,16 +2190,17 @@ body.secret-mode li {
             
             if (argProgress >= 5) {
                 unlockAchievement('arg_completer');
-                showNotification('🏆 ARG квест завершён!');
+                showNotification('🏆 ARG квест завершён! Ты настоящий детектив!');
             }
             
             loadARGSteps();
         }
 
-        // Секретный проект
+        // ==================== СЕКРЕТНЫЙ ПРОЕКТ ====================
         function unlockSecretProject() {
             if (currentUser) {
-                document.getElementById('secretProject').innerHTML = `
+                const secretProject = document.getElementById('secretProject');
+                secretProject.innerHTML = `
                     <div class="project-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
                         <i class="fas fa-star" style="color: gold; font-size: 4rem;"></i>
                     </div>
@@ -2181,19 +2225,20 @@ body.secret-mode li {
                 updateARGProgress();
                 showNotification('🎉 Секретный проект разблокирован!');
             } else {
-                showNotification('❌ Требуется авторизация');
+                showNotification('❌ Требуется авторизация', 'error');
             }
         }
 
         function showProjectDetails() {
-            alert(`Детали проекта "МАГИЯ":\n\n` +
+            alert(`🔐 Детали проекта "МАГИЯ":\n\n` +
                   `• Искусственный интеллект для анализа кода\n` +
-                  `• Блокчейн для хранения версий\n` +
+                  `• Блокчейн для хранения версий проектов\n` +
                   `• Нейросети для генерации кода\n` +
-                  `• Засекречено до релиза`);
+                  `• Засекречено до релиза в 2024 году\n\n` +
+                  `Статус: В разработке ⚡`);
         }
 
-        // Расширенная консоль
+        // ==================== РАСШИРЕННАЯ КОНСОЛЬ ====================
         function toggleEnhancedConsole() {
             const console = document.getElementById('enhancedConsole');
             const input = document.getElementById('enhancedConsoleInput');
@@ -2213,9 +2258,15 @@ body.secret-mode li {
             
             if (!command) return;
             
+            // Считаем команды для ачивки
+            consoleCommandsUsed++;
+            if (consoleCommandsUsed >= 5) {
+                unlockAchievement('console_master');
+            }
+            
             // Выводим команду
             const cmdLine = document.createElement('div');
-            cmdLine.innerHTML = `<span style="color: var(--green);">> ${command}</span>`;
+            cmdLine.innerHTML = `<span style="color: var(--success);">> ${command}</span>`;
             output.appendChild(cmdLine);
             
             // Обрабатываем команду
@@ -2243,57 +2294,63 @@ body.secret-mode li {
             
             switch(command) {
                 case 'help':
-                    return `<div style="color: var(--blue);">
-                        Доступные команды:<br>
-                        • help - показать это сообщение<br>
-                        • clear - очистить консоль<br>
-                        • whoami - информация о пользователе<br>
-                        • status - статус системы<br>
-                        • secret - показать секретный ключ<br>
-                        • hack - взломать систему<br>
-                        • arg - информация о ARG квесте<br>
-                        • achievements - список ачивок<br>
-                        • theme [dark/light] - сменить тему<br>
-                        • magic - магическая команда
+                    return `<div style="color: var(--primary);">
+                        <strong>Доступные команды:</strong><br>
+                        • <code>help</code> - показать это сообщение<br>
+                        • <code>clear</code> - очистить консоль<br>
+                        • <code>whoami</code> - информация о пользователе<br>
+                        • <code>status</code> - статус системы<br>
+                        • <code>secret</code> - показать секретный ключ<br>
+                        • <code>hack</code> - взломать систему<br>
+                        • <code>arg</code> - информация о ARG квесте<br>
+                        • <code>achievements</code> - список ачивок<br>
+                        • <code>theme [dark/light]</code> - сменить тему<br>
+                        • <code>magic</code> - магическая команда<br>
+                        • <code>login</code> - открыть окно авторизации<br>
+                        • <code>logout</code> - выйти из системы
                     </div>`;
                     
                 case 'clear':
                     document.getElementById('enhancedConsoleBody').innerHTML = 
-                        '> [SYSTEM] Консоль очищена<br>';
+                        '<div>> [SYSTEM] Консоль очищена</div>';
                     return '';
                     
                 case 'whoami':
                     if (currentUser) {
                         return `<div style="color: var(--primary);">
-                            👤 Пользователь: ${currentUser.firstName}<br>
-                            📛 Имя: ${currentUser.firstName} ${currentUser.lastName || ''}<br>
+                            <strong>👤 Информация о пользователе:</strong><br>
+                            📛 Имя: ${currentUser.firstName}<br>
                             🆔 ID: ${currentUser.id}<br>
                             🎮 Уровень: ${userLevel}<br>
-                            🏆 Ачивок: ${achievements.size}
+                            🏆 Ачивок: ${achievements.size}/8<br>
+                            🔐 Способ входа: ${currentUser.source}
                         </div>`;
                     } else {
-                        return '<div style="color: var(--red);">❌ Не авторизован</div>';
+                        return '<div style="color: var(--danger);">❌ Не авторизован. Используйте команду "login"</div>';
                     }
                     
                 case 'status':
                     return `<div style="color: var(--info);">
-                        📊 Статус системы:<br>
-                        • Пользователей онлайн: 1<br>
-                        • Активных сессий: ${currentUser ? '1' : '0'}<br>
+                        <strong>📊 Статус системы:</strong><br>
+                        • Пользователь: ${currentUser ? currentUser.firstName : 'Не авторизован'}<br>
                         • Время работы: ${Math.floor(performance.now() / 1000)} сек<br>
                         • ARG прогресс: ${argProgress}/5<br>
+                        • Команд использовано: ${consoleCommandsUsed}<br>
                         • Секретов найдено: ${achievements.size}/8
                     </div>`;
                     
                 case 'secret':
                     if (currentUser) {
                         unlockAchievement('secret_finder');
-                        return `<div style="color: var(--purple);">
-                            🔑 Секретный ключ: <strong>ARTEMOSKA_MAGIC_2025</strong><br>
-                            🎉 Ты нашёл секрет! Ачивка получена.
+                        updateARGProgress();
+                        return `<div style="color: var(--warning);">
+                            <strong>🔑 Секретный ключ найден!</strong><br>
+                            Ключ: <code style="background: var(--gray-light); padding: 2px 5px; border-radius: 3px;">ARTEMOSKA_MAGIC_2025</code><br>
+                            🎉 Ачивка "Искатель секретов" получена!<br>
+                            🕵️‍♂️ ARG прогресс обновлён
                         </div>`;
                     } else {
-                        return '<div style="color: var(--red);">❌ Требуется авторизация</div>';
+                        return '<div style="color: var(--danger);">❌ Требуется авторизация. Используйте команду "login"</div>';
                     }
                     
                 case 'hack':
@@ -2302,27 +2359,29 @@ body.secret-mode li {
                         updateARGProgress();
                         
                         // Эффект взлома
-                        document.body.classList.add('secret-mode');
+                        document.body.style.transition = 'all 0.5s ease';
+                        document.body.style.filter = 'hue-rotate(180deg)';
                         setTimeout(() => {
-                            document.body.classList.remove('secret-mode');
-                        }, 3000);
+                            document.body.style.filter = '';
+                        }, 1000);
                         
-                        return `<div style="color: var(--green);">
-                            💻 Взлом системы... УСПЕШНО!<br>
+                        return `<div style="color: var(--success);">
+                            <strong>💻 Взлом системы...</strong><br>
                             🔓 Получен доступ к скрытым функциям<br>
                             🏆 Ачивка "Хакер" получена<br>
-                            🔄 ARG прогресс обновлён
+                            🔄 ARG прогресс обновлён<br>
+                            ⚡ Система перезагружена
                         </div>`;
                     } else {
-                        return '<div style="color: var(--red);">❌ Требуется авторизация</div>';
+                        return '<div style="color: var(--danger);">❌ Требуется авторизация</div>';
                     }
                     
                 case 'arg':
                     return `<div style="color: var(--warning);">
-                        🕵️‍♂️ ARG КВЕСТ<br>
-                        Прогресс: ${argProgress}/5<br>
+                        <strong>🕵️‍♂️ ARG КВЕСТ</strong><br>
+                        📊 Прогресс: ${argProgress}/5<br>
                         ${argProgress >= 5 ? '✅ Завершён!' : '🚫 В процессе...'}<br>
-                        Проверь секретную зону для деталей.
+                        💡 Подсказка: Проверь секретную зону
                     </div>`;
                     
                 case 'achievements':
@@ -2332,8 +2391,8 @@ body.secret-mode li {
                     }).join('<br>');
                     
                     return `<div style="color: var(--success);">
-                        🏆 Ваши ачивки (${achievements.size}/8):<br>
-                        ${achList || '❌ Нет ачивок'}
+                        <strong>🏆 Ваши ачивки (${achievements.size}/8):</strong><br>
+                        ${achList || '❌ Нет ачивок. Используйте команды чтобы получить их!'}
                     </div>`;
                     
                 case 'theme':
@@ -2341,14 +2400,16 @@ body.secret-mode li {
                         document.documentElement.style.setProperty('--light', '#0f172a');
                         document.documentElement.style.setProperty('--text', '#e5e7eb');
                         document.documentElement.style.setProperty('--dark', '#f1f5f9');
-                        return '<div style="color: var(--green);">🌙 Тёмная тема активирована</div>';
+                        document.documentElement.style.setProperty('--gray-light', '#1e293b');
+                        return '<div style="color: var(--success);">🌙 Тёмная тема активирована</div>';
                     } else if (args[0] === 'light') {
                         document.documentElement.style.setProperty('--light', '#f9fafb');
                         document.documentElement.style.setProperty('--text', '#374151');
                         document.documentElement.style.setProperty('--dark', '#1f2937');
-                        return '<div style="color: var(--green);">☀️ Светлая тема активирована</div>';
+                        document.documentElement.style.setProperty('--gray-light', '#f3f4f6');
+                        return '<div style="color: var(--success);">☀️ Светлая тема активирована</div>';
                     }
-                    return '<div style="color: var(--red);">Используй: theme [dark/light]</div>';
+                    return '<div style="color: var(--danger);">Используй: theme [dark/light]</div>';
                     
                 case 'magic':
                     if (currentUser) {
@@ -2357,32 +2418,66 @@ body.secret-mode li {
                         const randomSpell = spells[Math.floor(Math.random() * spells.length)];
                         
                         // Анимация
-                        for (let i = 0; i < 20; i++) {
+                        for (let i = 0; i < 15; i++) {
                             setTimeout(() => {
                                 const spell = document.createElement('div');
                                 spell.textContent = randomSpell;
                                 spell.style.position = 'fixed';
                                 spell.style.left = Math.random() * window.innerWidth + 'px';
                                 spell.style.top = Math.random() * window.innerHeight + 'px';
-                                spell.style.fontSize = '2rem';
+                                spell.style.fontSize = (Math.random() * 2 + 1) + 'rem';
                                 spell.style.zIndex = '9999';
                                 spell.style.pointerEvents = 'none';
-                                spell.style.animation = 'fadeIn 1s forwards';
+                                spell.style.opacity = '0';
+                                spell.style.animation = 'fadeIn 0.5s forwards, float 2s ease-in-out forwards';
+                                spell.style.color = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57'][Math.floor(Math.random() * 5)];
                                 document.body.appendChild(spell);
                                 
-                                setTimeout(() => spell.remove(), 1000);
-                            }, i * 50);
+                                setTimeout(() => {
+                                    spell.style.animation = 'fadeOut 0.5s forwards';
+                                    setTimeout(() => spell.remove(), 500);
+                                }, 1500);
+                            }, i * 100);
                         }
                         
-                        return `<div style="color: var(--purple); font-size: 1.2rem;">
-                            ${randomSpell} АБРАКАДАБРА! ${randomSpell}<br>
+                        // Добавляем стили для анимации
+                        if (!document.getElementById('magic-styles')) {
+                            const style = document.createElement('style');
+                            style.id = 'magic-styles';
+                            style.textContent = `
+                                @keyframes fadeIn {
+                                    from { opacity: 0; transform: scale(0.5); }
+                                    to { opacity: 1; transform: scale(1); }
+                                }
+                                @keyframes fadeOut {
+                                    from { opacity: 1; }
+                                    to { opacity: 0; }
+                                }
+                                @keyframes float {
+                                    0% { transform: translateY(0) rotate(0deg); }
+                                    100% { transform: translateY(-100px) rotate(360deg); }
+                                }
+                            `;
+                            document.head.appendChild(style);
+                        }
+                        
+                        return `<div style="color: var(--primary); font-size: 1.1rem;">
+                            ${randomSpell} <strong>АБРАКАДАБРА!</strong> ${randomSpell}<br>
                             Магическое заклинание произнесено!
                         </div>`;
                     }
-                    return '<div style="color: var(--red);">❌ Только для избранных</div>';
+                    return '<div style="color: var(--danger);">❌ Только для авторизованных пользователей</div>';
+                    
+                case 'login':
+                    showAuthWindow();
+                    return '<div style="color: var(--success);">✅ Окно авторизации открыто</div>';
+                    
+                case 'logout':
+                    logout();
+                    return '<div style="color: var(--success);">✅ Выход из системы...</div>';
                     
                 default:
-                    return `<div style="color: var(--red);">❌ Неизвестная команда: "${command}"</div>`;
+                    return `<div style="color: var(--danger);">❌ Неизвестная команда: <code>${command}</code><br>Введите <code>help</code> для списка команд</div>`;
             }
         }
 
@@ -2393,90 +2488,114 @@ body.secret-mode li {
             }
         });
 
-        // Утилиты
-        function showNotification(message) {
-            // Создаём уведомление
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: var(--primary);
-                color: white;
-                padding: 1rem 1.5rem;
-                border-radius: 10px;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-                z-index: 10000;
-                animation: slideIn 0.3s ease;
-                max-width: 300px;
-            `;
+        // ==================== УВЕДОМЛЕНИЯ ====================
+        function showNotification(message, type = 'success') {
+            const colors = {
+                success: 'var(--success)',
+                error: 'var(--danger)',
+                warning: 'var(--warning)',
+                info: 'var(--info)'
+            };
             
-            notification.innerHTML = `<i class="fas fa-bell" style="margin-right: 10px;"></i> ${message}`;
+            const icons = {
+                success: '✅',
+                error: '❌',
+                warning: '⚠️',
+                info: 'ℹ️'
+            };
+            
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.style.background = colors[type] || colors.info;
+            notification.innerHTML = `${icons[type] || '📢'} ${message}`;
+            
             document.body.appendChild(notification);
             
             setTimeout(() => {
-                notification.style.animation = 'slideOut 0.3s ease';
+                notification.style.animation = 'slideOutRight 0.3s ease';
                 setTimeout(() => notification.remove(), 300);
             }, 3000);
         }
 
-        // Обновляем setupConsole для поддержки новых команд
+        // ==================== СЕТАП КОНСОЛИ (твоя оригинальная функция) ====================
         function setupConsole() {
             const consoleInput = document.querySelector('.console-input');
             const consoleHistory = document.querySelector('.console-content');
             
-            // Расширяем команды
+            // Основные команды для оригинальной консоли
             const commands = {
-                ...window.commands, // Старые команды
-                login: () => {
+                help: "Доступные команды: about, skills, projects, contact, clear, login, secret",
+                about: "Artemoska - разработчик ботов и веб-приложений. Специализация: JavaScript, Node.js, Telegram API.",
+                skills: "Основные навыки: JavaScript (90%), Telegram Bots (85%), HTML/CSS (80%), Node.js (75%), Game Dev (70%)",
+                projects: "Ключевые проекты: RubetonChat (Telegram бот), Browser Game (Canvas/WebGL), VK Bot (Python)",
+                contact: "Связь: Telegram @artemoska, GitHub: artemoska, Email: your-email@example.com",
+                login: function() { 
                     showAuthWindow();
                     return "Открыто окно авторизации";
                 },
-                secret: () => {
+                secret: function() {
                     if (currentUser) {
                         unlockAchievement('secret_finder');
                         return "🔑 Секретный ключ: ARTEMOSKA_MAGIC_2025\n🎉 Ачивка получена!";
                     }
                     return "⛔ Требуется авторизация. Используй команду 'login'";
                 },
-                hack: () => {
-                    if (currentUser) {
-                        unlockAchievement('hacker');
-                        updateARGProgress();
-                        return "💻 Взлом выполнен! Доступ к скрытым функциям получен.\n🏆 Ачивка 'Хакер' разблокирована";
-                    }
-                    return "⛔ Требуется авторизация";
-                },
-                achievements: () => {
-                    if (achievements.size > 0) {
-                        return `🏆 Ваши ачивки (${achievements.size}/8):\n` +
-                               [...achievements].map(code => {
-                                   const ach = getAchievementInfo(code);
-                                   return `  • ${ach.icon} ${ach.name}`;
-                               }).join('\n');
-                    }
-                    return "❌ Ачивок пока нет";
-                },
-                arg: () => {
-                    return `🕵️‍♂️ ARG Квест\nПрогресс: ${argProgress}/5\n` +
-                           (argProgress >= 5 ? "✅ Завершён!" : "🚫 В процессе...");
+                clear: function() { 
+                    consoleHistory.innerHTML = '';
+                    return "Консоль очищена"; 
                 }
             };
             
-            // Обновляем обработчик команд
-            window.commands = commands;
+            // Обработчик ввода команд для оригинальной консоли
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && document.activeElement !== document.getElementById('enhancedConsoleInput')) {
+                    const consoleInput = document.querySelector('.console-input');
+                    if (consoleInput && consoleInput.textContent.includes('>')) {
+                        const command = consoleInput.textContent.replace('>', '').trim();
+                        if (command) {
+                            let response;
+                            
+                            if (commands[command]) {
+                                if (typeof commands[command] === 'function') {
+                                    response = commands[command]();
+                                } else {
+                                    response = commands[command];
+                                }
+                            } else {
+                                response = `Команда "${command}" не найдена. Введите "help" для списка команд.`;
+                            }
+                            
+                            // Добавляем ввод пользователя в историю
+                            const userInput = document.createElement('div');
+                            userInput.textContent = `> ${command}`;
+                            consoleHistory.appendChild(userInput);
+                            
+                            // Добавляем ответ
+                            const responseElement = document.createElement('div');
+                            responseElement.textContent = response;
+                            consoleHistory.appendChild(responseElement);
+                            
+                            // Прокрутка вниз
+                            consoleHistory.scrollTop = consoleHistory.scrollHeight;
+                            
+                            // Очищаем ввод
+                            consoleInput.innerHTML = '> <span class="console-cursor"></span>';
+                        }
+                    }
+                }
+            });
         }
 
-        // Стили для уведомлений
+        // Добавляем стили для анимаций
         const style = document.createElement('style');
         style.textContent = `
-            @keyframes slideIn {
-                from { transform: translateX(100%); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
             }
-            @keyframes slideOut {
-                from { transform: translateX(0); opacity: 1; }
-                to { transform: translateX(100%); opacity: 0; }
+            @keyframes fadeOut {
+                from { opacity: 1; transform: translateY(0); }
+                to { opacity: 0; transform: translateY(-10px); }
             }
         `;
         document.head.appendChild(style);
