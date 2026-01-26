@@ -1008,5 +1008,37 @@
         `;
         document.head.appendChild(loaderStyle);
     </script>
+// В конце index.html, перед </body>
+<script>
+// Проверяем авторизацию
+document.addEventListener('DOMContentLoaded', function() {
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+    const loginBtn = document.getElementById('loginBtn');
+    const profileHeader = document.getElementById('profileHeader');
+    const greeting = document.getElementById('greeting');
+    
+    if (user && loginBtn && profileHeader && greeting) {
+        // Пользователь авторизован
+        loginBtn.style.display = 'none';
+        profileHeader.style.display = 'flex';
+        document.getElementById('userName').textContent = user.profile?.name || user.email.split('@')[0];
+        greeting.textContent = `Привет, ${user.profile?.name || user.email.split('@')[0]}!`;
+        
+        // Обновляем аватар
+        const avatar = document.getElementById('userAvatar');
+        if (user.profile?.avatar) {
+            avatar.innerHTML = `<img src="${user.profile.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+        }
+    }
+});
+
+// Функция выхода
+function logout() {
+    if (confirm('Выйти из аккаунта?')) {
+        localStorage.removeItem('currentUser');
+        window.location.reload();
+    }
+}
+</script>
 </body>
 </html>
