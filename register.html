@@ -273,42 +273,42 @@
             </div>
             
             <!-- Шаг 3: Подтверждение кода (регистрация) -->
-            <div class="form-step" id="stepVerifyRegister">
-                <h2 style="margin-bottom: 20px; color: var(--dark);">
-                    <i class="fas fa-shield-alt"></i> Подтверждение email
-                </h2>
-                
-                <p style="margin-bottom: 20px; color: var(--dark); opacity: 0.8;">
-                    Мы отправили 6-значный код на email <strong id="emailDisplay"></strong>
-                </p>
-                
-                <div class="code-inputs">
-                    <input type="text" id="code1" class="code-input" maxlength="1" pattern="[0-9]">
-                    <input type="text" id="code2" class="code-input" maxlength="1" pattern="[0-9]">
-                    <input type="text" id="code3" class="code-input" maxlength="1" pattern="[0-9]">
-                    <input type="text" id="code4" class="code-input" maxlength="1" pattern="[0-9]">
-                    <input type="text" id="code5" class="code-input" maxlength="1" pattern="[0-9]">
-                    <input type="text" id="code6" class="code-input" maxlength="1" pattern="[0-9]">
-                </div>
-                
-               <button onclick="verifyRegistrationCode()" id="verifyBtn">
-    <i class="fas fa-check"></i> Подтвердить и создать аккаунт
-</button>
-
-<div class="timer">
-    <div id="timerText">Отправить код повторно через <span id="countdown">60</span> сек</div>
-    <div id="resendContainer" style="display: none;">
-        <span onclick="resendCode()" id="resendLink" class="resend-link">
-            <i class="fas fa-redo"></i> Отправить код повторно
-        </span>
+<div class="form-step" id="stepVerifyRegister">
+    <h2 style="margin-bottom: 20px; color: var(--dark);">
+        <i class="fas fa-shield-alt"></i> Подтверждение email
+    </h2>
+    
+    <p style="margin-bottom: 20px; color: var(--dark); opacity: 0.8;">
+        Мы отправили 6-значный код на email <strong id="emailDisplay"></strong>
+    </p>
+    
+    <div class="code-inputs">
+        <input type="text" id="code1" class="code-input" maxlength="1" pattern="[0-9]">
+        <input type="text" id="code2" class="code-input" maxlength="1" pattern="[0-9]">
+        <input type="text" id="code3" class="code-input" maxlength="1" pattern="[0-9]">
+        <input type="text" id="code4" class="code-input" maxlength="1" pattern="[0-9]">
+        <input type="text" id="code5" class="code-input" maxlength="1" pattern="[0-9]">
+        <input type="text" id="code6" class="code-input" maxlength="1" pattern="[0-9]">
     </div>
+    
+    <!-- ВОТ ЭТА КНОПКА ДОЛЖНА БЫТЬ! -->
+    <button onclick="verifyRegistrationCode()" id="verifyBtn">
+        <i class="fas fa-check"></i> Подтвердить и создать аккаунт
+    </button>
+    
+    <div class="timer">
+        <div id="timerText">Отправить код повторно через <span id="countdown">60</span> сек</div>
+        <div id="resendContainer" style="display: none;">
+            <span onclick="resendCode()" id="resendLink" class="resend-link">
+                <i class="fas fa-redo"></i> Отправить код повторно
+            </span>
+        </div>
+    </div>
+    
+    <button onclick="showStep('register')" class="back-btn">
+        <i class="fas fa-arrow-left"></i> Назад
+    </button>
 </div>
-                
-                <button onclick="showStep('register')" class="back-btn">
-                    <i class="fas fa-arrow-left"></i> Назад
-                </button>
-            </div>
-            
             <!-- Шаг 4: Вход -->
             <div class="form-step" id="stepLogin">
                 <h2 style="margin-bottom: 20px; color: var(--dark);">
