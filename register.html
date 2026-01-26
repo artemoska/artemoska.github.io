@@ -1436,6 +1436,13 @@
                 window.location.href = 'index.html';
             }, 2500);
         }
+    // Убираем console.log на продакшене
+if (window.location.hostname !== 'localhost') {
+    console.log = function() {};
+    console.warn = function() {};
+    console.error = function() {};
+    console.info = function() {};
+}
     </script>
 </body>
 </html>
