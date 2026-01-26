@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Очистка данных</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        button { padding: 10px 20px; margin: 10px; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>🧹 Очистка старых данных авторизации</h1>
+    
+    <div id="status">
+        <p>Нажмите кнопку для очистки конфликтующих данных:</p>
+    </div>
+    
+    <button onclick="clearOldData()">Очистить старые данные</button>
+    <button onclick="checkData()">Проверить данные</button>
+    
+    <script>
+        function checkData() {
+            const status = document.getElementById('status');
+            let html = '<h3>Текущие данные:</h3><ul>';
+            
+            // Проверяем все ключи
+            const keys = [
+                'currentUser',
+                'artemoska_user',
+                'artemoska_achievements',
+                'artemoska_inventory',
+                'artemoska_arg'
+            ];
+            
+            // Ищем ключи пользователей
+            for(let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key.startsWith('user_') || key.startsWith('pending_') || key.startsWith('reset_')) {
+                    keys.push(key);
+                }
+            }
+            
+            keys.forEach(key => {
+                const value = localStorage.getItem(key);
+                html += `<li><strong>${key}:</strong> ${value ? '✅ Есть данные' : '❌ Нет данных'}</li>`;
+            });
+            
+            html += '</ul>';
+            status.innerHTML = html;
+        }
+        
+        function clearOldData() {
+            // Удаляем только конфликтующие старые данные
+            localStorage.removeItem('artemoska_user');
+            localStorage.removeItem('artemoska_achievements');
+            localStorage.removeItem('artemoska_inventory');
+            localStorage.removeItem('artemoska_arg');
+            
+            // Оставляем currentUser и данные по email
+            document.getElementById('status').innerHTML = 
+                '<p class="success">✅ Старые данные удалены! Теперь используйте новую систему.</p>' +
+                '<p><a href="index.html">Вернуться на главную</a></p>';
+        }
+        
+        // Проверяем при загрузке
+        checkData();
+    </script>
+</body>
+</html>
