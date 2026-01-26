@@ -2611,5 +2611,45 @@ footer {
             })
         })
     </script>
+<!-- Окно авторизации Telegram -->
+<div class="telegram-auth-window" id="telegramAuthWindow">
+    <div class="telegram-auth-header">
+        <h3><i class="fab fa-telegram"></i> Telegram Авторизация</h3>
+        <p>Отсканируйте QR-код или нажмите кнопку:</p>
+    </div>
+    
+    <div class="telegram-auth-qr" id="telegramQr">
+        <!-- QR-код появится здесь -->
+    </div>
+    
+    <div class="telegram-auth-buttons">
+        <button class="btn telegram-btn" onclick="openTelegramBot()">
+            <i class="fab fa-telegram"></i> Открыть в Telegram
+        </button>
+        <button class="btn btn-outline" onclick="copyBotLink()">
+            <i class="fas fa-link"></i> Скопировать ссылку
+        </button>
+    </div>
+    
+    <div class="telegram-auth-instructions">
+        <p><strong>Как авторизоваться:</strong></p>
+        <ol>
+            <li>Нажмите кнопку выше или сканируйте QR</li>
+            <li>Перейдите в бота @artemoska_auth_bot</li>
+            <li>Нажмите /start в боте</li>
+            <li>Введите секретный код с сайта</li>
+        </ol>
+    </div>
+    
+    <div class="telegram-auth-code">
+        <p>Ваш код для бота:</p>
+        <div class="auth-code-display" id="authCodeDisplay">
+            <!-- Код появится здесь -->
+        </div>
+        <button class="btn" onclick="generateNewCode()">
+            <i class="fas fa-sync-alt"></i> Новый код
+        </button>
+    </div>
+</div>
 </body>
 </html>
