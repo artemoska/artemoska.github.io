@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Верификация Telegram Auth</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f9fafb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .success {
+            color: #10b981;
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .error {
+            color: #ef4444;
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="statusIcon" class="success">⏳</div>
+        <h1 id="statusTitle">Верификация...</h1>
+        <p id="statusMessage">Проверяем данные авторизации</p>
+        <div id="userInfo" style="margin-top: 2rem;"></div>
+    </div>
+    
+    <script>
+        // Получаем параметры из URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const userId = urlParams.get('user');
+        
+        // Проверяем данные
+        setTimeout(() => {
+            if (code && userId) {
+                // Создаём данные пользователя
+                const userData = {
+                    id: userId,
+                    first_name: 'Telegram User',
+                    username: 'telegram_user',
+                    code: code,
+                    timestamp: Date.now()
+                };
+                
+                // Сохраняем для основного сайта
+                try {
+                    // Пытаемся отправить данные на основной сайт
+                    if (window.opener) {
+                        window.opener.postMessage({
+                            type: 'TELEGRAM_AUTH',
+                            code: code,
+                            user: userData
+                        }, 'https://artemoska.github.io');
+                    }
+                    
+                    // Сохраняем в localStorage
+                    localStorage.setItem(`tg_auth_${code}`, JSON.stringify(userData));
+                    
+                    // Показываем успех
+                    document.getElementById('statusIcon').className = 'success';
+                    document.getElementById('statusIcon').textContent = '✅';
+                    document.getElementById('statusTitle').textContent = 'Авторизация успешна!';
+                    document.getElementById('statusMessage').textContent = 'Вы можете закрыть эту вкладку';
+                    document.getElementById('userInfo').innerHTML = `
+                        <p><strong>Код:</strong> ${code}</p>
+                        <p><strong>ID пользователя:</strong> ${userId}</p>
+                    `;
+                    
+                    // Автоматически закрываем через 3 секунды
+                    setTimeout(() => {
+                        window.close();
+                    }, 3000);
+                    
+                } catch(e) {
+                    showError('Ошибка связи с основным сайтом');
+                }
+            } else {
+                showError('Неверные параметры авторизации');
+            }
+        }, 1000);
+        
+        function showError(message) {
+            document.getElementById('statusIcon').className = 'error';
+            document.getElementById('statusIcon').textContent = '❌';
+            document.getElementById('statusTitle').textContent = 'Ошибка';
+            document.getElementById('statusMessage').textContent = message;
+        }
+    </script>
+</body>
+</html>
