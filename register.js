@@ -6,18 +6,16 @@ emailjs.init("dqDwAfC5HAi1bp0q3");
 const sendCodeBtn = document.getElementById("sendCodeBtn");
 const verifyBtn = document.getElementById("verifyBtn");
 const emailInput = document.getElementById("email");
-const passwordInput = document.getElementById("password");
 const codeInput = document.getElementById("codeInput");
 const message = document.getElementById("message");
 
 let generatedCode = "";
 
 sendCodeBtn.addEventListener("click", async () => {
-  const email = emailInput.value;
-  const password = passwordInput.value;
+  const email = emailInput.value.trim();
 
-  if (!email || !password) {
-    message.textContent = "Заполните все поля";
+  if (!email) {
+    message.textContent = "Введите email";
     return;
   }
 
@@ -29,7 +27,7 @@ sendCodeBtn.addEventListener("click", async () => {
       "artemoska",               // Service ID
       "template_8kpkiyr",        // Template ID
       {
-        to_email: email,         // Email пользователя
+        to_email: email,         // email пользователя
         code: generatedCode      // 6-значный код
       }
     );
@@ -40,7 +38,12 @@ sendCodeBtn.addEventListener("click", async () => {
 });
 
 verifyBtn.addEventListener("click", () => {
-  if (codeInput.value === generatedCode) {
+  if (!generatedCode) {
+    message.textContent = "Сначала получите код";
+    return;
+  }
+
+  if (codeInput.value.trim() === generatedCode) {
     message.textContent = "Код верный! Регистрация успешна.";
     // Здесь можно добавить Firebase Auth создание пользователя
   } else {
