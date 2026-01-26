@@ -1,4 +1,4 @@
-// Упрощенная система регистрации - ВСЁ РАБОТАЕТ!
+// Система регистрации с отправкой на email
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Система регистрации загружена');
     
@@ -7,33 +7,26 @@ document.addEventListener('DOMContentLoaded', function() {
         emailjs.init("dqDwAfC5HAi1bp0q3");
         console.log('EmailJS инициализирован');
     } catch (error) {
-        console.log('EmailJS в тестовом режиме:', error);
+        console.error('Ошибка EmailJS:', error);
+        showError('regEmailError', 'Ошибка инициализации email сервиса');
     }
     
-    // Инициализируем обработчики событий
+    // Инициализируем обработчики
     initEventHandlers();
 });
 
 // Глобальные переменные
 let currentEmail = '';
-let verificationCode = '';
 let resendTimer = null;
 
-// Инициализация обработчиков событий
+// Инициализация обработчиков
 function initEventHandlers() {
-    // Автофокус на следующий input кода
+    // Автопереход между полями кода
     const codeInputs = document.querySelectorAll('.code-input');
     codeInputs.forEach((input, index) => {
         input.addEventListener('input', (e) => {
             if (e.target.value.length === 1 && index < codeInputs.length - 1) {
                 codeInputs[index + 1].focus();
-            }
-            // Если ввели все символы, автоматически проверяем
-            if (index === codeInputs.length - 1 && e.target.value.length === 1) {
-                const allFilled = Array.from(codeInputs).every(input => input.value.length === 1);
-                if (allFilled) {
-                    verifyRegistrationCode();
-                }
             }
         });
         
@@ -43,19 +36,6 @@ function initEventHandlers() {
             }
         });
     });
-    
-    // Обработчик Enter в полях
-    document.getElementById('regEmail')?.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') sendVerificationCode();
-    });
-    
-    document.getElementById('regPassword')?.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') sendVerificationCode();
-    });
-    
-    document.getElementById('regConfirmPassword')?.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') sendVerificationCode();
-    });
 }
 
 // Валидация email
@@ -64,42 +44,27 @@ function validateEmail(email) {
     return re.test(email);
 }
 
-// Показать сообщение об ошибке
+// Показать/скрыть сообщения
 function showError(elementId, message) {
     const element = document.getElementById(elementId);
     if (element) {
         element.textContent = message;
         element.style.display = 'block';
-        element.style.color = '#ef4444';
-        
-        setTimeout(() => {
-            element.style.display = 'none';
-        }, 5000);
-    } else {
-        alert(message);
+        setTimeout(() => element.style.display = 'none', 5000);
     }
 }
 
-// Показать сообщение об успехе
 function showSuccess(message) {
-    const element = document.getElementById('successMessage');
-    if (element) {
-        element.textContent = message;
-        element.style.display = 'block';
-        element.style.color = '#10b981';
-        
-        setTimeout(() => {
-            element.style.display = 'none';
-        }, 5000);
-    } else {
-        alert(message);
+    const successEl = document.getElementById('successMessage');
+    if (successEl) {
+        successEl.textContent = message;
+        successEl.style.display = 'block';
+        setTimeout(() => successEl.style.display = 'none', 5000);
     }
 }
 
-// Отправка кода подтверждения
+// Отправка кода подтверждения (ТОЛЬКО на email)
 async function sendVerificationCode() {
-    console.log('Функция sendVerificationCode вызвана');
-    
     const email = document.getElementById('regEmail')?.value;
     const password = document.getElementById('regPassword')?.value;
     const confirmPassword = document.getElementById('regConfirmPassword')?.value;
@@ -120,143 +85,66 @@ async function sendVerificationCode() {
         return;
     }
     
-    // Проверяем, не зарегистрирован ли уже пользователь
-    const existingUser = localStorage.getItem(`user_${email}`);
-    if (existingUser) {
+    // Проверяем, не зарегистрирован ли email
+    if (localStorage.getItem(`user_${email}`)) {
         showError('regEmailError', 'Пользователь с таким email уже существует');
         return;
     }
     
-    // Генерируем код
-    verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-    currentEmail = email;
+    // Блокируем кнопку
+    const sendBtn = document.getElementById('sendCodeBtn');
+    const originalText = sendBtn.innerHTML;
+    sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+    sendBtn.disabled = true;
     
-    // Сохраняем код для проверки
-    localStorage.setItem(`code_${email}`, JSON.stringify({
-        code: verificationCode,
-        timestamp: Date.now(),
-        password: btoa(password) // Простое "шифрование"
-    }));
-    
-    // Показываем код пользователю (вместо отправки email)
-    showCodePopup(verificationCode, email);
-    
-    // Переходим к подтверждению
-    document.getElementById('emailDisplay').textContent = email;
-    showStep('verify-register');
-    startResendTimer();
-    
-    // Очищаем поля пароля (для безопасности)
-    document.getElementById('regPassword').value = '';
-    document.getElementById('regConfirmPassword').value = '';
-}
-
-// Показ кода в попапе (вместо отправки email)
-function showCodePopup(code, email) {
-    // Удаляем старый попап если есть
-    const oldPopup = document.getElementById('codePopup');
-    if (oldPopup) oldPopup.remove();
-    
-    const popup = document.createElement('div');
-    popup.id = 'codePopup';
-    popup.style.cssText = `
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: white;
-        padding: 30px;
-        border-radius: 15px;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-        z-index: 10000;
-        text-align: center;
-        min-width: 300px;
-        max-width: 90%;
-        border: 3px solid #6366f1;
-    `;
-    
-    popup.innerHTML = `
-        <div style="position: absolute; top: 10px; right: 10px;">
-            <button onclick="document.getElementById('codePopup').remove()" 
-                    style="background: none; border: none; font-size: 20px; cursor: pointer; color: #666;">
-                ×
-            </button>
-        </div>
+    try {
+        // Генерируем код
+        const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+        currentEmail = email;
         
-        <div style="color: #6366f1; font-size: 48px; margin-bottom: 10px;">
-            <i class="fas fa-mail-bulk"></i>
-        </div>
+        // Отправляем email через EmailJS
+        const emailResult = await emailjs.send(
+            'artemoska', // Service ID
+            'template_8kpkiyr', // Template ID
+            {
+                to_email: email,
+                code: verificationCode,
+                subject: 'Код подтверждения регистрации',
+                message: `Ваш код подтверждения: ${verificationCode}`
+            }
+        );
         
-        <h3 style="color: #1f2937; margin-bottom: 15px;">Код подтверждения</h3>
-        
-        <p style="margin-bottom: 10px; color: #666;">
-            Для email: <strong>${email}</strong>
-        </p>
-        
-        <div style="
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            font-size: 32px;
-            font-weight: bold;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 20px 0;
-            letter-spacing: 5px;
-        ">
-            ${code}
-        </div>
-        
-        <p style="color: #666; font-size: 14px; margin-bottom: 20px;">
-            Введите этот код в форму подтверждения<br>
-            (В реальной системе код отправляется на email)
-        </p>
-        
-        <button onclick="copyCode('${code}')" 
-                style="
-                    background: #10b981;
-                    color: white;
-                    border: none;
-                    padding: 10px 20px;
-                    border-radius: 8px;
-                    cursor: pointer;
-                    font-size: 14px;
-                    margin: 5px;
-                ">
-            <i class="fas fa-copy"></i> Скопировать код
-        </button>
-        
-        <button onclick="document.getElementById('codePopup').remove()" 
-                style="
-                    background: #6366f1;
-                    color: white;
-                    border: none;
-                    padding: 10px 20px;
-                    border-radius: 8px;
-                    cursor: pointer;
-                    font-size: 14px;
-                    margin: 5px;
-                ">
-            Понятно
-        </button>
-    `;
-    
-    document.body.appendChild(popup);
-}
-
-// Копирование кода в буфер обмена
-function copyCode(code) {
-    navigator.clipboard.writeText(code).then(() => {
-        const copyBtn = document.querySelector('#codePopup button[onclick*="copyCode"]');
-        if (copyBtn) {
-            const originalText = copyBtn.innerHTML;
-            copyBtn.innerHTML = '<i class="fas fa-check"></i> Скопировано!';
-            copyBtn.style.background = '#10b981';
+        if (emailResult.status === 200) {
+            // Сохраняем данные для проверки
+            localStorage.setItem(`pending_${email}`, JSON.stringify({
+                code: verificationCode,
+                password: btoa(password),
+                timestamp: Date.now()
+            }));
             
-            setTimeout(() => {
-                copyBtn.innerHTML = originalText;
-            }, 2000);
+            // Показываем успех
+            showSuccess(`Код отправлен на ${email}`);
+            
+            // Переходим к подтверждению
+            document.getElementById('emailDisplay').textContent = email;
+            showStep('verify-register');
+            startResendTimer();
+            
+            // Очищаем пароли
+            document.getElementById('regPassword').value = '';
+            document.getElementById('regConfirmPassword').value = '';
+        } else {
+            showError('regEmailError', 'Ошибка отправки email');
         }
-    });
+        
+    } catch (error) {
+        console.error('Ошибка отправки:', error);
+        showError('regEmailError', `Ошибка отправки: ${error.text || error.message}`);
+    } finally {
+        // Восстанавливаем кнопку
+        sendBtn.innerHTML = originalText;
+        sendBtn.disabled = false;
+    }
 }
 
 // Таймер для повторной отправки
@@ -270,7 +158,7 @@ function startResendTimer() {
     if (!countdownElement || !timerText || !resendContainer) return;
     
     let timeLeft = 60;
-    
+    countdownElement.textContent = timeLeft;
     timerText.style.display = 'block';
     resendContainer.style.display = 'none';
     
@@ -287,42 +175,63 @@ function startResendTimer() {
 }
 
 // Повторная отправка кода
-function resendCode() {
+async function resendCode() {
     if (!currentEmail) {
-        showError('verifyBtn', 'Сначала введите email');
-        showStep('register');
+        showError('verifyBtn', 'Ошибка: email не найден');
         return;
     }
     
-    // Генерируем новый код
-    verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    // Блокируем ссылку
+    const resendLink = document.getElementById('resendLink');
+    resendLink.style.pointerEvents = 'none';
+    resendLink.style.opacity = '0.5';
     
-    // Обновляем сохраненный код
-    const savedData = JSON.parse(localStorage.getItem(`code_${currentEmail}`) || '{}');
-    savedData.code = verificationCode;
-    savedData.timestamp = Date.now();
-    localStorage.setItem(`code_${currentEmail}`, JSON.stringify(savedData));
-    
-    // Показываем новый код
-    showCodePopup(verificationCode, currentEmail);
-    
-    // Сбрасываем таймер
-    startResendTimer();
-    
-    // Очищаем поля кода
-    document.querySelectorAll('.code-input').forEach(input => {
-        input.value = '';
-    });
-    document.getElementById('code1').focus();
-    
-    showSuccess('Новый код отправлен!');
+    try {
+        // Генерируем новый код
+        const newCode = Math.floor(100000 + Math.random() * 900000).toString();
+        
+        // Отправляем email
+        await emailjs.send(
+            'artemoska',
+            'template_8kpkiyr',
+            {
+                to_email: currentEmail,
+                code: newCode,
+                subject: 'Новый код подтверждения',
+                message: `Ваш новый код подтверждения: ${newCode}`
+            }
+        );
+        
+        // Обновляем сохраненный код
+        const pendingData = JSON.parse(localStorage.getItem(`pending_${currentEmail}`) || '{}');
+        pendingData.code = newCode;
+        pendingData.timestamp = Date.now();
+        localStorage.setItem(`pending_${currentEmail}`, JSON.stringify(pendingData));
+        
+        // Показываем успех
+        showSuccess('Новый код отправлен на вашу почту');
+        
+        // Сбрасываем таймер
+        startResendTimer();
+        
+        // Очищаем поля ввода
+        document.querySelectorAll('.code-input').forEach(input => input.value = '');
+        document.getElementById('code1').focus();
+        
+    } catch (error) {
+        showError('verifyBtn', 'Ошибка отправки: ' + (error.text || error.message));
+    } finally {
+        // Восстанавливаем ссылку через 5 секунд
+        setTimeout(() => {
+            resendLink.style.pointerEvents = 'auto';
+            resendLink.style.opacity = '1';
+        }, 5000);
+    }
 }
 
-// Подтверждение кода и создание аккаунта
+// Подтверждение кода
 async function verifyRegistrationCode() {
-    console.log('Функция verifyRegistrationCode вызвана');
-    
-    // Собираем код из всех input'ов
+    // Собираем код
     const codeInputs = document.querySelectorAll('.code-input');
     const enteredCode = Array.from(codeInputs).map(input => input.value).join('');
     
@@ -332,65 +241,72 @@ async function verifyRegistrationCode() {
     }
     
     // Получаем сохраненные данные
-    const savedData = JSON.parse(localStorage.getItem(`code_${currentEmail}`) || '{}');
+    const pendingData = JSON.parse(localStorage.getItem(`pending_${currentEmail}`) || '{}');
     
-    if (!savedData.code) {
-        showError('verifyBtn', 'Код не найден. Запросите новый код.');
+    if (!pendingData.code) {
+        showError('verifyBtn', 'Код не найден. Запросите новый.');
         return;
     }
     
-    // Проверяем срок действия кода (10 минут)
-    const codeAge = Date.now() - savedData.timestamp;
-    if (codeAge > 10 * 60 * 1000) {
+    // Проверяем срок действия (15 минут)
+    const codeAge = Date.now() - pendingData.timestamp;
+    if (codeAge > 15 * 60 * 1000) {
         showError('verifyBtn', 'Код устарел. Запросите новый.');
+        localStorage.removeItem(`pending_${currentEmail}`);
         return;
     }
     
     // Проверяем код
-    if (enteredCode !== savedData.code) {
+    if (enteredCode !== pendingData.code) {
         showError('verifyBtn', 'Неверный код. Попробуйте еще раз.');
         return;
     }
     
-    // Код верный - создаем пользователя
-    const user = {
-        id: Date.now(),
-        email: currentEmail,
-        password: savedData.password,
-        verified: true,
-        createdAt: new Date().toISOString(),
-        profile: {
-            name: currentEmail.split('@')[0],
-            avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(currentEmail)}&background=6366f1&color=fff`
-        }
-    };
-    
-    // Сохраняем пользователя
-    localStorage.setItem(`user_${currentEmail}`, JSON.stringify(user));
-    
-    // Устанавливаем текущего пользователя
-    localStorage.setItem('currentUser', JSON.stringify(user));
-    
-    // Удаляем использованный код
-    localStorage.removeItem(`code_${currentEmail}`);
-    
-    // Показываем успех
-    showSuccess('🎉 Аккаунт успешно создан!');
-    
-    // Меняем текст кнопки
+    // Блокируем кнопку
     const verifyBtn = document.getElementById('verifyBtn');
-    if (verifyBtn) {
-        verifyBtn.innerHTML = '<i class="fas fa-check"></i> Успешно! Перенаправляем...';
-        verifyBtn.disabled = true;
-    }
+    const originalText = verifyBtn.innerHTML;
+    verifyBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Создание аккаунта...';
+    verifyBtn.disabled = true;
     
-    // Перенаправляем на главную через 2 секунды
-    setTimeout(() => {
-        window.location.href = 'index.html';
-    }, 2000);
+    try {
+        // Создаем пользователя
+        const user = {
+            id: 'user_' + Date.now(),
+            email: currentEmail,
+            password: pendingData.password,
+            verified: true,
+            createdAt: new Date().toISOString(),
+            lastLogin: new Date().toISOString(),
+            profile: {
+                name: currentEmail.split('@')[0],
+                avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(currentEmail)}&background=6366f1&color=fff&bold=true`
+            }
+        };
+        
+        // Сохраняем пользователя
+        localStorage.setItem(`user_${currentEmail}`, JSON.stringify(user));
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        
+        // Удаляем временные данные
+        localStorage.removeItem(`pending_${currentEmail}`);
+        
+        // Показываем успех
+        showSuccess('🎉 Аккаунт успешно создан!');
+        verifyBtn.innerHTML = '<i class="fas fa-check"></i> Успешно! Перенаправляем...';
+        
+        // Перенаправляем через 2 секунды
+        setTimeout(() => {
+            window.location.href = 'index.html';
+        }, 2000);
+        
+    } catch (error) {
+        showError('verifyBtn', 'Ошибка создания аккаунта: ' + error.message);
+        verifyBtn.innerHTML = originalText;
+        verifyBtn.disabled = false;
+    }
 }
 
-// Вход пользователя
+// Вход в систему
 async function loginUser() {
     const email = document.getElementById('loginEmail')?.value;
     const password = document.getElementById('loginPassword')?.value;
@@ -400,78 +316,56 @@ async function loginUser() {
         return;
     }
     
-    if (!password || password.length < 6) {
+    if (!password) {
         showError('loginPasswordError', 'Введите пароль');
         return;
     }
     
-    // Получаем пользователя
-    const userData = localStorage.getItem(`user_${email}`);
-    if (!userData) {
-        showError('loginPasswordError', 'Пользователь не найден');
-        return;
-    }
-    
-    const user = JSON.parse(userData);
-    
-    // Проверяем пароль
-    if (user.password !== btoa(password)) {
-        showError('loginPasswordError', 'Неверный пароль');
-        return;
-    }
-    
-    // Устанавливаем текущего пользователя
-    localStorage.setItem('currentUser', JSON.stringify(user));
-    
-    // Показываем успех
-    showSuccess('Вход выполнен!');
-    
-    // Меняем текст кнопки
+    // Блокируем кнопку
     const loginBtn = document.getElementById('loginBtn');
-    if (loginBtn) {
-        loginBtn.innerHTML = '<i class="fas fa-check"></i> Успешно!';
-        loginBtn.disabled = true;
-    }
+    const originalText = loginBtn.innerHTML;
+    loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Вход...';
+    loginBtn.disabled = true;
     
-    // Перенаправляем на главную
-    setTimeout(() => {
-        window.location.href = 'index.html';
-    }, 1000);
-}
-
-// Смена шага формы
-function showStep(step) {
-    // Скрываем все шаги
-    document.querySelectorAll('.form-step').forEach(el => {
-        el.classList.remove('active');
-    });
-    
-    // Показываем нужный шаг
-    const stepMap = {
-        '1': 'step1',
-        'register': 'stepRegister',
-        'verify-register': 'stepVerifyRegister',
-        'login': 'stepLogin',
-        'forgotPassword': 'stepForgotPassword',
-        'resetPassword': 'stepResetPassword'
-    };
-    
-    const stepId = stepMap[step] || 'step1';
-    const stepElement = document.getElementById(stepId);
-    
-    if (stepElement) {
-        stepElement.classList.add('active');
+    try {
+        // Ищем пользователя
+        const userData = localStorage.getItem(`user_${email}`);
+        if (!userData) {
+            showError('loginPasswordError', 'Пользователь не найден');
+            throw new Error('User not found');
+        }
         
-        // Фокус на первое поле
+        const user = JSON.parse(userData);
+        
+        // Проверяем пароль
+        if (user.password !== btoa(password)) {
+            showError('loginPasswordError', 'Неверный пароль');
+            throw new Error('Wrong password');
+        }
+        
+        // Обновляем последний вход
+        user.lastLogin = new Date().toISOString();
+        localStorage.setItem(`user_${email}`, JSON.stringify(user));
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        
+        // Показываем успех
+        showSuccess('Вход выполнен!');
+        loginBtn.innerHTML = '<i class="fas fa-check"></i> Успешно!';
+        
+        // Перенаправляем
         setTimeout(() => {
-            const firstInput = stepElement.querySelector('input');
-            if (firstInput) firstInput.focus();
-        }, 100);
+            window.location.href = 'index.html';
+        }, 1000);
+        
+    } catch (error) {
+        // Ошибка уже обработана в showError
+        loginBtn.innerHTML = originalText;
+        loginBtn.disabled = false;
     }
 }
 
 // Восстановление пароля
-function sendPasswordResetCode() {
+async function sendPasswordResetCode() {
     const email = document.getElementById('forgotEmail')?.value;
     
     if (!email || !validateEmail(email)) {
@@ -479,31 +373,53 @@ function sendPasswordResetCode() {
         return;
     }
     
-    // Проверяем, существует ли пользователь
-    const userData = localStorage.getItem(`user_${email}`);
-    if (!userData) {
+    // Проверяем существование пользователя
+    if (!localStorage.getItem(`user_${email}`)) {
         showError('forgotEmailError', 'Пользователь не найден');
         return;
     }
     
-    currentEmail = email;
-    verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    // Блокируем кнопку
+    const forgotBtn = document.getElementById('forgotBtn');
+    const originalText = forgotBtn.innerHTML;
+    forgotBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+    forgotBtn.disabled = true;
     
-    // Сохраняем код для восстановления
-    localStorage.setItem(`reset_${email}`, JSON.stringify({
-        code: verificationCode,
-        timestamp: Date.now()
-    }));
-    
-    // Показываем код
-    showCodePopup(verificationCode, email);
-    
-    // Переходим к сбросу пароля
-    showStep('resetPassword');
+    try {
+        currentEmail = email;
+        const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
+        
+        // Отправляем email
+        await emailjs.send(
+            'artemoska',
+            'template_8kpkiyr',
+            {
+                to_email: email,
+                code: resetCode,
+                subject: 'Код восстановления пароля',
+                message: `Ваш код для восстановления пароля: ${resetCode}`
+            }
+        );
+        
+        // Сохраняем код восстановления
+        localStorage.setItem(`reset_${email}`, JSON.stringify({
+            code: resetCode,
+            timestamp: Date.now()
+        }));
+        
+        showSuccess('Код восстановления отправлен на вашу почту');
+        showStep('resetPassword');
+        
+    } catch (error) {
+        showError('forgotEmailError', 'Ошибка отправки: ' + (error.text || error.message));
+    } finally {
+        forgotBtn.innerHTML = originalText;
+        forgotBtn.disabled = false;
+    }
 }
 
 // Сброс пароля
-function resetPassword() {
+async function resetPassword() {
     const code = document.getElementById('resetCode')?.value;
     const newPassword = document.getElementById('newPassword')?.value;
     const confirmPassword = document.getElementById('confirmNewPassword')?.value;
@@ -523,48 +439,94 @@ function resetPassword() {
         return;
     }
     
-    // Проверяем код
-    const savedData = JSON.parse(localStorage.getItem(`reset_${currentEmail}`) || '{}');
+    // Получаем сохраненный код
+    const resetData = JSON.parse(localStorage.getItem(`reset_${currentEmail}`) || '{}');
     
-    if (!savedData.code || savedData.code !== code) {
+    if (!resetData.code || resetData.code !== code) {
         showError('resetCodeError', 'Неверный код');
         return;
     }
     
-    // Получаем пользователя
-    const userData = localStorage.getItem(`user_${currentEmail}`);
-    if (!userData) {
-        showError('resetCodeError', 'Пользователь не найден');
+    // Проверяем срок действия
+    if (Date.now() - resetData.timestamp > 15 * 60 * 1000) {
+        showError('resetCodeError', 'Код устарел');
+        localStorage.removeItem(`reset_${currentEmail}`);
         return;
     }
     
-    // Обновляем пароль
-    const user = JSON.parse(userData);
-    user.password = btoa(newPassword);
-    localStorage.setItem(`user_${currentEmail}`, JSON.stringify(user));
+    // Блокируем кнопку
+    const resetBtn = document.getElementById('resetBtn');
+    const originalText = resetBtn.innerHTML;
+    resetBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Обновление...';
+    resetBtn.disabled = true;
     
-    // Удаляем код восстановления
-    localStorage.removeItem(`reset_${currentEmail}`);
-    
-    showSuccess('Пароль успешно изменен!');
-    
-    // Возвращаем к форме входа
-    setTimeout(() => {
-        showStep('login');
-    }, 2000);
+    try {
+        // Обновляем пароль пользователя
+        const userData = localStorage.getItem(`user_${currentEmail}`);
+        if (!userData) {
+            throw new Error('Пользователь не найден');
+        }
+        
+        const user = JSON.parse(userData);
+        user.password = btoa(newPassword);
+        localStorage.setItem(`user_${currentEmail}`, JSON.stringify(user));
+        
+        // Удаляем код восстановления
+        localStorage.removeItem(`reset_${currentEmail}`);
+        
+        showSuccess('Пароль успешно изменен!');
+        resetBtn.innerHTML = '<i class="fas fa-check"></i> Успешно!';
+        
+        // Возвращаем к форме входа
+        setTimeout(() => {
+            showStep('login');
+        }, 2000);
+        
+    } catch (error) {
+        showError('resetCodeError', error.message);
+        resetBtn.innerHTML = originalText;
+        resetBtn.disabled = false;
+    }
 }
 
-// Для отладки - создаем тестовых пользователей
+// Смена шагов формы
+function showStep(step) {
+    // Скрываем все шаги
+    document.querySelectorAll('.form-step').forEach(el => {
+        el.classList.remove('active');
+    });
+    
+    // Показываем нужный шаг
+    const stepId = {
+        '1': 'step1',
+        'register': 'stepRegister',
+        'verify-register': 'stepVerifyRegister',
+        'login': 'stepLogin',
+        'forgotPassword': 'stepForgotPassword',
+        'resetPassword': 'stepResetPassword'
+    }[step] || 'step1';
+    
+    const stepElement = document.getElementById(stepId);
+    if (stepElement) {
+        stepElement.classList.add('active');
+        // Фокус на первое поле
+        setTimeout(() => {
+            const firstInput = stepElement.querySelector('input');
+            if (firstInput) firstInput.focus();
+        }, 100);
+    }
+}
+
+// Создаем тестовых пользователей (только для разработки)
 function createTestUsers() {
     const testUsers = [
-        { email: 'test@example.com', password: 'test123' },
-        { email: 'user@mail.ru', password: 'password123' }
+        { email: 'test@example.com', password: 'test123' }
     ];
     
     testUsers.forEach(({ email, password }) => {
         if (!localStorage.getItem(`user_${email}`)) {
             const user = {
-                id: Date.now(),
+                id: 'user_' + Date.now(),
                 email: email,
                 password: btoa(password),
                 verified: true,
@@ -577,9 +539,16 @@ function createTestUsers() {
             localStorage.setItem(`user_${email}`, JSON.stringify(user));
         }
     });
-    
-    console.log('Тестовые пользователи созданы');
 }
 
-// Создаем тестовых пользователей при загрузке
-setTimeout(createTestUsers, 1000);
+// Удаляем отладочную информацию из HTML
+document.addEventListener('DOMContentLoaded', function() {
+    const debugInfo = document.getElementById('debugInfo');
+    if (debugInfo) debugInfo.remove();
+    
+    // Создаем тестовых пользователей (только при первом запуске)
+    if (!localStorage.getItem('test_users_created')) {
+        createTestUsers();
+        localStorage.setItem('test_users_created', 'true');
+    }
+});
