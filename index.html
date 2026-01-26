@@ -1,197 +1,1376 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <!-- Google tag -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TZY49R07HS"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-TZY49R07HS');
-  </script>
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Artemoska | Web Developer</title>
-
-  <script async src="https://telegram.org/js/telegram-widget.js?22"
-    data-telegram-login="artemosbot"
-    data-size="large"
-    data-userpic="true"
-    data-onauth="onTelegramAuth(user)">
-  </script>
-
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<style>
-/* ===== ДОБАВКА ДЛЯ ЛОГИНА И СЕКРЕТОК ===== */
-#authPanel {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.85);
-  backdrop-filter: blur(10px);
-  z-index: 100000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-}
-#authBox {
-  background: #020617;
-  padding: 40px;
-  border-radius: 20px;
-  border: 1px solid #334155;
-  text-align: center;
-  max-width: 400px;
-}
-#profileBox {
-  position: fixed;
-  top: 90px;
-  right: 20px;
-  background: white;
-  border-radius: 14px;
-  padding: 15px;
-  font-size: 0.85rem;
-  border: 1px solid #e5e7eb;
-  box-shadow: 0 10px 30px rgba(0,0,0,.1);
-  z-index: 2000;
-}
-.locked-project {
-  opacity: .2;
-  filter: grayscale(1);
-  pointer-events: none;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARTEMOSKA // TERMINAL SYSTEM</title>
+    <meta name="description" content="Секретная система Artemoska. Доступ только для избранных.">
+    
+    <!-- Telegram Login Widget -->
+    <script async src="https://telegram.org/js/telegram-widget.js?22" 
+            data-telegram-login="artemoska_bot" 
+            data-size="large" 
+            data-userpic="true" 
+            data-onauth="onTelegramAuth(user)"
+            data-request-access="write">
+    </script>
+    
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --terminal: #0d1117;
+            --text: #c9d1d9;
+            --green: #7ee787;
+            --blue: #58a6ff;
+            --purple: #bc8cff;
+            --red: #ff7b72;
+            --yellow: #ffa657;
+            --border: #30363d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Courier New', monospace;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* Matrix эффект на фоне */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.03;
+            pointer-events: none;
+        }
+        
+        /* Header */
+        .terminal-header {
+            background: rgba(13, 17, 23, 0.9);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--blue), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+        
+        .logo::after {
+            content: ">";
+            color: var(--green);
+            margin-left: 5px;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* Панели */
+        .panel {
+            background: var(--terminal);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .panel-title {
+            color: var(--blue);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .panel-title::before {
+            content: "$";
+            color: var(--green);
+        }
+        
+        /* Скрытые элементы */
+        .hidden {
+            display: none !important;
+        }
+        
+        .locked {
+            opacity: 0.3;
+            filter: blur(2px);
+            user-select: none;
+            pointer-events: none;
+        }
+        
+        /* Авторизация */
+        #authPanel {
+            text-align: center;
+            padding: 3rem;
+        }
+        
+        .auth-message {
+            margin: 2rem 0;
+            color: var(--yellow);
+            font-size: 1.2rem;
+        }
+        
+        /* Профиль */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+        }
+        
+        .user-card {
+            text-align: center;
+            padding: 1.5rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+        }
+        
+        .user-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            overflow: hidden;
+            border: 3px solid var(--blue);
+        }
+        
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .user-name {
+            font-size: 1.2rem;
+            color: var(--blue);
+            margin-bottom: 0.5rem;
+        }
+        
+        .user-id {
+            color: var(--text);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        /* Инвентарь */
+        .inventory {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .item:hover {
+            border-color: var(--green);
+            transform: translateY(-2px);
+        }
+        
+        .item.locked {
+            opacity: 0.3;
+        }
+        
+        .item-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--purple);
+        }
+        
+        /* Консоль */
+        #consoleOutput {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            padding: 1rem;
+            height: 300px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .console-line {
+            margin-bottom: 5px;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        
+        .console-input-line {
+            color: var(--green);
+        }
+        
+        .console-output-line {
+            color: var(--text);
+        }
+        
+        .console-error {
+            color: var(--red);
+        }
+        
+        .console-success {
+            color: var(--green);
+        }
+        
+        .console-warning {
+            color: var(--yellow);
+        }
+        
+        .console-secret {
+            color: var(--purple);
+            font-weight: bold;
+        }
+        
+        #consoleInput {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.8rem;
+            color: var(--green);
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+        }
+        
+        #consoleInput:focus {
+            outline: none;
+            border-color: var(--green);
+        }
+        
+        /* Проекты */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .project-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .project-card:hover {
+            border-color: var(--blue);
+            transform: translateY(-5px);
+        }
+        
+        .project-card.locked {
+            position: relative;
+        }
+        
+        .project-card.locked::after {
+            content: "🔒";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            opacity: 0.5;
+        }
+        
+        .project-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--blue);
+        }
+        
+        .project-title {
+            color: var(--blue);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .project-desc {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 1rem;
+        }
+        
+        .project-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            background: rgba(88, 166, 255, 0.1);
+            color: var(--blue);
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        /* ARG Секция */
+        .arg-container {
+            position: relative;
+            min-height: 200px;
+        }
+        
+        .arg-step {
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 3px solid var(--purple);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .arg-step.completed {
+            border-left-color: var(--green);
+            opacity: 0.7;
+        }
+        
+        .arg-step.active {
+            border-left-color: var(--yellow);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { background: rgba(0, 0, 0, 0.3); }
+            50% { background: rgba(255, 166, 87, 0.1); }
+        }
+        
+        /* Модалки */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--terminal);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        /* Статус бар */
+        .status-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(13, 17, 23, 0.9);
+            border-top: 1px solid var(--border);
+            padding: 0.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            backdrop-filter: blur(10px);
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Кнопки */
+        .btn {
+            background: var(--blue);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background: var(--purple);
+            transform: translateY(-2px);
+        }
+        
+        .btn-logout {
+            background: var(--red);
+        }
+        
+        .btn-logout:hover {
+            background: #d32f2f;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .terminal-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
-
 <body>
-
-<!-- AUTH -->
-<div id="authPanel">
-  <div id="authBox">
-    <h2>🔐 Вход в систему</h2>
-    <p>Авторизуйся через Telegram</p>
-  </div>
-</div>
-
-<!-- PROFILE -->
-<div id="profileBox" style="display:none">
-  <div id="profileName"></div>
-  <div id="profileUser"></div>
-  <div>🎖 Ачивки: <span id="achCount">0</span></div>
-  <button onclick="logout()">Выйти</button>
-</div>
-
-<!-- ===== ТВОЙ САЙТ (НЕ ТРОНУТ) ===== -->
-<!-- … ТУТ ИДЁТ ТВОЙ ИСХОДНЫЙ HTML (ОБРЕЗАН ДЛЯ СООБЩЕНИЯ) -->
-<!-- Проекты -->
-<section id="projects" class="animate-on-scroll">
-  <h2>Проекты</h2>
-  <div class="projects-container">
-
-    <!-- ОТКРЫТЫЙ -->
-    <div class="project-card">
-      <div class="project-image"><i class="fab fa-telegram"></i></div>
-      <div class="project-content">
-        <h3>RubetonChat</h3>
-        <p>Telegram чат.</p>
-      </div>
+    <!-- Matrix эффект на фоне -->
+    <div class="matrix-bg" id="matrixBg"></div>
+    
+    <!-- Модалка с секретом -->
+    <div class="modal" id="secretModal">
+        <div class="modal-content">
+            <h2 style="color: var(--purple); margin-bottom: 1rem;">🎉 СЕКРЕТ ОТКРЫТ!</h2>
+            <p>Ты нашёл секретный ключ! Вот твоя награда:</p>
+            <div style="text-align: center; margin: 2rem 0;">
+                <div style="font-size: 4rem; color: var(--yellow);">🗝️</div>
+                <h3 style="color: var(--green);">Ключ к мастерству</h3>
+            </div>
+            <p><strong>Запомни эту фразу:</strong></p>
+            <p style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; font-family: monospace;">
+                MAGIC_IS_REAL_42
+            </p>
+            <button class="btn" onclick="closeModal()" style="margin-top: 1rem;">Закрыть</button>
+        </div>
     </div>
-
-    <!-- СКРЫТЫЙ -->
-    <div class="project-card locked-project" id="secretProject">
-      <div class="project-image"><i class="fas fa-lock"></i></div>
-      <div class="project-content">
-        <h3>SECRET PROJECT</h3>
-        <p>🔒 Доступ закрыт</p>
-      </div>
+    
+    <!-- Модалка с ARG подсказкой -->
+    <div class="modal" id="argModal">
+        <div class="modal-content">
+            <h2 style="color: var(--yellow); margin-bottom: 1rem;">🕵️‍♂️ ARG КВЕСТ</h2>
+            <div id="argContent"></div>
+            <button class="btn" onclick="closeModal()" style="margin-top: 1rem;">Закрыть</button>
+        </div>
     </div>
-
-  </div>
-</section>
-
-<!-- КОНСОЛЬ -->
-<div class="console-effect" id="console">
-  <div class="console-header">
-    <span>Artemoska Console</span>
-  </div>
-  <div class="console-content" id="consoleContent">
-    <div>> system online</div>
-  </div>
-  <input id="consoleInput" placeholder="> command">
-</div>
+    
+    <!-- Шапка терминала -->
+    <header class="terminal-header">
+        <div class="logo">ARTEMOSKA_TERMINAL</div>
+        <div id="userStatus">Статус: ОФЛАЙН</div>
+    </header>
+    
+    <!-- Основной контейнер -->
+    <div class="container">
+        
+        <!-- Панель авторизации -->
+        <div class="panel" id="authPanel">
+            <h2 class="panel-title">🔐 ТЕРМИНАЛЬНЫЙ ДОСТУП</h2>
+            <p class="auth-message">Для доступа к системе требуется авторизация через Telegram</p>
+            <p style="margin-bottom: 2rem; opacity: 0.8;">Система содержит секретные проекты, ARG-квест и интерактивную консоль</p>
+            
+            <!-- Telegram Login Button будет здесь -->
+            <div id="telegramLoginContainer"></div>
+            
+            <div style="margin-top: 2rem; padding: 1rem; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                <p style="color: var(--yellow);">💡 Подсказка: После входа открой консоль и введи "help"</p>
+            </div>
+        </div>
+        
+        <!-- Панель профиля (скрыта до авторизации) -->
+        <div class="panel hidden" id="profilePanel">
+            <h2 class="panel-title">👤 ПРОФИЛЬ СИСТЕМЫ</h2>
+            <div class="profile-grid">
+                <div class="user-card">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <div class="user-name" id="userName"></div>
+                    <div class="user-id" id="userId"></div>
+                    <button class="btn btn-logout" onclick="logout()" style="margin-top: 1rem;">Выйти из системы</button>
+                </div>
+                
+                <div>
+                    <h3 style="color: var(--green); margin-bottom: 1rem;">🏆 ИНВЕНТАРЬ И АЧИВКИ</h3>
+                    <div class="inventory" id="inventory">
+                        <!-- Ачивки будут добавляться через JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Игровая консоль -->
+        <div class="panel hidden" id="consolePanel">
+            <h2 class="panel-title">🎮 ИГРОВАЯ КОНСОЛЬ</h2>
+            <p style="margin-bottom: 1rem; opacity: 0.8;">Вводи команды для взаимодействия с системой. Начни с "help"</p>
+            
+            <div id="consoleOutput">
+                <div class="console-line console-output-line">[SYSTEM] Загрузка терминала...</div>
+                <div class="console-line console-output-line">[SYSTEM] Инициализация магических модулей...</div>
+                <div class="console-line console-output-line">[SYSTEM] Готов к приёму команд</div>
+            </div>
+            
+            <input type="text" id="consoleInput" placeholder="Введите команду и нажмите Enter">
+        </div>
+        
+        <!-- Скрытые проекты -->
+        <div class="panel hidden" id="projectsPanel">
+            <h2 class="panel-title">🧪 СЕКРЕТНЫЕ ПРОЕКТЫ</h2>
+            <div class="projects-grid" id="projectsGrid">
+                <!-- Проекты будут добавляться через JS -->
+            </div>
+        </div>
+        
+        <!-- ARG квест -->
+        <div class="panel hidden" id="argPanel">
+            <h2 class="panel-title">🏴‍☠️ ARG КВЕСТ</h2>
+            <div class="arg-container" id="argContainer">
+                <!-- Шаги ARG будут добавляться через JS -->
+            </div>
+        </div>
+        
+    </div>
+    
+    <!-- Статус бар -->
+    <div class="status-bar hidden" id="statusBar">
+        <div class="status-item">
+            <span style="color: var(--green);">●</span>
+            <span id="statusUser">Гость</span>
+        </div>
+        <div class="status-item">
+            <span style="color: var(--yellow);">⚡</span>
+            <span id="statusAch">Ачивки: 0</span>
+        </div>
+        <div class="status-item">
+            <span style="color: var(--blue);">🔑</span>
+            <span id="statusLevel">Уровень: 1</span>
+        </div>
+        <div class="status-item">
+            <span id="statusTime">--:--:--</span>
+        </div>
+    </div>
 
 <script>
-let user=null, ach=0;
+// ==================== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ====================
+let user = null;
+let achievements = new Set();
+let inventory = [];
+let argProgress = 1;
+let userLevel = 1;
+let sessionTime = 0;
 
-function onTelegramAuth(u){
-  user=u;
-  localStorage.setItem("user",JSON.stringify(u));
-  start();
-}
-
-function start(){
-  document.getElementById("authPanel").style.display="none";
-  document.getElementById("profileBox").style.display="block";
-  document.getElementById("profileName").innerText=user.first_name;
-  document.getElementById("profileUser").innerText="@"+user.username;
-}
-
-function logout(){
-  localStorage.clear();
-  location.reload();
-}
-
-function log(t){
-  const c=document.getElementById("consoleContent");
-  c.innerHTML+=`<div>> ${t}</div>`;
-  c.scrollTop=c.scrollHeight;
-}
-
-document.getElementById("consoleInput").addEventListener("keydown",e=>{
-  if(e.key==="Enter"){
-    run(e.target.value);
-    e.target.value="";
-  }
+// ==================== ИНИЦИАЛИЗАЦИЯ ====================
+document.addEventListener('DOMContentLoaded', function() {
+    // Проверяем сохранённую сессию
+    const savedUser = localStorage.getItem('artemoska_user');
+    const savedAch = localStorage.getItem('artemoska_ach');
+    const savedArg = localStorage.getItem('artemoska_arg');
+    
+    if (savedUser) {
+        user = JSON.parse(savedUser);
+        if (savedAch) achievements = new Set(JSON.parse(savedAch));
+        if (savedArg) argProgress = parseInt(savedArg);
+        initSystem();
+    }
+    
+    // Инициализируем Matrix эффект
+    initMatrix();
+    
+    // Запускаем таймер
+    setInterval(updateTime, 1000);
+    setInterval(() => { sessionTime++; }, 1000);
+    
+    // Создаём Telegram виджет
+    setTimeout(() => {
+        const container = document.getElementById('telegramLoginContainer');
+        if (container) {
+            const script = document.createElement('script');
+            script.src = 'https://telegram.org/js/telegram-widget.js?22';
+            script.setAttribute('data-telegram-login', 'artemoska_bot');
+            script.setAttribute('data-size', 'large');
+            script.setAttribute('data-userpic', 'true');
+            script.setAttribute('data-request-access', 'write');
+            script.onload = function() {
+                window.onTelegramAuth = onTelegramAuth;
+            };
+            container.appendChild(script);
+        }
+    }, 1000);
 });
 
-function unlock(name){
-  ach++;
-  document.getElementById("achCount").innerText=ach;
-  log("🏆 "+name);
+// ==================== TELEGRAM АВТОРИЗАЦИЯ ====================
+function onTelegramAuth(userData) {
+    user = {
+        id: userData.id,
+        first_name: userData.first_name,
+        last_name: userData.last_name || '',
+        username: userData.username,
+        photo_url: userData.photo_url || ''
+    };
+    
+    localStorage.setItem('artemoska_user', JSON.stringify(user));
+    consoleLog(`[AUTH] Приветствуем, ${user.first_name}! ID: ${user.id}`);
+    
+    // Добавляем первую ачивку
+    unlockAchievement('welcome');
+    
+    initSystem();
 }
 
-function run(cmd){
-  log(cmd);
-  switch(cmd.toLowerCase()){
-    case "help":
-      log("whoami, hack, secret, arg");
-      break;
-    case "whoami":
-      log(user.first_name+" :: telegram user");
-      break;
-    case "hack":
-      document.body.style.filter="hue-rotate(120deg)";
-      unlock("Hacker");
-      break;
-    case "secret":
-      document.getElementById("secretProject").classList.remove("locked-project");
-      unlock("Secret Access");
-      break;
-    case "arg":
-      log("ARG STEP 1: Ищи слово MAGIC в коде");
-      unlock("ARG Started");
-      break;
-    default:
-      log("command not found");
-  }
+function initSystem() {
+    // Показываем все панели
+    document.getElementById('authPanel').classList.add('hidden');
+    document.getElementById('profilePanel').classList.remove('hidden');
+    document.getElementById('consolePanel').classList.remove('hidden');
+    document.getElementById('projectsPanel').classList.remove('hidden');
+    document.getElementById('argPanel').classList.remove('hidden');
+    document.getElementById('statusBar').classList.remove('hidden');
+    
+    // Обновляем профиль
+    updateProfile();
+    
+    // Инициализируем проекты
+    initProjects();
+    
+    // Инициализируем ARG
+    initARG();
+    
+    // Инициализируем консоль
+    initConsole();
+    
+    // Запускаем приветствие в консоли
+    setTimeout(() => {
+        consoleLog(`[SYSTEM] Добро пожаловать, ${user.first_name}!`, 'success');
+        consoleLog(`[SYSTEM] Твой ID: ${user.id}`, 'info');
+        consoleLog(`[SYSTEM] Введи "help" для списка команд`, 'warning');
+    }, 500);
 }
 
-const saved=localStorage.getItem("user");
-if(saved){user=JSON.parse(saved);start();}
+// ==================== ПРОФИЛЬ И ИНВЕНТАРЬ ====================
+function updateProfile() {
+    document.getElementById('userName').textContent = 
+        `${user.first_name} ${user.last_name || ''}`;
+    document.getElementById('userId').textContent = `@${user.username || 'no_username'} | ID: ${user.id}`;
+    document.getElementById('statusUser').textContent = user.first_name;
+    
+    // Аватар
+    const avatar = document.getElementById('userAvatar');
+    if (user.photo_url) {
+        avatar.innerHTML = `<img src="${user.photo_url}" alt="Avatar">`;
+    } else {
+        avatar.innerHTML = '👤';
+        avatar.style.fontSize = '3rem';
+        avatar.style.display = 'flex';
+        avatar.style.alignItems = 'center';
+        avatar.style.justifyContent = 'center';
+    }
+    
+    // Обновляем инвентарь
+    updateInventory();
+    
+    // Обновляем статус бар
+    updateStatusBar();
+}
+
+function unlockAchievement(name) {
+    if (!achievements.has(name)) {
+        achievements.add(name);
+        localStorage.setItem('artemoska_ach', JSON.stringify([...achievements]));
+        
+        // Добавляем предмет в инвентарь
+        addToInventory(name);
+        
+        consoleLog(`[ACHIEVEMENT] Получена ачивка: ${getAchievementName(name)}`, 'secret');
+        
+        // Проверяем повышение уровня
+        checkLevelUp();
+        
+        // Обновляем профиль
+        updateProfile();
+        
+        return true;
+    }
+    return false;
+}
+
+function getAchievementName(code) {
+    const achMap = {
+        'welcome': '👋 Первый вход',
+        'console_master': '🎮 Мастер консоли',
+        'secret_finder': '🔍 Искатель секретов',
+        'hacker': '💻 Хакер',
+        'arg_starter': '🕵️ Начало квеста',
+        'arg_solver': '🎯 Решатель загадок',
+        'project_unlocker': '🧪 Открыватель проектов',
+        'time_traveler': '⏱️ Путешественник во времени',
+        'magic_key': '🗝️ Ключ магии'
+    };
+    return achMap[code] || code;
+}
+
+function addToInventory(itemCode) {
+    const item = {
+        id: itemCode,
+        name: getAchievementName(itemCode),
+        icon: getItemIcon(itemCode),
+        unlocked: true
+    };
+    
+    // Проверяем, нет ли уже такого предмета
+    if (!inventory.some(i => i.id === itemCode)) {
+        inventory.push(item);
+    }
+}
+
+function getItemIcon(code) {
+    const iconMap = {
+        'welcome': '👋',
+        'console_master': '🎮',
+        'secret_finder': '🔍',
+        'hacker': '💻',
+        'arg_starter': '🕵️',
+        'arg_solver': '🎯',
+        'project_unlocker': '🧪',
+        'time_traveler': '⏱️',
+        'magic_key': '🗝️'
+    };
+    return iconMap[code] || '📦';
+}
+
+function updateInventory() {
+    const container = document.getElementById('inventory');
+    container.innerHTML = '';
+    
+    // Добавляем все ачивки
+    const allAchievements = [
+        'welcome', 'console_master', 'secret_finder', 'hacker',
+        'arg_starter', 'arg_solver', 'project_unlocker', 
+        'time_traveler', 'magic_key'
+    ];
+    
+    allAchievements.forEach(ach => {
+        const unlocked = achievements.has(ach);
+        const item = document.createElement('div');
+        item.className = `item ${unlocked ? '' : 'locked'}`;
+        item.innerHTML = `
+            <div class="item-icon">${getItemIcon(ach)}</div>
+            <div>${getAchievementName(ach)}</div>
+            ${unlocked ? '<div style="color: var(--green); font-size: 0.8rem;">✓ Получено</div>' : 
+                        '<div style="opacity: 0.5; font-size: 0.8rem;">🔒 Заблокировано</div>'}
+        `;
+        container.appendChild(item);
+    });
+}
+
+function checkLevelUp() {
+    const newLevel = Math.floor(achievements.size / 3) + 1;
+    if (newLevel > userLevel) {
+        userLevel = newLevel;
+        consoleLog(`[LEVEL UP] Новый уровень: ${userLevel}!`, 'success');
+        updateStatusBar();
+    }
+}
+
+// ==================== ИГРОВАЯ КОНСОЛЬ ====================
+function initConsole() {
+    const input = document.getElementById('consoleInput');
+    const output = document.getElementById('consoleOutput');
+    
+    input.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            const command = input.value.trim();
+            if (command) {
+                // Выводим команду пользователя
+                consoleLog(`> ${command}`, 'input');
+                
+                // Обрабатываем команду
+                processCommand(command);
+                
+                // Очищаем поле ввода
+                input.value = '';
+                
+                // Скроллим вниз
+                output.scrollTop = output.scrollHeight;
+            }
+        }
+    });
+    
+    // Фокус на поле ввода
+    input.focus();
+}
+
+function consoleLog(message, type = 'output') {
+    const output = document.getElementById('consoleOutput');
+    const line = document.createElement('div');
+    line.className = `console-line console-${type}-line`;
+    
+    // Добавляем цвет в зависимости от типа
+    if (type === 'error') line.classList.add('console-error');
+    if (type === 'success') line.classList.add('console-success');
+    if (type === 'warning') line.classList.add('console-warning');
+    if (type === 'secret') line.classList.add('console-secret');
+    
+    line.textContent = message;
+    output.appendChild(line);
+    
+    // Ограничиваем количество строк
+    const lines = output.querySelectorAll('.console-line');
+    if (lines.length > 100) {
+        lines[0].remove();
+    }
+    
+    // Авто-скролл
+    output.scrollTop = output.scrollHeight;
+}
+
+function processCommand(command) {
+    const cmd = command.toLowerCase().split(' ')[0];
+    const args = command.split(' ').slice(1);
+    
+    switch(cmd) {
+        case 'help':
+            showHelp();
+            break;
+            
+        case 'clear':
+            document.getElementById('consoleOutput').innerHTML = '';
+            consoleLog('[SYSTEM] Консоль очищена', 'success');
+            break;
+            
+        case 'whoami':
+            consoleLog(`[USER] ${user.first_name} ${user.last_name || ''}`, 'info');
+            consoleLog(`[USER] @${user.username || 'no_username'}`, 'info');
+            consoleLog(`[USER] ID: ${user.id}`, 'info');
+            consoleLog(`[USER] Уровень: ${userLevel}`, 'info');
+            break;
+            
+        case 'status':
+            consoleLog(`[STATUS] Ачивки: ${achievements.size}`, 'info');
+            consoleLog(`[STATUS] Время в системе: ${formatTime(sessionTime)}`, 'info');
+            consoleLog(`[STATUS] Прогресс ARG: ${argProgress}/7`, 'info');
+            break;
+            
+        case 'hack':
+            hackSystem();
+            break;
+            
+        case 'secret':
+            showSecret();
+            break;
+            
+        case 'arg':
+            if (args.length > 0) {
+                processARG(args.join(' '));
+            } else {
+                consoleLog('[ARG] Используй: arg [команда]', 'warning');
+                consoleLog('[ARG] Доступные команды: start, hint, solve [ответ]', 'warning');
+            }
+            break;
+            
+        case 'projects':
+            listProjects();
+            break;
+            
+        case 'unlock':
+            if (args[0] === 'magic') {
+                unlockMagicProject();
+            } else {
+                consoleLog('[SYSTEM] Неизвестный код разблокировки', 'error');
+            }
+            break;
+            
+        case 'matrix':
+            toggleMatrix();
+            break;
+            
+        case 'echo':
+            consoleLog(args.join(' '), 'output');
+            break;
+            
+        case 'time':
+            const now = new Date();
+            consoleLog(`[TIME] ${now.toLocaleString('ru-RU')}`, 'info');
+            break;
+            
+        case 'test':
+            consoleLog('[TEST] Проверка связи... OK ✅', 'success');
+            unlockAchievement('console_master');
+            break;
+            
+        default:
+            consoleLog(`[ERROR] Неизвестная команда: "${cmd}"`, 'error');
+            consoleLog('[HELP] Введите "help" для списка команд', 'warning');
+    }
+}
+
+function showHelp() {
+    consoleLog('[HELP] Доступные команды:', 'success');
+    consoleLog('  help - показать это сообщение');
+    consoleLog('  clear - очистить консоль');
+    consoleLog('  whoami - информация о пользователе');
+    consoleLog('  status - статус системы');
+    consoleLog('  hack - хакнуть систему (пасхалка)');
+    consoleLog('  secret - показать секретный ключ');
+    consoleLog('  arg [команда] - взаимодействие с ARG квестом');
+    consoleLog('  projects - список проектов');
+    consoleLog('  unlock [код] - разблокировать проект');
+    consoleLog('  matrix - включить/выключить Matrix эффект');
+    consoleLog('  echo [текст] - повторить текст');
+    consoleLog('  time - текущее время');
+    consoleLog('  test - тестовая команда');
+}
+
+// ==================== ПРОЕКТЫ ====================
+function initProjects() {
+    const projects = [
+        {
+            id: 'rubeton',
+            title: 'RubetonChat',
+            description: 'Многофункциональный Telegram чат с модерацией',
+            icon: '🤖',
+            tags: ['Telegram', 'Node.js', 'Bot'],
+            locked: false
+        },
+        {
+            id: 'game',
+            title: 'Browser Game',
+            description: 'Интерактивная игра на Canvas и WebGL',
+            icon: '🎮',
+            tags: ['JavaScript', 'HTML5', 'Game'],
+            locked: false
+        },
+        {
+            id: 'vkbot',
+            title: 'VK Bot',
+            description: 'Умный бот для ВКонтакте с интеграцией API',
+            icon: '👾',
+            tags: ['VK API', 'Python', 'MySQL'],
+            locked: false
+        },
+        {
+            id: 'secret',
+            title: '[ЗАСЕКРЕЧЕНО]',
+            description: 'Проект под кодовым названием "МАГИЯ"',
+            icon: '🔒',
+            tags: ['Секретно', 'Магия', 'Артефакт'],
+            locked: true
+        },
+        {
+            id: 'arg_project',
+            title: 'ARG Project',
+            description: 'Интерактивный квест с реальными головоломками',
+            icon: '🕵️',
+            tags: ['ARG', 'Квест', 'Интерактив'],
+            locked: argProgress < 3
+        },
+        {
+            id: 'console_os',
+            title: 'Console OS',
+            description: 'Операционная система в браузере',
+            icon: '💻',
+            tags: ['OS', 'Консоль', 'JavaScript'],
+            locked: argProgress < 5
+        }
+    ];
+    
+    const container = document.getElementById('projectsGrid');
+    container.innerHTML = '';
+    
+    projects.forEach(project => {
+        const card = document.createElement('div');
+        card.className = `project-card ${project.locked ? 'locked' : ''}`;
+        card.id = `project-${project.id}`;
+        card.innerHTML = `
+            <div class="project-icon">${project.icon}</div>
+            <h3 class="project-title">${project.title}</h3>
+            <p class="project-desc">${project.description}</p>
+            <div class="project-tags">
+                ${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+            </div>
+        `;
+        
+        if (!project.locked) {
+            card.addEventListener('click', () => {
+                consoleLog(`[PROJECT] Открыт проект: ${project.title}`, 'success');
+            });
+        }
+        
+        container.appendChild(card);
+    });
+}
+
+function listProjects() {
+    consoleLog('[PROJECTS] Доступные проекты:', 'success');
+    consoleLog('  1. RubetonChat - Telegram чат бот');
+    consoleLog('  2. Browser Game - игра на Canvas');
+    consoleLog('  3. VK Bot - бот для ВКонтакте');
+    
+    if (!document.getElementById('project-secret').classList.contains('locked')) {
+        consoleLog('  4. [СЕКРЕТ] - магический проект');
+    }
+    
+    if (argProgress >= 3) {
+        consoleLog('  5. ARG Project - интерактивный квест');
+    }
+    
+    if (argProgress >= 5) {
+        consoleLog('  6. Console OS - ОС в браузере');
+    }
+}
+
+function unlockMagicProject() {
+    if (achievements.has('magic_key')) {
+        const secretProject = document.getElementById('project-secret');
+        secretProject.classList.remove('locked');
+        secretProject.querySelector('.project-title').textContent = 'Магический Артефакт';
+        secretProject.querySelector('.project-desc').textContent = 'Древний артефакт, содержащий секреты вселенной кода';
+        secretProject.querySelector('.project-icon').textContent = '✨';
+        
+        consoleLog('[PROJECT] Секретный проект разблокирован!', 'secret');
+        unlockAchievement('project_unlocker');
+    } else {
+        consoleLog('[PROJECT] Тебе нужен магический ключ!', 'error');
+    }
+}
+
+// ==================== ARG КВЕСТ ====================
+function initARG() {
+    localStorage.setItem('artemoska_arg', argProgress.toString());
+    updateARGDisplay();
+}
+
+function updateARGDisplay() {
+    const container = document.getElementById('argContainer');
+    container.innerHTML = '';
+    
+    const steps = [
+        { id: 1, title: 'Начало пути', desc: 'Найди секретный ключ в консоли' },
+        { id: 2, title: 'Код доступа', desc: 'Разблокируй секретный проект' },
+        { id: 3, title: 'Хакерский вызов', desc: 'Взломай систему с помощью команды' },
+        { id: 4, title: 'Таймер магии', desc: 'Проведи в системе более 5 минут' },
+        { id: 5, title: 'Загадка кода', desc: 'Найди скрытое сообщение в исходном коде' },
+        { id: 6, title: 'Финал квеста', desc: 'Собери все части пазла' },
+        { id: 7, title: 'Мастер ARG', desc: 'Заверши все испытания' }
+    ];
+    
+    steps.forEach(step => {
+        const stepEl = document.createElement('div');
+        stepEl.className = `arg-step ${step.id < argProgress ? 'completed' : 
+                                 step.id === argProgress ? 'active' : ''}`;
+        stepEl.innerHTML = `
+            <h4>Шаг ${step.id}: ${step.title}</h4>
+            <p>${step.desc}</p>
+            ${step.id < argProgress ? '<span style="color: var(--green);">✓ Выполнено</span>' : 
+              step.id === argProgress ? '<span style="color: var(--yellow);">● В процессе</span>' : 
+              '<span style="opacity: 0.5;">🔒 Заблокировано</span>'}
+        `;
+        container.appendChild(stepEl);
+    });
+}
+
+function processARG(input) {
+    switch(argProgress) {
+        case 1:
+            if (input.toLowerCase().includes('magic_is_real')) {
+                consoleLog('[ARG] Правильно! Ключ принят.', 'success');
+                argProgress = 2;
+                unlockAchievement('arg_starter');
+                updateARGDisplay();
+                showARGHint();
+            } else {
+                consoleLog('[ARG] Неверный ответ. Ищи подсказку в консоли.', 'error');
+            }
+            break;
+            
+        case 2:
+            if (input.toLowerCase().includes('unlock magic')) {
+                consoleLog('[ARG] Отлично! Проект разблокирован.', 'success');
+                argProgress = 3;
+                updateARGDisplay();
+                showARGHint();
+            }
+            break;
+            
+        case 3:
+            if (input.toLowerCase().includes('hack')) {
+                consoleLog('[ARG] Взлом выполнен успешно!', 'success');
+                argProgress = 4;
+                updateARGDisplay();
+                showARGHint();
+            }
+            break;
+            
+        case 4:
+            if (sessionTime > 300) { // 5 минут
+                consoleLog('[ARG] Время вышло! Ты прошёл испытание.', 'success');
+                argProgress = 5;
+                unlockAchievement('time_traveler');
+                updateARGDisplay();
+                showARGHint();
+            } else {
+                consoleLog(`[ARG] Нужно провести в системе больше времени. Осталось: ${300 - sessionTime} сек`, 'warning');
+            }
+            break;
+            
+        case 5:
+            // Проверка ответа на загадку в исходном коде
+            if (input.toLowerCase().includes('telegram')) {
+                consoleLog('[ARG] Верно! Ты нашёл скрытое сообщение.', 'success');
+                argProgress = 6;
+                updateARGDisplay();
+                showARGHint();
+            }
+            break;
+            
+        case 6:
+            if (input.toLowerCase().includes('artemoska')) {
+                consoleLog('[ARG] Поздравляю! Ты завершил квест!', 'secret');
+                argProgress = 7;
+                unlockAchievement('arg_solver');
+                updateARGDisplay();
+                showARGCompletion();
+            }
+            break;
+            
+        default:
+            consoleLog('[ARG] Квест завершён!', 'success');
+    }
+    
+    localStorage.setItem('artemoska_arg', argProgress.toString());
+}
+
+function showARGHint() {
+    const hints = [
+        'Подсказка: Используй команду "secret"',
+        'Подсказка: Разблокируй секретный проект',
+        'Подсказка: Попробуй команду "hack"',
+        'Подсказка: Проведи больше времени в системе',
+        'Подсказка: Ищи в исходном коде страницы',
+        'Подсказка: Ответ в названии системы',
+        'Ты завершил все шаги!'
+    ];
+    
+    consoleLog(`[ARG HINT] ${hints[argProgress - 1]}`, 'warning');
+}
+
+function showARGCompletion() {
+    consoleLog('[ARG] 🎉 Поздравляем с завершением ARG квеста!', 'secret');
+    consoleLog('[ARG] Ты доказал, что достоин звания Мастера Системы!', 'secret');
+}
+
+// ==================== ПРИКОЛЫ И СЕКРЕТКИ ====================
+function hackSystem() {
+    consoleLog('[HACK] Начинаю взлом системы...', 'warning');
+    setTimeout(() => {
+        consoleLog('[HACK] Подключаюсь к основному ядру...', 'warning');
+        setTimeout(() => {
+            consoleLog('[HACK] Обхожу защиту...', 'warning');
+            setTimeout(() => {
+                consoleLog('[HACK] ВЗЛОМ УСПЕШЕН!', 'secret');
+                consoleLog('[HACK] Доступ к секретным функциям получен', 'secret');
+                
+                // Визуальные эффекты
+                document.body.style.animation = 'glitch 0.3s infinite';
+                setTimeout(() => {
+                    document.body.style.animation = '';
+                }, 1000);
+                
+                unlockAchievement('hacker');
+                
+                // Разблокируем дополнительные команды
+                setTimeout(() => {
+                    consoleLog('[SYSTEM] Новая команда доступна: "sudo"', 'success');
+                }, 1500);
+            }, 1000);
+        }, 1000);
+    }, 1000);
+}
+
+function showSecret() {
+    unlockAchievement('secret_finder');
+    
+    // Показываем модалку с секретом
+    document.getElementById('secretModal').classList.add('active');
+    
+    // Даём магический ключ
+    unlockAchievement('magic_key');
+    
+    consoleLog('[SECRET] Магический ключ получен!', 'secret');
+}
+
+function toggleMatrix() {
+    const bg = document.getElementById('matrixBg');
+    if (bg.style.display === 'none') {
+        bg.style.display = 'block';
+        consoleLog('[MATRIX] Эффект Matrix включён', 'success');
+    } else {
+        bg.style.display = 'none';
+        consoleLog('[MATRIX] Эффект Matrix выключен', 'success');
+    }
+}
+
+// ==================== MATRIX ЭФФЕКТ ====================
+function initMatrix() {
+    const bg = document.getElementById('matrixBg');
+    const canvas = document.createElement('canvas');
+    bg.appendChild(canvas);
+    
+    const ctx = canvas.getContext('2d');
+    
+    // Размеры
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+    
+    // Символы
+    const chars = '01';
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = [];
+    
+    for (let i = 0; i < columns; i++) {
+        drops[i] = 1;
+    }
+    
+    // Рисование
+    function draw() {
+        ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.fillStyle = '#0F0';
+        ctx.font = `${fontSize}px monospace`;
+        
+        for (let i = 0; i < drops.length; i++) {
+            const text = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            drops[i]++;
+        }
+    }
+    
+    // Анимация
+    setInterval(draw, 50);
+}
+
+// ==================== УТИЛИТЫ ====================
+function updateStatusBar() {
+    document.getElementById('statusAch').textContent = `Ачивки: ${achievements.size}`;
+    document.getElementById('statusLevel').textContent = `Уровень: ${userLevel}`;
+}
+
+function updateTime() {
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString('ru-RU');
+    document.getElementById('statusTime').textContent = timeStr;
+}
+
+function formatTime(seconds) {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+}
+
+function closeModal() {
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.classList.remove('active');
+    });
+}
+
+function logout() {
+    if (confirm('Выйти из системы?')) {
+        localStorage.clear();
+        location.reload();
+    }
+}
+
+// ==================== СЕКРЕТНЫЕ КОМАНДЫ ====================
+// Эти команды активируются при определенных условиях
+window.secretCommands = {
+    sudo: () => {
+        if (achievements.has('hacker')) {
+            consoleLog('[SUDO] Root доступ получен!', 'secret');
+            consoleLog('[SUDO] Запускаю скрытые процессы...', 'secret');
+            
+            // Активируем все проекты
+            document.querySelectorAll('.project-card.locked').forEach(card => {
+                card.classList.remove('locked');
+            });
+            
+            unlockAchievement('project_unlocker');
+        } else {
+            consoleLog('[SUDO] Отказано в доступе. Нужны права хакера.', 'error');
+        }
+    },
+    
+    // Другие секретные команды...
+};
+
+// Глобальные обработчики
+window.addEventListener('keydown', function(e) {
+    // Konami Code: ↑↑↓↓←→←→BA
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || 
+        e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        // Тут можно добавить обработчик Konami Code
+    }
+    
+    // Секретные хоткеи
+    if (e.ctrlKey && e.shiftKey && e.key === 'M') {
+        showSecret();
+    }
+});
+
+// Инициализация завершена
+consoleLog('[SYSTEM] Система Artemoska Terminal загружена', 'success');
 </script>
-
-<!-- MAGIC -->
 </body>
 </html>
