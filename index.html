@@ -1313,6 +1313,97 @@ footer {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+/* Telegram Auth Styles */
+.telegram-auth-window {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    z-index: 10001;
+    max-width: 400px;
+    width: 90%;
+    display: none;
+}
+
+.telegram-auth-window.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+.telegram-auth-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.telegram-auth-header h3 {
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+}
+
+.telegram-auth-qr {
+    text-align: center;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: var(--gray-light);
+    border-radius: 10px;
+}
+
+.telegram-auth-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.telegram-btn {
+    background: #0088cc;
+    color: white;
+}
+
+.telegram-btn:hover {
+    background: #0077b3;
+}
+
+.telegram-auth-instructions {
+    background: rgba(0, 136, 204, 0.1);
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.telegram-auth-instructions ol {
+    margin-left: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.telegram-auth-instructions li {
+    margin-bottom: 0.5rem;
+}
+
+.telegram-auth-code {
+    text-align: center;
+    padding: 1rem;
+    background: var(--gray-light);
+    border-radius: 10px;
+}
+
+.auth-code-display {
+    font-family: 'Courier New', monospace;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary);
+    background: white;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    letter-spacing: 2px;
+    border: 2px dashed var(--primary);
+}
 </style>
 </head>
 
@@ -2599,6 +2690,266 @@ footer {
             }
         `;
         document.head.appendChild(style);
+    // ==================== REAL TELEGRAM AUTH ====================
+// Замени эти данные на свои!
+const TELEGRAM_BOT_TOKEN = 'ВАШ_ТОКЕН_БОТА'; // Токен от @BotFather
+const TELEGRAM_BOT_USERNAME = 'artemoska_auth_bot'; // Username вашего бота
+
+// Хранилище кодов (в реальном проекте нужно хранить на сервере)
+let authCodes = {};
+
+// Показать окно Telegram авторизации
+function showTelegramAuth() {
+    // Скрыть другие окна авторизации
+    hideAuthWindow();
+    
+    // Показать Telegram окно
+    document.getElementById('telegramAuthWindow').classList.add('active');
+    document.getElementById('authOverlay').classList.add('active');
+    
+    // Генерируем код
+    generateAuthCode();
+}
+
+// Генерация кода авторизации
+function generateAuthCode() {
+    const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const userId = Date.now();
+    
+    // Сохраняем код
+    authCodes[code] = {
+        userId: userId,
+        timestamp: Date.now(),
+        used: false
+    };
+    
+    // Показываем код пользователю
+    document.getElementById('authCodeDisplay').innerHTML = `
+        <div style="font-size: 2rem; color: var(--primary);">${code}</div>
+        <p style="font-size: 0.8rem; color: var(--text-light); margin-top: 0.5rem;">
+            Код действителен 5 минут
+        </p>
+    `;
+    
+    // Генерируем QR код
+    generateQRCode(code);
+    
+    // Таймер для очистки кода
+    setTimeout(() => {
+        if (authCodes[code] && !authCodes[code].used) {
+            delete authCodes[code];
+            showNotification('⏰ Код истёк. Сгенерируйте новый.', 'warning');
+            generateNewCode();
+        }
+    }, 5 * 60 * 1000); // 5 минут
+    
+    return code;
+}
+
+// Генерация QR кода
+function generateQRCode(code) {
+    const qrContainer = document.getElementById('telegramQr');
+    const botUrl = `https://t.me/${TELEGRAM_BOT_USERNAME}?start=${code}`;
+    
+    // Используем Google Charts API для QR кода
+    qrContainer.innerHTML = `
+        <img src="https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=${encodeURIComponent(botUrl)}" 
+             alt="QR Code" style="border-radius: 8px;">
+        <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-light);">
+            Отсканируйте для быстрого перехода
+        </p>
+    `;
+}
+
+// Открыть бота в Telegram
+function openTelegramBot() {
+    const code = document.querySelector('#authCodeDisplay div').textContent;
+    const botUrl = `https://t.me/${TELEGRAM_BOT_USERNAME}?start=${code}`;
+    window.open(botUrl, '_blank');
+}
+
+// Скопировать ссылку на бота
+function copyBotLink() {
+    const code = document.querySelector('#authCodeDisplay div').textContent;
+    const botUrl = `https://t.me/${TELEGRAM_BOT_USERNAME}?start=${code}`;
+    
+    navigator.clipboard.writeText(botUrl)
+        .then(() => showNotification('✅ Ссылка скопирована в буфер', 'success'))
+        .catch(() => {
+            // Fallback для старых браузеров
+            const textArea = document.createElement('textarea');
+            textArea.value = botUrl;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            showNotification('✅ Ссылка скопирована', 'success');
+        });
+}
+
+// Сгенерировать новый код
+function generateNewCode() {
+    generateAuthCode();
+    showNotification('🔄 Новый код сгенерирован', 'info');
+}
+
+// Закрыть окно Telegram авторизации
+function closeTelegramAuth() {
+    document.getElementById('telegramAuthWindow').classList.remove('active');
+    document.getElementById('authOverlay').classList.remove('active');
+}
+
+// ==================== СЕРВЕРНАЯ ЧАСТЬ (НЕОБХОДИМА!) ====================
+// Тебе нужен сервер для проверки кодов. Вот простой вариант на Node.js:
+
+/*
+// server.js (нужно запустить на хостинге)
+const express = require('express');
+const TelegramBot = require('node-telegram-bot-api');
+const cors = require('cors');
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+const botToken = 'ВАШ_ТОКЕН_БОТА';
+const bot = new TelegramBot(botToken, { polling: true });
+
+// Хранилище кодов (в реальном проекте используй базу данных)
+const activeCodes = new Map();
+
+// Команда /start в боте
+bot.onText(/\/start (.+)/, (msg, match) => {
+    const chatId = msg.chat.id;
+    const code = match[1];
+    
+    if (activeCodes.has(code)) {
+        const userData = activeCodes.get(code);
+        if (!userData.used && (Date.now() - userData.timestamp) < 5 * 60 * 1000) {
+            // Код валиден
+            userData.used = true;
+            userData.telegramId = chatId;
+            userData.username = msg.from.username;
+            userData.firstName = msg.from.first_name;
+            
+            bot.sendMessage(chatId, 
+                `✅ Авторизация успешна!\n\n` +
+                `Добро пожаловать, ${msg.from.first_name}!\n` +
+                `Вы можете закрыть это окно и вернуться на сайт.`
+            );
+        } else {
+            bot.sendMessage(chatId, '❌ Код истёк или уже использован.');
+        }
+    } else {
+        bot.sendMessage(chatId, '❌ Неверный код авторизации.');
+    }
+});
+
+// Эндпоинт для проверки кода
+app.post('/verify-code', (req, res) => {
+    const { code, userId } = req.body;
+    
+    if (activeCodes.has(code)) {
+        const data = activeCodes.get(code);
+        if (data.userId === userId && data.used && data.telegramId) {
+            // Авторизация успешна
+            activeCodes.delete(code);
+            res.json({
+                success: true,
+                user: {
+                    id: data.telegramId,
+                    username: data.username,
+                    firstName: data.firstName
+                }
+            });
+        } else {
+            res.json({ success: false, error: 'Код не подтверждён' });
+        }
+    } else {
+        res.json({ success: false, error: 'Код не найден' });
+    }
+});
+
+// Эндпоинт для создания кода
+app.post('/create-code', (req, res) => {
+    const { userId } = req.body;
+    const code = Math.random().toString(36).substring(2, 8).toUpperCase();
+    
+    activeCodes.set(code, {
+        userId: userId,
+        timestamp: Date.now(),
+        used: false
+    });
+    
+    res.json({ code: code });
+});
+
+app.listen(3000, () => {
+    console.log('Server running on port 3000');
+});
+*/
+
+// ==================== КЛИЕНТСКАЯ ПРОВЕРКА ====================
+// Эта функция будет проверять статус кода через сервер
+async function checkAuthStatus(userId, code) {
+    // Вместо этого URL укажи адрес своего сервера
+    const serverUrl = 'https://твой-сервер.herokuapp.com';
+    
+    try {
+        const response = await fetch(`${serverUrl}/verify-code`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: userId, code: code })
+        });
+        
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Ошибка проверки кода:', error);
+        return { success: false, error: 'Ошибка сети' };
+    }
+}
+
+// Функция для опроса сервера (пока пользователь не авторизуется)
+function startPollingForAuth(userId, code) {
+    const interval = setInterval(async () => {
+        const result = await checkAuthStatus(userId, code);
+        
+        if (result.success) {
+            clearInterval(interval);
+            
+            // Пользователь авторизован
+            currentUser = {
+                id: result.user.id,
+                firstName: result.user.firstName,
+                username: result.user.username,
+                source: 'telegram'
+            };
+            
+            localStorage.setItem('artemoska_user', JSON.stringify(currentUser));
+            unlockAchievement('welcome');
+            updateUIForUser();
+            showSecretContent();
+            closeTelegramAuth();
+            showNotification(`✅ Авторизация через Telegram успешна!`);
+        }
+    }, 3000); // Проверяем каждые 3 секунды
+    
+    // Останавливаем через 5 минут
+    setTimeout(() => {
+        clearInterval(interval);
+        showNotification('⏰ Время авторизации истекло', 'warning');
+    }, 5 * 60 * 1000);
+}
+
+// Обновляем кнопку "Войти через Telegram" в основном окне авторизации
+document.getElementById('telegramBtn').onclick = showTelegramAuth;
+
+// Добавляем обработчик закрытия
+document.getElementById('authOverlay').addEventListener('click', function() {
+    closeTelegramAuth();
+    hideAuthWindow();
+});
     </script>
 
     <!-- Yandex.RTB R-A-18551594-2 -->
