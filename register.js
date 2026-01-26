@@ -1,5 +1,4 @@
-import emailjs from "https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js";
-
+// Инициализация EmailJS
 emailjs.init("dqDwAfC5HAi1bp0q3"); // твой Public Key
 
 const sendCodeBtn = document.getElementById("sendCodeBtn");
@@ -10,7 +9,7 @@ const message = document.getElementById("message");
 
 let generatedCode = "";
 
-sendCodeBtn.onclick = async () => {
+sendCodeBtn.onclick = function () {
   const email = emailInput.value.trim();
   if (!email) {
     message.textContent = "Введите email";
@@ -19,24 +18,20 @@ sendCodeBtn.onclick = async () => {
 
   generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-  try {
-    // Проверка, что переменные точно совпадают с шаблоном
-    await emailjs.send(
-      "artemoska",               // Service ID
-      "template_8kpkiyr",        // Template ID
-      {
-        to_email: email,         // Должно совпадать с {{to_email}} в шаблоне
-        code: generatedCode      // Должно совпадать с {{code}} в шаблоне
-      }
-    );
+  emailjs.send(
+    "artemoska",               // Service ID
+    "template_8kpkiyr",        // Template ID
+    { to_email: email, code: generatedCode }
+  )
+  .then(function() {
     message.textContent = "Код отправлен на почту";
-  } catch (err) {
-    console.error(err); // Смотри здесь ошибку EmailJS
+  }, function(err) {
+    console.error(err);
     message.textContent = "Ошибка отправки, смотри консоль";
-  }
+  });
 };
 
-verifyBtn.onclick = () => {
+verifyBtn.onclick = function () {
   if (!generatedCode) {
     message.textContent = "Сначала получите код";
     return;
