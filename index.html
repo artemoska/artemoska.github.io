@@ -10,30 +10,14 @@ gtag('js', new Date());
 gtag('config', 'G-TZY49R07HS');
 </script>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Artemoska | Web Developer</title>
 <meta name="description" content="Artemoska - разработчик Telegram ботов, веб-приложений и игр. Создаю магию с помощью JavaScript.">
 <meta name="keywords" content="Artemoska, программист, разработчик, Telegram боты, JavaScript, портфолио">
-<meta name="theme-color" content="#6366f1">
-
-<!-- Open Graph для Telegram Web App -->
-<meta property="og:title" content="Artemoska | Web Developer">
-<meta property="og:description" content="Разработчик Telegram ботов, веб-приложений и игр">
-<meta property="og:url" content="https://artemoska.github.io">
-<meta property="og:type" content="website">
-
-<!-- Твиттер карточки -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Artemoska | Web Developer">
-<meta name="twitter:description" content="Разработчик Telegram ботов, веб-приложений и игр">
-
-<!-- Telegram Web App -->
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-/* ВСЁ ТВОЁ КАК БЫЛО + ДОБАВЛЕНА АДАПТИВНОСТЬ */
+/* ВСЁ ТВОЁ КАК БЫЛО */
 :root {
     --primary: #6366f1;
     --primary-light: #818cf8;
@@ -50,50 +34,18 @@ gtag('config', 'G-TZY49R07HS');
     --warning: #f59e0b;
     --danger: #ef4444;
     --info: #3b82f6;
-    
-    /* Переменные для платформ */
-    --safe-area-inset-top: env(safe-area-inset-top);
-    --safe-area-inset-bottom: env(safe-area-inset-bottom);
-    --safe-area-inset-left: env(safe-area-inset-left);
-    --safe-area-inset-right: env(safe-area-inset-right);
-}
-
-/* Для Telegram Web App */
-:root.telegram-webapp {
-    --light: var(--tg-theme-bg-color, #f9fafb);
-    --text: var(--tg-theme-text-color, #374151);
-    --dark: var(--tg-theme-text-color, #1f2937);
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-}
-
-html {
-    scroll-behavior: smooth;
-    overflow-x: hidden;
-    scrollbar-width: thin;
-    scrollbar-color: var(--primary) var(--gray-light);
-}
-
-body {
-    background-color: var(--light);
-    color: var(--text);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    line-height: 1.6;
-    overflow-x: hidden;
-    min-height: 100vh;
-    padding-top: var(--safe-area-inset-top);
-    padding-bottom: var(--safe-area-inset-bottom);
 }
 
 /* Кастомный скроллбар */
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 12px;
+    height: 12px;
 }
 
 ::-webkit-scrollbar-track {
@@ -104,13 +56,28 @@ body {
 ::-webkit-scrollbar-thumb {
     background: var(--primary);
     border-radius: 10px;
+    border: 3px solid var(--gray-light);
 }
 
 ::-webkit-scrollbar-thumb:hover {
     background: var(--primary-dark);
 }
 
-/* Геометрический фон */
+/* Для Firefox */
+html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) var(--gray-light);
+}
+
+body {
+    background-color: var(--light);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Анимированный фон с тонкими линиями */
 .geometric-bg {
     position: fixed;
     top: 0;
@@ -138,29 +105,34 @@ body {
 }
 
 @keyframes grid-move {
-    0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
-    100% { transform: perspective(500px) rotateX(60deg) translateY(40px); }
+    0% {
+        transform: perspective(500px) rotateX(60deg) translateY(0);
+    }
+    100% {
+        transform: perspective(500px) rotateX(60deg) translateY(40px);
+    }
 }
 
-/* Прогресс бар */
+/* Индикатор прогресса прокрутки */
 .progress-container {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 3px;
+    height: 4px;
     background: transparent;
     z-index: 10000;
 }
 
 .progress-bar {
-    height: 100%;
+    height: 4px;
     background: var(--primary);
     width: 0%;
     transition: width 0.3s ease;
+    box-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary);
 }
 
-/* Кнопка "Наверх" - только для ПК */
+/* Кнопка "Наверх" */
 .scroll-to-top {
     position: fixed;
     bottom: 30px;
@@ -181,12 +153,6 @@ body {
     box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
 }
 
-@media (max-width: 768px) {
-    .scroll-to-top {
-        display: none; /* Скрываем на мобилках */
-    }
-}
-
 .scroll-to-top.visible {
     opacity: 1;
     transform: translateY(0);
@@ -198,10 +164,10 @@ body {
     box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
 }
 
-/* Шапка */
+/* Шапка с фиксированной навигацией */
 header {
     background: rgba(255, 255, 255, 0.95);
-    padding: 1rem;
+    padding: 1.5rem 1rem;
     text-align: center;
     border-bottom: 1px solid var(--gray);
     position: sticky;
@@ -211,26 +177,23 @@ header {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 
-@media (max-width: 768px) {
-    header {
-        padding: 0.75rem;
-    }
-}
-
 .header-content {
+    position: relative;
+    z-index: 1;
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: relative;
 }
 
 .brand-logo {
-    font-size: clamp(1.8rem, 5vw, 2.2rem);
+    font-size: 2.2rem;
     font-weight: 700;
     color: var(--primary);
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+    letter-spacing: -1px;
     background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -238,14 +201,14 @@ header {
 
 h1 {
     color: var(--dark);
-    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-size: 2rem;
     margin-bottom: 0.5rem;
     font-weight: 600;
 }
 
 .header-subtitle {
     color: var(--text-light);
-    font-size: clamp(0.9rem, 3vw, 1.1rem);
+    font-size: 1.1rem;
     margin-bottom: 1rem;
     font-weight: 400;
 }
@@ -253,143 +216,69 @@ h1 {
 /* Навигация */
 .nav-links {
     display: flex;
-    gap: 1rem;
+    gap: 1.5rem;
     margin-top: 1rem;
     flex-wrap: wrap;
     justify-content: center;
-    max-width: 100%;
-    overflow-x: auto;
-    padding-bottom: 0.5rem;
-    -webkit-overflow-scrolling: touch;
-}
-
-@media (max-width: 768px) {
-    .nav-links {
-        gap: 0.75rem;
-        justify-content: flex-start;
-        padding: 0 0.5rem 0.5rem;
-    }
 }
 
 .nav-link {
     color: var(--text);
     text-decoration: none;
     font-weight: 500;
-    padding: 0.5rem 0.75rem;
-    white-space: nowrap;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-    font-size: 0.95rem;
-    min-height: 44px;
-    display: flex;
-    align-items: center;
+    position: relative;
+    padding: 0.5rem 0;
+    transition: all 0.3s ease;
 }
 
-@media (max-width: 768px) {
-    .nav-link {
-        padding: 0.4rem 0.6rem;
-        font-size: 0.9rem;
-    }
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary);
+    transition: width 0.3s ease;
 }
 
-.nav-link:hover,
-.nav-link:active {
-    background: rgba(99, 102, 241, 0.1);
+.nav-link:hover {
     color: var(--primary);
 }
 
-/* Мобильное меню (скрытое по умолчанию) */
-.mobile-menu-btn {
-    display: none;
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    z-index: 1001;
-    background: var(--primary);
-    color: white;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    border: none;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+.nav-link:hover::after {
+    width: 100%;
 }
 
-@media (max-width: 768px) {
-    .mobile-menu-btn {
-        display: flex;
-    }
-    .nav-links {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: white;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 1rem;
-        z-index: 1000;
-        padding: 2rem;
-        overflow-y: auto;
-    }
-    .nav-links.active {
-        display: flex;
-    }
-    .nav-link {
-        width: 100%;
-        max-width: 300px;
-        justify-content: center;
-        padding: 1rem;
-        font-size: 1.1rem;
-    }
-}
-
-/* Контейнер */
+/* Основное содержимое */
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: clamp(1rem, 3vw, 2rem);
+    padding: 2rem;
 }
 
 /* Секции */
 section {
     background: white;
-    margin: clamp(1.5rem, 4vw, 3rem) 0;
-    padding: clamp(1.25rem, 3vw, 2.5rem);
-    border-radius: clamp(12px, 2vw, 16px);
+    margin: 3rem 0;
+    padding: 2.5rem;
+    border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
     transition: all 0.3s ease;
     border: 1px solid var(--gray);
 }
 
-.telegram-webapp section {
-    background: var(--tg-theme-bg-color, white);
-    border-color: var(--tg-theme-hint-color, #e5e7eb);
-}
-
 section:hover {
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-    transform: translateY(-2px);
-}
-
-@media (max-width: 768px) {
-    section {
-        margin: 1.25rem 0;
-        padding: 1.5rem;
-    }
-    section:hover {
-        transform: none; /* Убираем hover-эффект на мобилках */
-    }
+    transform: translateY(-5px);
 }
 
 h2 {
     color: var(--dark);
-    margin-bottom: 1.25rem;
-    font-size: clamp(1.4rem, 3vw, 1.8rem);
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
     font-weight: 700;
     position: relative;
     display: inline-block;
@@ -407,10 +296,29 @@ h2::after {
 }
 
 p {
-    margin-bottom: 1.25rem;
-    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
     color: var(--text);
-    font-size: clamp(0.95rem, 2vw, 1rem);
+}
+
+ul {
+    list-style-type: none;
+    margin-bottom: 1.5rem;
+}
+
+li {
+    margin-bottom: 0.8rem;
+    position: relative;
+    padding-left: 1.5rem;
+    color: var(--text);
+}
+
+li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--primary);
+    font-weight: bold;
 }
 
 /* Кнопки */
@@ -418,35 +326,27 @@ p {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: clamp(0.75rem, 2vw, 0.9rem) clamp(1.25rem, 2vw, 1.7rem);
+    padding: 0.9rem 1.7rem;
     background: var(--primary);
     color: white;
     border: none;
     border-radius: 10px;
-    font-family: inherit;
-    font-size: clamp(0.85rem, 2vw, 0.95rem);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
     text-decoration: none;
-    margin: 0.5rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
     position: relative;
     overflow: hidden;
-    min-height: 44px;
-    -webkit-user-select: none;
-    user-select: none;
 }
 
-.telegram-webapp .btn {
-    background: var(--tg-theme-button-color, var(--primary));
-    color: var(--tg-theme-button-text-color, white);
-}
-
-.btn:hover,
-.btn:active {
+.btn:hover {
     background: var(--primary-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.25);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.25);
 }
 
 .btn i {
@@ -469,14 +369,14 @@ p {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 1.5rem;
+    gap: 1rem;
+    margin-top: 2rem;
 }
 
 .social-link {
     display: flex;
     align-items: center;
-    padding: 0.75rem 1.25rem;
+    padding: 0.9rem 1.5rem;
     background: white;
     color: var(--text);
     border-radius: 10px;
@@ -484,25 +384,12 @@ p {
     transition: all 0.3s ease;
     border: 1px solid var(--gray);
     font-weight: 500;
-    font-size: 0.95rem;
-    white-space: nowrap;
-    min-height: 44px;
 }
 
-@media (max-width: 480px) {
-    .social-link {
-        flex: 1;
-        min-width: 140px;
-        justify-content: center;
-        padding: 0.75rem;
-    }
-}
-
-.social-link:hover,
-.social-link:active {
+.social-link:hover {
     background: var(--primary);
     color: white;
-    transform: translateY(-2px);
+    transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     border-color: var(--primary);
 }
@@ -512,27 +399,38 @@ p {
     font-size: 1.2rem;
 }
 
+.telegram {
+    color: var(--info);
+}
+
+.github {
+    color: var(--dark);
+}
+
+.email {
+    color: var(--danger);
+}
+
+.social-link:hover i {
+    color: white !important;
+}
+
 /* Навыки */
 .skills-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1.5rem;
-}
-
-@media (max-width: 768px) {
-    .skills-container {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
+    gap: 1.8rem;
+    margin-top: 2rem;
 }
 
 .skill-card {
     background: white;
     border: 1px solid var(--gray);
     border-radius: 12px;
-    padding: 1.5rem;
+    padding: 1.8rem;
     transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
 }
 
 .skill-card:hover {
@@ -546,21 +444,51 @@ p {
     display: flex;
     align-items: center;
     font-weight: 600;
-    font-size: 1.1rem;
 }
 
 .skill-card h3 i {
     margin-right: 0.8rem;
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     color: var(--primary);
+}
+
+.skill-level {
+    height: 10px;
+    background: var(--gray-light);
+    border-radius: 5px;
+    margin-top: 1.2rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.skill-level::before {
+    content: attr(data-level);
+    position: absolute;
+    right: 5px;
+    top: -22px;
+    font-size: 0.75rem;
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+.skill-level-bar {
+    height: 100%;
+    background: linear-gradient(to right, var(--primary), var(--primary-light));
+    border-radius: 5px;
+    width: 0;
+    transition: width 1.5s ease-out;
+}
+
+.skill-card:hover .skill-level-bar {
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.3);
 }
 
 /* Проекты */
 .projects-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
-    gap: 1.5rem;
-    margin-top: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+    gap: 2.2rem;
+    margin-top: 2rem;
 }
 
 .project-card {
@@ -569,123 +497,86 @@ p {
     border-radius: 14px;
     overflow: hidden;
     transition: all 0.3s ease;
+    position: relative;
 }
 
 .project-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
     border-color: var(--primary-light);
 }
 
-@media (max-width: 768px) {
-    .project-card:hover {
-        transform: translateY(-3px);
-    }
-}
-
 .project-image {
-    height: clamp(160px, 25vw, 200px);
+    height: 200px;
     background: var(--gray-light);
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--primary);
-    font-size: clamp(2.5rem, 5vw, 3.2rem);
+    font-size: 3.2rem;
+    position: relative;
+    overflow: hidden;
 }
 
 .project-content {
-    padding: 1.5rem;
+    padding: 1.8rem;
 }
 
 .project-content h3 {
     color: var(--dark);
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.8rem;
     font-weight: 600;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
 }
 
 .project-content p {
     color: var(--text-light);
     font-size: 0.95rem;
-    margin-bottom: 1.25rem;
-    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
 }
 
-/* Таймлайн */
-.timeline {
-    position: relative;
-    max-width: 100%;
-    margin: 2rem auto;
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 1.8rem;
 }
 
-.timeline::after {
-    content: '';
-    position: absolute;
-    width: 2px;
-    background: var(--gray);
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    margin-left: -1px;
+.project-tag {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary);
+    padding: 0.4rem 0.9rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+    font-weight: 500;
 }
 
-@media (max-width: 768px) {
-    .timeline::after {
-        left: 31px;
-    }
+.project-card:hover .project-tag {
+    background: rgba(99, 102, 241, 0.2);
 }
 
-.timeline-item {
-    padding: 10px 40px;
-    position: relative;
-    width: 50%;
-    box-sizing: border-box;
-}
-
-@media (max-width: 768px) {
-    .timeline-item {
-        width: 100%;
-        padding-left: 70px;
-        padding-right: 25px;
-    }
-}
-
-.timeline-item::after {
-    content: '';
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    background: var(--primary);
-    border: 3px solid white;
-    border-radius: 50%;
-    top: 16px;
-    z-index: 1;
-    box-shadow: 0 0 0 3px var(--primary-light);
-}
-
-.left { left: 0; }
-.right { left: 50%; }
-
-@media (max-width: 768px) {
-    .right { left: 0; }
-    .left::after,
-    .right::after { left: 21px; }
+.project-links {
+    display: flex;
+    gap: 1rem;
 }
 
 /* Футер */
 footer {
     background: white;
     text-align: center;
-    padding: clamp(2rem, 5vw, 4rem) 1rem;
+    padding: 4rem 1rem;
     border-top: 1px solid var(--gray);
-    margin-top: 3rem;
+    margin-top: 4rem;
 }
 
 .footer-logo {
-    font-size: clamp(1.8rem, 4vw, 2.2rem);
+    font-size: 2.2rem;
     font-weight: 700;
     color: var(--primary);
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    display: inline-block;
     background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -693,56 +584,17 @@ footer {
 
 .footer-text {
     color: var(--text-light);
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
-    font-size: 1rem;
+    font-size: 1.1rem;
 }
 
-/* Консоль */
-.console-effect {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: white;
-    border: 1px solid var(--gray);
-    border-radius: 14px;
-    padding: 1rem;
-    width: min(calc(100vw - 40px), 320px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    font-size: 0.85rem;
-    line-height: 1.5;
-    font-family: 'Inter', monospace;
-    display: none; /* Скрываем на мобилках */
-}
-
-@media (min-width: 769px) {
-    .console-effect {
-        display: block;
-    }
-}
-
-/* Расширенная консоль */
-.console-enhanced {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: min(calc(100vw - 40px), 450px);
-    max-height: min(calc(100vh - 80px), 500px);
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-    z-index: 1001;
-    display: none;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-.console-enhanced.active {
-    display: flex;
+.copyright {
+    color: var(--text-light);
+    opacity: 0.8;
+    font-size: 0.95rem;
 }
 
 /* Анимации */
@@ -769,56 +621,233 @@ footer {
     transform: translateY(0);
 }
 
-/* Адаптивность для остальных элементов */
-@media (max-width: 768px) {
-    .brand-logo,
-    .footer-logo {
-        font-size: 1.8rem;
+/* Консоль */
+.console-effect {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: white;
+    border: 1px solid var(--gray);
+    border-radius: 14px;
+    padding: 1.2rem;
+    width: 320px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    font-family: 'Inter', monospace;
+    transition: all 0.3s ease;
+}
+
+.console-effect:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.console-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.console-close {
+    cursor: pointer;
+    color: var(--text-light);
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+}
+
+.console-close:hover {
+    color: var(--danger);
+    transform: scale(1.1);
+}
+
+.console-content {
+    color: var(--text);
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.console-content div {
+    margin-bottom: 0.5rem;
+    font-family: 'Fira Code', monospace;
+}
+
+.console-input {
+    color: var(--primary);
+    position: relative;
+    font-weight: 500;
+    margin-top: 0.5rem;
+    font-family: 'Fira Code', monospace;
+}
+
+.console-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    background: var(--primary);
+    vertical-align: middle;
+    margin-left: 2px;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
     }
-    
-    .console-enhanced {
-        width: calc(100% - 40px);
-        right: 20px;
-        bottom: 20px;
-    }
-    
-    .profile-header {
-        position: static;
-        transform: none;
-        justify-content: center;
-        margin-top: 1rem;
+    50% {
+        opacity: 0;
     }
 }
 
-@media (max-width: 480px) {
-    .container {
-        padding: 0.75rem;
-    }
-    
-    section {
-        padding: 1.25rem;
-        margin: 1rem 0;
-    }
-    
-    .btn,
-    .social-link {
-        width: 100%;
-        justify-content: center;
-        margin-right: 0;
-    }
-    
-    .project-links {
-        flex-direction: column;
-    }
-    
-    .nav-links {
-        flex-direction: column;
-        gap: 0.8rem;
-    }
+/* Таймлайн */
+.timeline {
+    position: relative;
+    max-width: 1200px;
+    margin: 2.5rem auto;
 }
 
-/* ==================== НОВЫЕ СТИЛИ (ДОБАВЛЕННЫЕ РАНЕЕ) ==================== */
-/* (Весь остальной твой CSS оставляем без изменений) */
+.timeline::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    background: var(--gray);
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -1px;
+}
+
+.timeline-item {
+    padding: 10px 40px;
+    position: relative;
+    width: 50%;
+    box-sizing: border-box;
+}
+
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background: var(--primary);
+    border: 3px solid white;
+    border-radius: 50%;
+    top: 16px;
+    z-index: 1;
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.left {
+    left: 0;
+}
+
+.right {
+    left: 50%;
+}
+
+.left::after {
+    right: -9px;
+}
+
+.right::after {
+    left: -9px;
+}
+
+.timeline-content {
+    padding: 22px;
+    background: white;
+    border: 1px solid var(--gray);
+    border-radius: 12px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.timeline-content:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-light);
+}
+
+.timeline-date {
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    font-size: 0.95rem;
+}
+
+/* Виджеты */
+.widgets-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2.2rem;
+    margin-top: 2rem;
+}
+
+.widget {
+    background: white;
+    border: 1px solid var(--gray);
+    border-radius: 12px;
+    padding: 1.8rem;
+    transition: all 0.3s ease;
+}
+
+.widget:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-light);
+}
+
+.widget-title {
+    color: var(--dark);
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.widget-title i {
+    margin-right: 0.8rem;
+    font-size: 1.6rem;
+    color: var(--primary);
+}
+
+/* Рекламный блок */
+.ad-place {
+    background: rgba(99, 102, 241, 0.05);
+    border: 2px dashed var(--primary-light);
+    border-radius: 14px;
+    padding: 2.5rem;
+    text-align: center;
+    margin: 2.5rem 0;
+    transition: all 0.3s ease;
+}
+
+.ad-place:hover {
+    background: rgba(99, 102, 241, 0.1);
+    box-shadow: 0 12px 25px rgba(99, 102, 241, 0.1);
+    transform: translateY(-3px);
+}
+
+.ad-place h3 {
+    color: var(--primary);
+    margin-bottom: 1.2rem;
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+.ad-place p {
+    color: var(--text-light);
+    margin-bottom: 1.8rem;
+    font-size: 1.05rem;
+}
+
+/* ==================== НОВЫЕ СТИЛИ (ДОБАВЛЕННЫЕ) ==================== */
 /* Окно авторизации */
 .auth-window {
     position: fixed;
@@ -966,6 +995,26 @@ footer {
 
 .logout-btn:hover {
     color: var(--danger);
+}
+
+/* Расширенная консоль */
+.console-enhanced {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 450px;
+    max-height: 500px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    z-index: 1001;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.console-enhanced.active {
+    display: flex;
 }
 
 .console-header {
@@ -1199,13 +1248,142 @@ body.secret-mode p,
 body.secret-mode li {
     color: #00ff00;
 }
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+    .projects-container {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+    
+    .console-enhanced {
+        width: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1.5rem;
+    }
+    
+    section {
+        padding: 2rem;
+        margin: 2.5rem 0;
+    }
+    
+    .skills-container,
+    .projects-container,
+    .widgets-container {
+        grid-template-columns: 1fr;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    .header-subtitle {
+        font-size: 1rem;
+    }
+    
+    .brand-logo,
+    .footer-logo {
+        font-size: 1.9rem;
+    }
+    
+    .console-effect {
+        width: calc(100% - 40px);
+        right: 20px;
+        bottom: 20px;
+        font-size: 0.85rem;
+    }
+    
+    .console-enhanced {
+        width: calc(100% - 40px);
+        right: 20px;
+        bottom: 20px;
+    }
+    
+    .timeline::after {
+        left: 31px;
+    }
+    
+    .timeline-item {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+    }
+    
+    .timeline-item::after {
+        left: 21px;
+    }
+    
+    .left::after,
+    .right::after {
+        left: 21px;
+    }
+    
+    .right {
+        left: 0%;
+    }
+    
+    .nav-links {
+        gap: 1rem;
+    }
+    
+    .nav-link {
+        font-size: 0.9rem;
+    }
+    
+    .profile-header {
+        position: static;
+        transform: none;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    section {
+        padding: 1.5rem;
+    }
+    
+    .btn,
+    .social-link {
+        width: 100%;
+        justify-content: center;
+        margin-right: 0;
+    }
+    
+    .project-links {
+        flex-direction: column;
+    }
+    
+    .nav-links {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+    
+    .achievements-grid,
+    .inventory-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
 </style>
+
+<!-- Telegram Widget -->
+<script async src="https://telegram.org/js/telegram-widget.js?22"
+  data-telegram-login="artemoska_bot"
+  data-size="large"
+  data-userpic="true"
+  data-onauth="onTelegramAuth(user)"
+  data-request-access="write">
+</script>
 </head>
 
 <body>
-    <!-- Геометрический фон -->
-    <div class="geometric-bg"></div>
-
     <!-- Индикатор прогресса прокрутки -->
     <div class="progress-container">
         <div class="progress-bar" id="progressBar"></div>
@@ -1216,10 +1394,8 @@ body.secret-mode li {
         <i class="fas fa-arrow-up"></i>
     </div>
 
-    <!-- Кнопка мобильного меню -->
-    <button class="mobile-menu-btn" id="mobileMenuBtn">
-        <i class="fas fa-bars"></i>
-    </button>
+    <!-- Геометрический фон -->
+    <div class="geometric-bg"></div>
 
     <!-- Окно авторизации -->
     <div class="auth-overlay" id="authOverlay"></div>
@@ -1265,7 +1441,7 @@ body.secret-mode li {
             <h1 id="greeting">Привет, я Artemoska!</h1>
             <p class="header-subtitle">Добро пожаловать в моё портфолио</p>
             
-           <div class="nav-links" id="navLinks">
+           <div class="nav-links">
     <a href="register.html" class="nav-link register-link" style="color: var(--success); font-weight: 600;">
         <i class="fas fa-user-plus"></i> Регистрация
     </a>
@@ -1596,73 +1772,19 @@ body.secret-mode li {
     </div>
 
     <script>
-        // ==================== ОБНОВЛЕННЫЙ КОД С АДАПТИВНОСТЬЮ ====================
-        
-        // Проверка платформ
-        const isTelegramWebApp = typeof window.Telegram !== 'undefined' && 
-                                 typeof window.Telegram.WebApp !== 'undefined';
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        const isTablet = /iPad|Android(?!.*Mobile)/i.test(navigator.userAgent);
-        const isDesktop = !isMobile && !isTablet;
-
-        // Инициализация платформы
-        function initPlatform() {
-            if (isTelegramWebApp) {
-                document.documentElement.classList.add('telegram-webapp');
-                const tg = window.Telegram.WebApp;
-                tg.expand(); // Раскрываем на весь экран
-                
-                // Настройка тем Telegram
-                if (tg.colorScheme) {
-                    document.documentElement.style.setProperty('--tg-theme-bg-color', tg.themeParams.bg_color || '#ffffff');
-                    document.documentElement.style.setProperty('--tg-theme-text-color', tg.themeParams.text_color || '#000000');
-                    document.documentElement.style.setProperty('--tg-theme-hint-color', tg.themeParams.hint_color || '#999999');
-                    document.documentElement.style.setProperty('--tg-theme-button-color', tg.themeParams.button_color || '#3390ec');
-                    document.documentElement.style.setProperty('--tg-theme-button-text-color', tg.themeParams.button_text_color || '#ffffff');
-                }
-            }
-            
-            // Для мобилок добавляем меню
-            if (isMobile && !isTelegramWebApp) {
-                initMobileNavigation();
-            }
-        }
-
-        // Мобильная навигация
-        function initMobileNavigation() {
-            const menuBtn = document.getElementById('mobileMenuBtn');
-            const navLinks = document.getElementById('navLinks');
-            
-            if (menuBtn && navLinks) {
-                menuBtn.addEventListener('click', function() {
-                    navLinks.classList.toggle('active');
-                    menuBtn.innerHTML = navLinks.classList.contains('active') ? 
-                        '<i class="fas fa-times"></i>' : 
-                        '<i class="fas fa-bars"></i>';
-                });
-                
-                // Закрытие меню при клике на ссылку
-                navLinks.querySelectorAll('.nav-link').forEach(link => {
-                    link.addEventListener('click', function() {
-                        navLinks.classList.remove('active');
-                        menuBtn.innerHTML = '<i class="fas fa-bars"></i>';
-                    });
-                });
-            }
-        }
+        // ==================== ОБНОВЛЕННЫЙ КОД С ИНТЕГРАЦИЕЙ AUTH-FIX.JS ====================
 
         // Проверяем авторизацию при загрузке
         document.addEventListener('DOMContentLoaded', function() {
+            // Инициализация происходит в auth-fix.js, но проверяем что система загрузилась
             console.log('🚀 Загрузка портфолио...');
-            
-            // Инициализируем платформу
-            initPlatform();
             
             // Даем время auth-fix.js загрузиться
             setTimeout(() => {
                 // Проверяем существование системы
                 if (typeof window.AuthSystem === 'undefined') {
                     console.error('❌ AuthSystem не загружена!');
+                    // Создаем простую fallback систему
                     setupFallbackAuth();
                 } else {
                     console.log('✅ AuthSystem загружена:', window.AuthSystem.currentUser?.email);
@@ -1797,6 +1919,7 @@ body.secret-mode li {
             const grid = document.getElementById('achievementsGrid');
             if (!grid || !window.AuthSystem?.currentUser) return;
             
+            // Получаем прогресс пользователя
             const progress = window.AuthSystem.getCurrentProgress ? 
                 window.AuthSystem.getCurrentProgress() : null;
             
@@ -1927,7 +2050,7 @@ body.secret-mode li {
             }
         }
 
-        // ==================== БАЗОВЫЙ КОД ====================
+        // ==================== БАЗОВЫЙ КОД (НЕ МЕНЯЕМ) ====================
 
         function updateProgressBar() {
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
@@ -1951,21 +2074,24 @@ body.secret-mode li {
         });
 
         document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                const href = this.getAttribute('href');
-                
-                if (href.startsWith('#')) {
-                    e.preventDefault();
-                    const targetElement = document.querySelector(href);
-                    if (targetElement) {
-                        window.scrollTo({ 
-                            top: targetElement.offsetTop - 100, 
-                            behavior: "smooth" 
-                        });
-                    }
-                }
-            });
-        });
+    link.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        
+        // Если ссылка начинается с # - это якорь на странице
+        if (href.startsWith('#')) {
+            e.preventDefault();
+            const targetElement = document.querySelector(href);
+            if (targetElement) {
+                window.scrollTo({ 
+                    top: targetElement.offsetTop - 100, 
+                    behavior: "smooth" 
+                });
+            }
+        }
+        // Если это внешняя ссылка (register.html), ничего не делаем - позволим браузеру перейти
+        // Браузер сам обработает переход
+    });
+});
 
         function animateOnScroll() {
             const elements = document.querySelectorAll('.animate-on-scroll');
@@ -1990,8 +2116,6 @@ body.secret-mode li {
                 "Готов к работе!"
             ];
             const consoleInput = document.querySelector('.console-input');
-            if (!consoleInput) return;
-            
             let currentPhrase = 0;
             let currentChar = 0;
             let isDeleting = false;
@@ -2037,7 +2161,10 @@ body.secret-mode li {
             });
         }
 
+        // ==================== ОКНО АВТОРИЗАЦИИ ====================
+
         function showAuthWindow() {
+            // Перенаправляем на страницу регистрации
             window.location.href = 'register.html';
         }
 
@@ -2051,10 +2178,12 @@ body.secret-mode li {
         }
 
         function onTelegramAuth(user) {
+            // Теперь это обрабатывается в auth-fix.js
             console.log('Telegram auth:', user);
         }
 
-        // Расширенная консоль
+        // ==================== РАСШИРЕННАЯ КОНСОЛЬ ====================
+
         function toggleEnhancedConsole() {
             const console = document.getElementById('enhancedConsole');
             const input = document.getElementById('enhancedConsoleInput');
@@ -2074,18 +2203,26 @@ body.secret-mode li {
             
             if (!command) return;
             
+            // Выводим команду
             const cmdLine = document.createElement('div');
             cmdLine.innerHTML = `<span style="color: var(--primary);">> ${command}</span>`;
             output.appendChild(cmdLine);
             
+            // Обрабатываем команду
             const result = handleEnhancedCommand(command);
             
+            // Выводим результат
             const resultLine = document.createElement('div');
             resultLine.innerHTML = result;
             output.appendChild(resultLine);
             
+            // Очищаем input
             input.value = '';
+            
+            // Скроллим вниз
             output.scrollTop = output.scrollHeight;
+            
+            // Фокус обратно на input
             input.focus();
         }
 
@@ -2155,6 +2292,7 @@ body.secret-mode li {
                     
                 case 'secret':
                     if (window.AuthSystem?.currentUser) {
+                        // Разблокируем ачивку
                         if (window.AuthSystem.unlockAchievement) {
                             window.AuthSystem.unlockAchievement('secret_finder');
                         }
@@ -2170,10 +2308,12 @@ body.secret-mode li {
                     
                 case 'hack':
                     if (window.AuthSystem?.currentUser) {
+                        // Разблокируем ачивку
                         if (window.AuthSystem.unlockAchievement) {
                             window.AuthSystem.unlockAchievement('hacker');
                         }
                         
+                        // Эффект взлома
                         document.body.classList.add('secret-mode');
                         setTimeout(() => {
                             document.body.classList.remove('secret-mode');
@@ -2234,9 +2374,11 @@ body.secret-mode li {
                     
                 case 'magic':
                     if (window.AuthSystem?.currentUser) {
+                        // Секретная магическая команда
                         const spells = ['✨', '🔥', '💫', '🌟', '⚡', '🌠'];
                         const randomSpell = spells[Math.floor(Math.random() * spells.length)];
                         
+                        // Анимация
                         for (let i = 0; i < 20; i++) {
                             setTimeout(() => {
                                 const spell = document.createElement('div');
@@ -2279,18 +2421,21 @@ body.secret-mode li {
             }
         }
 
-        document.getElementById('enhancedConsoleInput')?.addEventListener('keypress', function(e) {
+        // Обработка Enter в расширенной консоли
+        document.getElementById('enhancedConsoleInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 processEnhancedCommand();
             }
         });
 
+        // Утилиты
         function showNotification(message) {
             if (window.AuthSystem?.showNotification) {
                 window.AuthSystem.showNotification(message);
                 return;
             }
             
+            // Простая реализация
             const notification = document.createElement('div');
             notification.style.cssText = `
                 position: fixed;
@@ -2338,6 +2483,7 @@ body.secret-mode li {
                   `• Засекречено до релиза`);
         }
 
+        // Настройка консоли
         function setupConsole() {
             const style = document.createElement('style');
             style.textContent = `
