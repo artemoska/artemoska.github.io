@@ -20,23 +20,28 @@ sendCodeBtn.onclick = async () => {
   generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
 
   try {
+    // Проверка, что переменные точно совпадают с шаблоном
     await emailjs.send(
-      "artemoska",
-      "template_8kpkiyr",
+      "artemoska",               // Service ID
+      "template_8kpkiyr",        // Template ID
       {
-        to_email: email,
-        code: generatedCode
+        to_email: email,         // Должно совпадать с {{to_email}} в шаблоне
+        code: generatedCode      // Должно совпадать с {{code}} в шаблоне
       }
     );
     message.textContent = "Код отправлен на почту";
-  } catch (e) {
-    console.error(e);
-    message.textContent = "Ошибка отправки (см. консоль)";
+  } catch (err) {
+    console.error(err); // Смотри здесь ошибку EmailJS
+    message.textContent = "Ошибка отправки, смотри консоль";
   }
 };
 
 verifyBtn.onclick = () => {
-  if (codeInput.value === generatedCode) {
+  if (!generatedCode) {
+    message.textContent = "Сначала получите код";
+    return;
+  }
+  if (codeInput.value.trim() === generatedCode) {
     message.textContent = "Код верный";
   } else {
     message.textContent = "Неверный код";
