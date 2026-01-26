@@ -2006,16 +2006,6 @@ footer {
             // Показываем сообщение
             showNotification('✅ Вход через Telegram выполнен! (демо)');
         }
-
-        function handleTelegramAuth(user) {
-            currentUser = {
-                id: user.id,
-                firstName: user.first_name,
-                username: user.username,
-                photoUrl: user.photo_url || '',
-                authDate: user.auth_date,
-                source: 'telegram'
-            };
             
             localStorage.setItem('artemoska_user', JSON.stringify(currentUser));
             
@@ -2947,6 +2937,219 @@ document.getElementById('authOverlay').addEventListener('click', function() {
     closeTelegramAuth();
     hideAuthWindow();
 });
+    // ==================== РЕАЛЬНАЯ TELEGRAM АВТОРИЗАЦИЯ ДЛЯ @artemosbot ====================
+let telegramAuthInterval = null;
+let currentAuthCode = null;
+
+// Показать окно Telegram авторизации
+function showTelegramAuthWindow() {
+    hideAuthWindow(); // Скрываем основное окно
+    
+    // Создаём уникальный код
+    const code = generateAuthCode();
+    currentAuthCode = code;
+    
+    // Показываем код пользователю
+    showAuthCodeToUser(code);
+    
+    // Начинаем проверку
+    startTelegramAuthPolling(code);
+}
+
+// Генерация кода
+function generateAuthCode() {
+    return Math.random().toString(36).substring(2, 8).toUpperCase();
+}
+
+// Показать код пользователю
+function showAuthCodeToUser(code) {
+    // Создаём модальное окно
+    const modalHTML = `
+        <div class="telegram-auth-modal" style="
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 10002;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        ">
+            <div style="
+                background: white;
+                padding: 2rem;
+                border-radius: 16px;
+                max-width: 400px;
+                width: 90%;
+                text-align: center;
+            ">
+                <h3 style="color: var(--primary); margin-bottom: 1rem;">
+                    <i class="fab fa-telegram"></i> Авторизация через @artemosbot
+                </h3>
+                
+                <div style="margin: 1.5rem 0;">
+                    <div style="
+                        font-size: 2.5rem;
+                        font-weight: bold;
+                        color: var(--primary);
+                        letter-spacing: 5px;
+                        margin: 1rem 0;
+                        background: var(--gray-light);
+                        padding: 1rem;
+                        border-radius: 10px;
+                        border: 2px dashed var(--primary);
+                    ">
+                        ${code}
+                    </div>
+                    
+                    <p style="color: var(--text-light); margin-bottom: 1rem;">
+                        Отправь этот код боту:
+                    </p>
+                    
+                    <div style="
+                        background: #0088cc;
+                        color: white;
+                        padding: 0.8rem 1.5rem;
+                        border-radius: 8px;
+                        margin: 1rem 0;
+                        font-family: monospace;
+                        font-size: 1.2rem;
+                    ">
+                        /auth ${code}
+                    </div>
+                </div>
+                
+                <div style="margin: 1.5rem 0; text-align: left; background: rgba(0,136,204,0.1); padding: 1rem; border-radius: 8px;">
+                    <p style="font-weight: bold; margin-bottom: 0.5rem;">📱 Инструкция:</p>
+                    <ol style="margin-left: 1.5rem;">
+                        <li style="margin-bottom: 0.5rem;">Открой Telegram</li>
+                        <li style="margin-bottom: 0.5rem;">Найди @artemosbot</li>
+                        <li style="margin-bottom: 0.5rem;">Отправь: <code>/auth ${code}</code></li>
+                        <li>Вернись на эту страницу</li>
+                    </ol>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; justify-content: center;">
+                    <button onclick="window.open('https://t.me/artemosbot', '_blank')" 
+                            style="background: #0088cc; color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 8px; cursor: pointer;">
+                        <i class="fab fa-telegram"></i> Открыть бота
+                    </button>
+                    <button onclick="copyAuthCode('${code}')" 
+                            style="background: var(--gray-light); color: var(--text); border: none; padding: 0.8rem 1.5rem; border-radius: 8px; cursor: pointer;">
+                        <i class="fas fa-copy"></i> Копировать код
+                    </button>
+                </div>
+                
+                <p style="margin-top: 1.5rem; color: var(--text-light); font-size: 0.9rem;">
+                    ⏰ Код действителен 5 минут
+                </p>
+                
+                <button onclick="closeTelegramAuthModal()" 
+                        style="margin-top: 1rem; background: none; border: none; color: var(--text-light); cursor: pointer;">
+                    Закрыть
+                </button>
+            </div>
+        </div>
+    `;
+    
+    // Добавляем окно на страницу
+    const modalContainer = document.createElement('div');
+    modalContainer.id = 'telegramAuthModal';
+    modalContainer.innerHTML = modalHTML;
+    document.body.appendChild(modalContainer);
+}
+
+// Копировать код в буфер
+function copyAuthCode(code) {
+    navigator.clipboard.writeText(`/auth ${code}`)
+        .then(() => showNotification('✅ Команда скопирована в буфер', 'success'))
+        .catch(() => {
+            // Fallback
+            const textArea = document.createElement('textarea');
+            textArea.value = `/auth ${code}`;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            showNotification('✅ Команда скопирована', 'success');
+        });
+}
+
+// Закрыть модальное окно
+function closeTelegramAuthModal() {
+    const modal = document.getElementById('telegramAuthModal');
+    if (modal) modal.remove();
+    if (telegramAuthInterval) {
+        clearInterval(telegramAuthInterval);
+        telegramAuthInterval = null;
+    }
+}
+
+// Проверка авторизации
+function startTelegramAuthPolling(code) {
+    let attempts = 0;
+    const maxAttempts = 100; // ~5 минут
+    
+    telegramAuthInterval = setInterval(() => {
+        attempts++;
+        
+        // Проверяем через localStorage (простой способ без сервера)
+        const verified = localStorage.getItem(`tg_auth_${code}`);
+        
+        if (verified) {
+            // Авторизация успешна!
+            clearInterval(telegramAuthInterval);
+            
+            try {
+                const userData = JSON.parse(verified);
+                completeTelegramAuth(userData);
+            } catch(e) {
+                console.error('Ошибка парсинга данных:', e);
+            }
+            
+            // Убираем из localStorage
+            localStorage.removeItem(`tg_auth_${code}`);
+            closeTelegramAuthModal();
+            
+        } else if (attempts >= maxAttempts) {
+            // Время истекло
+            clearInterval(telegramAuthInterval);
+            showNotification('⏰ Время авторизации истекло', 'warning');
+            closeTelegramAuthModal();
+        }
+    }, 3000); // Проверяем каждые 3 секунды
+}
+
+// Завершение авторизации
+function completeTelegramAuth(userData) {
+    currentUser = {
+        id: userData.id || Date.now(),
+        firstName: userData.first_name || 'Telegram User',
+        username: userData.username || 'telegram_user',
+        source: 'telegram'
+    };
+    
+    localStorage.setItem('artemoska_user', JSON.stringify(currentUser));
+    unlockAchievement('welcome');
+    unlockAchievement('telegram_master');
+    updateUIForUser();
+    showSecretContent();
+    
+    showNotification(`🎉 Привет, ${currentUser.firstName}! Telegram авторизация успешна!`);
+    
+    // Запускаем ARG квест
+    startARGQuest();
+}
+
+// Функция для бота (чтобы он мог обновить localStorage)
+// Эту функцию нужно вызвать из бота через JavaScript injection
+function verifyTelegramAuth(code, userData) {
+    localStorage.setItem(`tg_auth_${code}`, JSON.stringify(userData));
+    return true;
+}
+
+// Глобально доступная функция для вебхука
+window.verifyTelegramAuth = verifyTelegramAuth;
     </script>
 
     <!-- Yandex.RTB R-A-18551594-2 -->
