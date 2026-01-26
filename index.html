@@ -1994,15 +1994,12 @@ footer {
             document.getElementById('passwordInput').value = '';
         }
 
-        function loginWithTelegram() {
-            // Создаём фейкового пользователя Telegram (так как без бота не работает)
-            const fakeTelegramUser = {
-                id: Math.floor(Math.random() * 1000000000),
-                first_name: 'Telegram',
-                username: 'telegram_user',
-                photo_url: '',
-                auth_date: Math.floor(Date.now() / 1000)
-            };
+       function loginWithTelegram() {
+    // Вместо фейкового пользователя показываем реальное окно авторизации
+    showTelegramAuthWindow();
+}
+
+// Удали старую функцию handleTelegramAuth если она есть
             
             handleTelegramAuth(fakeTelegramUser);
             
