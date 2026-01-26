@@ -1,24 +1,2496 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Регистрация</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TZY49R07HS"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TZY49R07HS');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Artemoska | Web Developer</title>
+<meta name="description" content="Artemoska - разработчик Telegram ботов, веб-приложений и игр. Создаю магию с помощью JavaScript.">
+<meta name="keywords" content="Artemoska, программист, разработчик, Telegram боты, JavaScript, портфолио">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* ВСЁ ТВОЁ КАК БЫЛО */
+:root {
+    --primary: #6366f1;
+    --primary-light: #818cf8;
+    --primary-dark: #4f46e5;
+    --dark: #1f2937;
+    --darker: #111827;
+    --light: #f9fafb;
+    --gray-light: #f3f4f6;
+    --gray: #e5e7eb;
+    --gray-dark: #9ca3af;
+    --text: #374151;
+    --text-light: #6b7280;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --info: #3b82f6;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Кастомный скроллбар */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--gray-light);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 10px;
+    border: 3px solid var(--gray-light);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
+}
+
+/* Для Firefox */
+html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) var(--gray-light);
+}
+
+body {
+    background-color: var(--light);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Анимированный фон с тонкими линиями */
+.geometric-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    background-color: var(--light);
+    opacity: 1;
+    overflow: hidden;
+}
+
+.geometric-bg::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    background-image: linear-gradient(var(--gray) 1px, transparent 1px), linear-gradient(90deg, var(--gray) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.3;
+    transform: perspective(500px) rotateX(60deg);
+    animation: grid-move 20s linear infinite;
+}
+
+@keyframes grid-move {
+    0% {
+        transform: perspective(500px) rotateX(60deg) translateY(0);
+    }
+    100% {
+        transform: perspective(500px) rotateX(60deg) translateY(40px);
+    }
+}
+
+/* Индикатор прогресса прокрутки */
+.progress-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: transparent;
+    z-index: 10000;
+}
+
+.progress-bar {
+    height: 4px;
+    background: var(--primary);
+    width: 0%;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary);
+}
+
+/* Кнопка "Наверх" */
+.scroll-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    z-index: 999;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+}
+
+.scroll-to-top.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.scroll-to-top:hover {
+    background: var(--primary-dark);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+}
+
+/* Шапка с фиксированной навигацией */
+header {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 1.5rem 1rem;
+    text-align: center;
+    border-bottom: 1px solid var(--gray);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.header-content {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.brand-logo {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+    display: inline-block;
+    letter-spacing: -1px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+h1 {
+    color: var(--dark);
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.header-subtitle {
+    color: var(--text-light);
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    font-weight: 400;
+}
+
+/* Навигация */
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.nav-link {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 500;
+    position: relative;
+    padding: 0.5rem 0;
+    transition: all 0.3s ease;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--primary);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Основное содержимое */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Секции */
+section {
+    background: white;
+    margin: 3rem 0;
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid var(--gray);
+}
+
+section:hover {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+h2 {
+    color: var(--dark);
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    font-weight: 700;
+    position: relative;
+    display: inline-block;
+}
+
+h2::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: var(--primary);
+    border-radius: 3px;
+}
+
+p {
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+    color: var(--text);
+}
+
+ul {
+    list-style-type: none;
+    margin-bottom: 1.5rem;
+}
+
+li {
+    margin-bottom: 0.8rem;
+    position: relative;
+    padding-left: 1.5rem;
+    color: var(--text);
+}
+
+li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--primary);
+    font-weight: bold;
+}
+
+/* Кнопки */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.9rem 1.7rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.25);
+}
+
+.btn i {
+    margin-right: 0.5rem;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+}
+
+.btn-outline:hover {
+    background: var(--primary);
+    color: white;
+}
+
+/* Социальные сети */
+.social-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    padding: 0.9rem 1.5rem;
+    background: white;
+    color: var(--text);
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid var(--gray);
+    font-weight: 500;
+}
+
+.social-link:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary);
+}
+
+.social-link i {
+    margin-right: 0.8rem;
+    font-size: 1.2rem;
+}
+
+.telegram {
+    color: var(--info);
+}
+
+.github {
+    color: var(--dark);
+}
+
+.email {
+    color: var(--danger);
+}
+
+.social-link:hover i {
+    color: white !important;
+}
+
+/* Навыки */
+.skills-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.8rem;
+    margin-top: 2rem;
+}
+
+.skill-card {
+    background: white;
+    border: 1px solid var(--gray);
+    border-radius: 12px;
+    padding: 1.8rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.skill-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+}
+
+.skill-card h3 {
+    color: var(--dark);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+}
+
+.skill-card h3 i {
+    margin-right: 0.8rem;
+    font-size: 1.6rem;
+    color: var(--primary);
+}
+
+.skill-level {
+    height: 10px;
+    background: var(--gray-light);
+    border-radius: 5px;
+    margin-top: 1.2rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.skill-level::before {
+    content: attr(data-level);
+    position: absolute;
+    right: 5px;
+    top: -22px;
+    font-size: 0.75rem;
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+.skill-level-bar {
+    height: 100%;
+    background: linear-gradient(to right, var(--primary), var(--primary-light));
+    border-radius: 5px;
+    width: 0;
+    transition: width 1.5s ease-out;
+}
+
+.skill-card:hover .skill-level-bar {
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.3);
+}
+
+/* Проекты */
+.projects-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+    gap: 2.2rem;
+    margin-top: 2rem;
+}
+
+.project-card {
+    background: white;
+    border: 1px solid var(--gray);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.project-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+    border-color: var(--primary-light);
+}
+
+.project-image {
+    height: 200px;
+    background: var(--gray-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    font-size: 3.2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.project-content {
+    padding: 1.8rem;
+}
+
+.project-content h3 {
+    color: var(--dark);
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+    font-size: 1.3rem;
+}
+
+.project-content p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+}
+
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 1.8rem;
+}
+
+.project-tag {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary);
+    padding: 0.4rem 0.9rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.project-card:hover .project-tag {
+    background: rgba(99, 102, 241, 0.2);
+}
+
+.project-links {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Футер */
+footer {
+    background: white;
+    text-align: center;
+    padding: 4rem 1rem;
+    border-top: 1px solid var(--gray);
+    margin-top: 4rem;
+}
+
+.footer-logo {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+    display: inline-block;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.footer-text {
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.1rem;
+}
+
+.copyright {
+    color: var(--text-light);
+    opacity: 0.8;
+    font-size: 0.95rem;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Эффекты при прокрутке */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease;
+}
+
+.animate-on-scroll.animated {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Консоль */
+.console-effect {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: white;
+    border: 1px solid var(--gray);
+    border-radius: 14px;
+    padding: 1.2rem;
+    width: 320px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    font-family: 'Inter', monospace;
+    transition: all 0.3s ease;
+}
+
+.console-effect:hover {
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.console-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.8rem;
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.console-close {
+    cursor: pointer;
+    color: var(--text-light);
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+}
+
+.console-close:hover {
+    color: var(--danger);
+    transform: scale(1.1);
+}
+
+.console-content {
+    color: var(--text);
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.console-content div {
+    margin-bottom: 0.5rem;
+    font-family: 'Fira Code', monospace;
+}
+
+.console-input {
+    color: var(--primary);
+    position: relative;
+    font-weight: 500;
+    margin-top: 0.5rem;
+    font-family: 'Fira Code', monospace;
+}
+
+.console-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    background: var(--primary);
+    vertical-align: middle;
+    margin-left: 2px;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+/* Таймлайн */
+.timeline {
+    position: relative;
+    max-width: 1200px;
+    margin: 2.5rem auto;
+}
+
+.timeline::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    background: var(--gray);
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -1px;
+}
+
+.timeline-item {
+    padding: 10px 40px;
+    position: relative;
+    width: 50%;
+    box-sizing: border-box;
+}
+
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background: var(--primary);
+    border: 3px solid white;
+    border-radius: 50%;
+    top: 16px;
+    z-index: 1;
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.left {
+    left: 0;
+}
+
+.right {
+    left: 50%;
+}
+
+.left::after {
+    right: -9px;
+}
+
+.right::after {
+    left: -9px;
+}
+
+.timeline-content {
+    padding: 22px;
+    background: white;
+    border: 1px solid var(--gray);
+    border-radius: 12px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.timeline-content:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-light);
+}
+
+.timeline-date {
+    color: var(--primary);
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    font-size: 0.95rem;
+}
+
+/* Виджеты */
+.widgets-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2.2rem;
+    margin-top: 2rem;
+}
+
+.widget {
+    background: white;
+    border: 1px solid var(--gray);
+    border-radius: 12px;
+    padding: 1.8rem;
+    transition: all 0.3s ease;
+}
+
+.widget:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-light);
+}
+
+.widget-title {
+    color: var(--dark);
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.widget-title i {
+    margin-right: 0.8rem;
+    font-size: 1.6rem;
+    color: var(--primary);
+}
+
+/* Рекламный блок */
+.ad-place {
+    background: rgba(99, 102, 241, 0.05);
+    border: 2px dashed var(--primary-light);
+    border-radius: 14px;
+    padding: 2.5rem;
+    text-align: center;
+    margin: 2.5rem 0;
+    transition: all 0.3s ease;
+}
+
+.ad-place:hover {
+    background: rgba(99, 102, 241, 0.1);
+    box-shadow: 0 12px 25px rgba(99, 102, 241, 0.1);
+    transform: translateY(-3px);
+}
+
+.ad-place h3 {
+    color: var(--primary);
+    margin-bottom: 1.2rem;
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+.ad-place p {
+    color: var(--text-light);
+    margin-bottom: 1.8rem;
+    font-size: 1.05rem;
+}
+
+/* ==================== НОВЫЕ СТИЛИ (ДОБАВЛЕННЫЕ) ==================== */
+/* Окно авторизации */
+.auth-window {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    background: white;
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    z-index: 10000;
+    max-width: 400px;
+    width: 90%;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.auth-window.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.auth-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.auth-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.auth-header h3 {
+    color: var(--dark);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.auth-input {
+    padding: 1rem;
+    border: 1px solid var(--gray);
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.auth-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.auth-btn {
+    width: 100%;
+    padding: 1rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.auth-btn:hover {
+    background: var(--primary-dark);
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.auth-footer a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+/* Профиль в шапке */
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--gray-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.user-name {
+    font-weight: 500;
+    color: var(--dark);
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    color: var(--danger);
+}
+
+/* Расширенная консоль */
+.console-enhanced {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 450px;
+    max-height: 500px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    z-index: 1001;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.console-enhanced.active {
+    display: flex;
+}
+
+.console-header {
+    background: var(--primary);
+    color: white;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.console-title {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.console-body {
+    flex: 1;
+    padding: 1.5rem;
+    overflow-y: auto;
+    max-height: 350px;
+    background: #f8f9fa;
+}
+
+.console-input-area {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--gray);
+    display: flex;
+    gap: 0.5rem;
+}
+
+.console-input-enhanced {
+    flex: 1;
+    padding: 0.8rem;
+    border: 1px solid var(--gray);
+    border-radius: 8px;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9rem;
+}
+
+.console-input-enhanced:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+/* Секретные элементы */
+.secret-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 2.5rem;
+    border-radius: 16px;
+    margin: 2rem 0;
+    display: none;
+}
+
+.secret-section.active {
+    display: block;
+}
+
+.secret-title {
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.secret-title::after {
+    background: white;
+}
+
+/* Ачивки */
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.achievement-card {
+    background: white;
+    border: 1px solid var(--gray);
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.achievement-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.achievement-icon {
+    font-size: 2rem;
+    margin-bottom: 0.8rem;
+}
+
+.achievement-locked {
+    opacity: 0.5;
+    filter: grayscale(1);
+}
+
+/* ARG Квест */
+.arg-steps {
+    margin-top: 2rem;
+}
+
+.arg-step {
+    background: white;
+    border: 1px solid var(--gray);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+}
+
+.arg-step:hover {
+    border-color: var(--primary);
+}
+
+.arg-step.completed {
+    border-color: var(--success);
+    background: rgba(16, 185, 129, 0.05);
+}
+
+.arg-step.active {
+    border-color: var(--primary);
+    background: rgba(99, 102, 241, 0.05);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(99, 102, 241, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+    }
+}
+
+.step-number {
+    width: 30px;
+    height: 30px;
+    background: var(--gray-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.arg-step.completed .step-number {
+    background: var(--success);
+    color: white;
+}
+
+.arg-step.active .step-number {
+    background: var(--primary);
+    color: white;
+}
+
+.step-content {
+    flex: 1;
+}
+
+/* Инвентарь */
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.inventory-item {
+    background: white;
+    border: 1px solid var(--gray);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.inventory-item:hover {
+    transform: scale(1.05);
+    border-color: var(--primary);
+}
+
+.inventory-item.locked {
+    opacity: 0.3;
+    filter: grayscale(1);
+}
+
+.item-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Секретный режим */
+body.secret-mode {
+    background: #0a0a0a;
+    color: #00ff00;
+}
+
+body.secret-mode .geometric-bg::before {
+    background-image: linear-gradient(#00ff00 1px, transparent 1px), linear-gradient(90deg, #00ff00 1px, transparent 1px);
+    opacity: 0.1;
+}
+
+body.secret-mode header {
+    background: rgba(10, 10, 10, 0.95);
+    border-bottom: 1px solid #00ff00;
+}
+
+body.secret-mode section {
+    background: rgba(20, 20, 20, 0.9);
+    border: 1px solid #00ff00;
+    color: #00ff00;
+}
+
+body.secret-mode h1,
+body.secret-mode h2,
+body.secret-mode h3,
+body.secret-mode p,
+body.secret-mode li {
+    color: #00ff00;
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+    .projects-container {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+    
+    .console-enhanced {
+        width: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1.5rem;
+    }
+    
+    section {
+        padding: 2rem;
+        margin: 2.5rem 0;
+    }
+    
+    .skills-container,
+    .projects-container,
+    .widgets-container {
+        grid-template-columns: 1fr;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    .header-subtitle {
+        font-size: 1rem;
+    }
+    
+    .brand-logo,
+    .footer-logo {
+        font-size: 1.9rem;
+    }
+    
+    .console-effect {
+        width: calc(100% - 40px);
+        right: 20px;
+        bottom: 20px;
+        font-size: 0.85rem;
+    }
+    
+    .console-enhanced {
+        width: calc(100% - 40px);
+        right: 20px;
+        bottom: 20px;
+    }
+    
+    .timeline::after {
+        left: 31px;
+    }
+    
+    .timeline-item {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 25px;
+    }
+    
+    .timeline-item::after {
+        left: 21px;
+    }
+    
+    .left::after,
+    .right::after {
+        left: 21px;
+    }
+    
+    .right {
+        left: 0%;
+    }
+    
+    .nav-links {
+        gap: 1rem;
+    }
+    
+    .nav-link {
+        font-size: 0.9rem;
+    }
+    
+    .profile-header {
+        position: static;
+        transform: none;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    section {
+        padding: 1.5rem;
+    }
+    
+    .btn,
+    .social-link {
+        width: 100%;
+        justify-content: center;
+        margin-right: 0;
+    }
+    
+    .project-links {
+        flex-direction: column;
+    }
+    
+    .nav-links {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+    
+    .achievements-grid,
+    .inventory-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+</style>
+
+<!-- Telegram Widget -->
+<script async src="https://telegram.org/js/telegram-widget.js?22"
+  data-telegram-login="artemoska_bot"
+  data-size="large"
+  data-userpic="true"
+  data-onauth="onTelegramAuth(user)"
+  data-request-access="write">
+</script>
 </head>
+
 <body>
+    <!-- Индикатор прогресса прокрутки -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
 
-  <h2>Регистрация</h2>
+    <!-- Кнопка "Наверх" -->
+    <div class="scroll-to-top" id="scrollToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
 
-  <input type="email" id="email" placeholder="Email">
-  <input type="password" id="password" placeholder="Пароль">
-  <button id="sendCodeBtn">Получить код</button>
+    <!-- Геометрический фон -->
+    <div class="geometric-bg"></div>
 
-  <br><br>
+    <!-- Окно авторизации -->
+    <div class="auth-overlay" id="authOverlay"></div>
+    <div class="auth-window" id="authWindow">
+        <div class="auth-header">
+            <h3>🔐 Вход в систему</h3>
+            <p>Выберите способ авторизации</p>
+        </div>
+        <div class="auth-form">
+            <button class="auth-btn" onclick="loginWithTelegram()">
+                <i class="fab fa-telegram"></i> Войти через Telegram
+            </button>
+            <div class="auth-footer">
+                <p>Или <a href="#" onclick="showPasswordLogin()">войти с паролем</a></p>
+            </div>
+        </div>
+    </div>
 
-  <input type="text" id="codeInput" placeholder="Введите код">
-  <button id="verifyBtn">Подтвердить</button>
+    <!-- Расширенная консоль -->
+    <div class="console-enhanced" id="enhancedConsole">
+        <div class="console-header">
+            <div class="console-title">
+                <i class="fas fa-terminal"></i> ARTEMOSKA TERMINAL v2.0
+            </div>
+            <div class="console-close" onclick="toggleEnhancedConsole()">×</div>
+        </div>
+        <div class="console-body" id="enhancedConsoleBody">
+            <div>> [SYSTEM] Загрузка расширенной консоли...</div>
+            <div>> [SYSTEM] Готов к приёму команд</div>
+            <div>> Введите "help" для списка команд</div>
+        </div>
+        <div class="console-input-area">
+            <input type="text" class="console-input-enhanced" id="enhancedConsoleInput" 
+                   placeholder="Введите команду..." autocomplete="off">
+            <button class="btn" onclick="processEnhancedCommand()">↵</button>
+        </div>
+    </div>
 
-  <p id="message"></p>
+    <!-- Шапка -->
+    <header>
+        <div class="header-content">
+            <div class="brand-logo">ARTEMOSKA</div>
+            <h1 id="greeting">Привет, я Artemoska!</h1>
+            <p class="header-subtitle">Добро пожаловать в моё портфолио</p>
+            
+            <div class="nav-links">
+                <a href="#about" class="nav-link">Обо мне</a>
+                <a href="#skills" class="nav-link">Навыки</a>
+                <a href="#projects" class="nav-link">Проекты</a>
+                <a href="#plans" class="nav-link">Планы</a>
+                <a href="#secrets" class="nav-link">Секреты</a>
+                <a href="#contacts" class="nav-link">Контакты</a>
+            </div>
 
-  <script type="module" src="register.js"></script>
+            <!-- Профиль пользователя -->
+            <div class="profile-header" id="profileHeader" style="display: none;">
+                <div class="user-avatar" id="userAvatar">👤</div>
+                <div class="user-name" id="userName"></div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Основное содержимое -->
+    <div class="container">
+        <!-- Секция "Обо мне" -->
+        <section id="about" class="animate-on-scroll">
+            <h2>Обо мне</h2>
+            <p>Привет! Я Artemoska — программист, админ RubetonChat и создатель проектов.</p>
+            <p>Делаю игры, Telegram и VK ботов, веб-приложения и просто магию на JavaScript.</p>
+            
+            <div class="social-links">
+                <a href="https://t.me/artemoska" class="social-link" target="_blank">
+                    <i class="fab fa-telegram telegram"></i> Telegram: @artemoska
+                </a>
+                <a href="https://t.me/tonxui" class="social-link" target="_blank">
+                    <i class="fab fa-telegram telegram"></i> Telegram: @tonxui
+                </a>
+            </div>
+            
+            <!-- Кнопка входа -->
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="btn" onclick="showAuthWindow()" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i> Войти в систему
+                </button>
+                <button class="btn btn-outline" onclick="toggleEnhancedConsole()">
+                    <i class="fas fa-terminal"></i> Открыть консоль
+                </button>
+            </div>
+        </section>
+
+        <!-- Секретный раздел (только для авторизованных) -->
+        <section id="secrets" class="animate-on-scroll secret-section">
+            <h2 class="secret-title">🔒 Секретная зона</h2>
+            <p>Эта секция доступна только авторизованным пользователям.</p>
+            
+            <div id="secretContent" style="display: none;">
+                <h3>🎉 Добро пожаловать в клуб!</h3>
+                <p>Ты получил доступ к секретным функциям:</p>
+                <ul>
+                    <li>Секретные команды в консоли</li>
+                    <li>Дополнительные проекты</li>
+                    <li>ARG квест</li>
+                    <li>Ачивки и инвентарь</li>
+                </ul>
+                
+                <div class="achievements-grid" id="achievementsGrid">
+                    <!-- Ачивки будут добавлены через JS -->
+                </div>
+                
+                <div class="arg-steps" id="argSteps">
+                    <!-- ARG шаги будут добавлены через JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Рекламный блок -->
+        <section class="animate-on-scroll">
+            <div class="ad-place">
+                <h3>Здесь могла быть ваша реклама!</h3>
+                <p>Это место идеально подходит для продвижения вашего продукта или услуги. Свяжитесь со мной для размещения рекламы.</p>
+                <a href="https://t.me/artemoska" class="btn" target="_blank">
+                    <i class="fas fa-ad"></i> Заказать рекламу
+                </a>
+            </div>
+        </section>
+
+        <!-- Секция "Навыки" -->
+        <section id="skills" class="animate-on-scroll">
+            <h2>Навыки</h2>
+            <div class="skills-container">
+                <div class="skill-card">
+                    <h3><i class="fab fa-js"></i> JavaScript</h3>
+                    <p>Создание интерактивных веб-приложений, работа с API, анимации.</p>
+                    <div class="skill-level" data-level="90%">
+                        <div class="skill-level-bar" style="width: 90%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3><i class="fab fa-telegram"></i> Telegram Bots</h3>
+                    <p>Разработка ботов любой сложности на Node.js и Python.</p>
+                    <div class="skill-level" data-level="85%">
+                        <div class="skill-level-bar" style="width: 85%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3><i class="fab fa-html5"></i> HTML/CSS</h3>
+                    <p>Создание адаптивных и современных интерфейсов.</p>
+                    <div class="skill-level" data-level="80%">
+                        <div class="skill-level-bar" style="width: 80%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3><i class="fab fa-node-js"></i> Node.js</h3>
+                    <p>Серверная разработка, REST API, WebSockets.</p>
+                    <div class="skill-level" data-level="75%">
+                        <div class="skill-level-bar" style="width: 75%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3><i class="fas fa-gamepad"></i> Game Dev</h3>
+                    <p>Разработка браузерных игр на JavaScript.</p>
+                    <div class="skill-level" data-level="70%">
+                        <div class="skill-level-bar" style="width: 70%"></div>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3><i class="fas fa-magic"></i> Code Magic</h3>
+                    <p>Нестандартные решения и креативный подход.</p>
+                    <div class="skill-level" data-level="95%">
+                        <div class="skill-level-bar" style="width: 95%"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция "Проекты" -->
+        <section id="projects" class="animate-on-scroll">
+            <h2>Проекты</h2>
+            <div class="projects-container">
+                <div class="project-card">
+                    <div class="project-image">
+                        <i class="fab fa-telegram"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>RubetonChat</h3>
+                        <p>Многофункциональный Telegram чат с модерацией и развлекательными функциями.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">Telegram</span>
+                            <span class="project-tag">Node.js</span>
+                            <span class="project-tag">Bot API</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="rubeton.html" class="btn btn-outline">
+                                <i class="fas fa-external-link-alt"></i> Подробнее
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>Browser Game</h3>
+                        <p>Интерактивная браузерная игра с использованием Canvas и WebGL.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">JavaScript</span>
+                            <span class="project-tag">HTML5</span>
+                            <span class="project-tag">Game Dev</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="game/game.html" class="btn btn-outline">
+                                <i class="fas fa-external-link-alt"></i> Подробнее
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>VK Bot</h3>
+                        <p>Умный бот для ВКонтакте с интеграцией внешних API и базой данных.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">VK API</span>
+                            <span class="project-tag">Python</span>
+                            <span class="project-tag">MySQL</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="vkbot.html" class="btn btn-outline">
+                                <i class="fas fa-external-link-alt"></i> Подробнее
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Секретный проект (только для авторизованных) -->
+                <div class="project-card" id="secretProject" style="display: none;">
+                    <div class="project-image">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>Проект "МАГИЯ"</h3>
+                        <p>Секретный проект с использованием AI и блокчейн технологий.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">AI</span>
+                            <span class="project-tag">Blockchain</span>
+                            <span class="project-tag">Secret</span>
+                        </div>
+                        <div class="project-links">
+                            <button class="btn btn-outline" onclick="unlockSecretProject()">
+                                <i class="fas fa-key"></i> Разблокировать
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция "Запланированные проекты" -->
+        <section id="plans" class="animate-on-scroll">
+            <h2>Запланированные проекты</h2>
+            <p>Вот что я планирую реализовать в ближайшем будущем:</p>
+            <div class="timeline">
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2023 Q4</div>
+                        <h3>Telegram Mini Apps</h3>
+                        <p>Разработка мини-приложений для Telegram с интеграцией криптовалютных платежей.</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2024 Q1</div>
+                        <h3>AI Chat Bot</h3>
+                        <p>Создание интеллектуального чат-бота с использованием GPT-технологий.</p>
+                    </div>
+                </div>
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2024 Q2</div>
+                        <h3>Multiplayer Game</h3>
+                        <p>Разработка многопользовательской браузерной игры с реальным временем.</p>
+                    </div>
+                </div>
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2024 Q3</div>
+                        <h3>Dev Tools Package</h3>
+                        <p>Публикация набора инструментов для разработчиков Telegram ботов.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Виджеты -->
+        <section class="animate-on-scroll">
+            <h2>Виджеты</h2>
+            <div class="widgets-container">
+                <div class="widget">
+                    <h3 class="widget-title"><i class="fas fa-code"></i> Последний код</h3>
+                    <div class="code-widget">
+                        <pre><code>function magicSpell() {
+    console.log("Abracadabra!");
+    return "✨ Magic happens!";
+}</code></pre>
+                    </div>
+                </div>
+                <div class="widget">
+                    <h3 class="widget-title"><i class="fas fa-trophy"></i> Достижения</h3>
+                    <ul>
+                        <li>1000+ пользователей ботов</li>
+                        <li>5 завершенных проектов</li>
+                        <li>3 довольных клиента</li>
+                        <li>2 года опыта</li>
+                    </ul>
+                </div>
+                <div class="widget">
+                    <h3 class="widget-title"><i class="fas fa-quote-left"></i> Цитата дня</h3>
+                    <blockquote>
+                        "Любая достаточно развитая технология неотличима от магии."
+                        <footer>- Артур Кларк</footer>
+                    </blockquote>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция "Контакты" -->
+        <section id="contacts" class="animate-on-scroll">
+            <h2>Контакты</h2>
+            <p>Хотите сотрудничать или просто пообщаться? Я всегда открыт для новых идей и проектов!</p>
+            <div class="social-links">
+                <a href="https://t.me/artemoska" class="social-link" target="_blank">
+                    <i class="fab fa-telegram telegram"></i> Telegram
+                </a>
+                <a href="https://github.com/artemoska" class="social-link" target="_blank">
+                    <i class="fab fa-github github"></i> GitHub
+                </a>
+                <a href="mailto:your-email@example.com" class="social-link" target="_blank">
+                    <i class="fas fa-envelope email"></i> Email
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <!-- Футер -->
+    <footer>
+        <div class="footer-logo">ARTEMOSKA</div>
+        <p class="footer-text">"Превращаю идеи в цифровую реальность"</p>
+        <p class="copyright">© 2025 Artemoska. All rights reserved.</p>
+        <p><a href="privacy.html" style="color: var(--primary); text-decoration: none;">Политика конфиденциальности</a></p>
+    </footer>
+
+    <!-- Интерактивная консоль -->
+    <div class="console-effect" id="console">
+        <div class="console-header">
+            <span>Artemoska Console</span>
+            <span class="console-close" onclick="document.getElementById('console').style.display='none'">×</span>
+        </div>
+        <div class="console-content">
+            <div>> Инициализация магии кода...</div>
+            <div>> Загрузка заклинаний JavaScript...</div>
+            <div>> Подключение к Telegram API...</div>
+            <div>> Готов к волшебству!</div>
+            <div class="console-input">> _<span class="console-cursor"></span></div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== БАЗОВЫЙ КОД (ТВОЙ ОРИГИНАЛ) ====================
+        function updateProgressBar() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progressBar").style.width = scrolled + "%";
+        }
+
+        window.onscroll = function() {
+            updateProgressBar();
+            const scrollToTopBtn = document.getElementById("scrollToTop");
+            if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
+                scrollToTopBtn.classList.add("visible");
+            } else {
+                scrollToTopBtn.classList.remove("visible");
+            }
+        };
+
+        document.getElementById("scrollToTop").addEventListener("click", function() {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                window.scrollTo({ top: targetElement.offsetTop - 100, behavior: "smooth" });
+            });
+        });
+
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.animate-on-scroll');
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+                if (elementPosition < screenPosition) {
+                    element.classList.add('animated');
+                }
+            });
+        }
+
+        function typeConsoleText() {
+            const phrases = [
+                "npm run magic",
+                "node spell.js",
+                "git push origin master",
+                "Инициализация заклинаний...",
+                "Заклинание готово!",
+                "Загрузка волшебства...",
+                "Подключение к магическому API...",
+                "Готов к работе!"
+            ];
+            const consoleInput = document.querySelector('.console-input');
+            let currentPhrase = 0;
+            let currentChar = 0;
+            let isDeleting = false;
+            let isWaiting = false;
+
+            function type() {
+                if (isWaiting) return;
+                const currentText = phrases[currentPhrase];
+                if (!isDeleting && currentChar < currentText.length) {
+                    consoleInput.innerHTML = `> ${currentText.substring(0, currentChar + 1)}<span class="console-cursor"></span>`;
+                    currentChar++;
+                    setTimeout(type, 100);
+                } else if (isDeleting && currentChar > 0) {
+                    consoleInput.innerHTML = `> ${currentText.substring(0, currentChar - 1)}<span class="console-cursor"></span>`;
+                    currentChar--;
+                    setTimeout(type, 50);
+                } else {
+                    if (!isDeleting && currentChar === currentText.length) {
+                        isWaiting = true;
+                        setTimeout(() => {
+                            isWaiting = false;
+                            isDeleting = true;
+                            setTimeout(type, 1000);
+                        }, 2000);
+                    } else if (isDeleting && currentChar === 0) {
+                        isDeleting = false;
+                        currentPhrase = (currentPhrase + 1) % phrases.length;
+                        setTimeout(type, 500);
+                    }
+                }
+            }
+            type();
+        }
+
+        function animateSkills() {
+            const skillBars = document.querySelectorAll('.skill-level-bar');
+            skillBars.forEach(bar => {
+                const targetWidth = bar.style.width;
+                bar.style.width = '0';
+                setTimeout(() => {
+                    bar.style.width = targetWidth;
+                }, 200);
+            });
+        }
+
+        // ==================== НОВЫЙ КОД (ДОБАВЛЕННЫЙ) ====================
+        // Система пользователей
+        let currentUser = null;
+        let achievements = new Set();
+        let inventory = new Set();
+        let argProgress = 0;
+        let userLevel = 1;
+
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            // Проверяем сохранённую сессию
+            const savedUser = localStorage.getItem('artemoska_user');
+            const savedAch = localStorage.getItem('artemoska_achievements');
+            const savedInv = localStorage.getItem('artemoska_inventory');
+            const savedArg = localStorage.getItem('artemoska_arg');
+            
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                achievements = new Set(JSON.parse(savedAch || '[]'));
+                inventory = new Set(JSON.parse(savedInv || '[]'));
+                argProgress = parseInt(savedArg || '0');
+                
+                updateUIForUser();
+                showSecretContent();
+            }
+            
+            // Инициализируем консоль
+            setTimeout(() => {
+                typeConsoleText();
+                animateSkills();
+                setupConsole();
+            }, 100);
+            
+            // Обработчик скролла
+            window.addEventListener('scroll', animateOnScroll);
+            
+            // Первоначальная анимация
+            animateOnScroll();
+            
+            // Запускаем ARG квест если пользователь авторизован
+            if (currentUser) {
+                startARGQuest();
+            }
+        });
+
+        // Авторизация
+        function showAuthWindow() {
+            document.getElementById('authOverlay').classList.add('active');
+            document.getElementById('authWindow').classList.add('active');
+        }
+
+        function hideAuthWindow() {
+            document.getElementById('authOverlay').classList.remove('active');
+            document.getElementById('authWindow').classList.remove('active');
+        }
+
+        function loginWithTelegram() {
+            // Telegram Widget уже подключен
+            hideAuthWindow();
+            // Виджет сам вызовет onTelegramAuth
+        }
+
+        function onTelegramAuth(user) {
+            currentUser = {
+                id: user.id,
+                firstName: user.first_name,
+                lastName: user.last_name || '',
+                username: user.username,
+                photoUrl: user.photo_url || '',
+                authDate: user.auth_date
+            };
+            
+            localStorage.setItem('artemoska_user', JSON.stringify(currentUser));
+            
+            // Даём первую ачивку
+            unlockAchievement('welcome');
+            
+            updateUIForUser();
+            showSecretContent();
+            startARGQuest();
+            
+            // Показываем приветствие
+            showNotification(`Добро пожаловать, ${currentUser.firstName}!`);
+        }
+
+        function loginWithPassword(password) {
+            // Простая авторизация по паролю (для демо)
+            if (password === 'magic123') {
+                currentUser = {
+                    id: Date.now(),
+                    firstName: 'Гость',
+                    username: 'guest',
+                    isGuest: true
+                };
+                
+                localStorage.setItem('artemoska_user', JSON.stringify(currentUser));
+                unlockAchievement('welcome');
+                
+                updateUIForUser();
+                showSecretContent();
+                hideAuthWindow();
+                
+                showNotification('Вход выполнен как Гость');
+                return true;
+            }
+            return false;
+        }
+
+        function logout() {
+            if (confirm('Выйти из системы?')) {
+                localStorage.removeItem('artemoska_user');
+                currentUser = null;
+                updateUIForUser();
+                hideSecretContent();
+                showNotification('Вы вышли из системы');
+            }
+        }
+
+        function updateUIForUser() {
+            const loginBtn = document.getElementById('loginBtn');
+            const profileHeader = document.getElementById('profileHeader');
+            const greeting = document.getElementById('greeting');
+            
+            if (currentUser) {
+                loginBtn.style.display = 'none';
+                profileHeader.style.display = 'flex';
+                document.getElementById('userName').textContent = currentUser.firstName;
+                greeting.textContent = `Привет, ${currentUser.firstName}!`;
+                
+                // Обновляем аватар
+                const avatar = document.getElementById('userAvatar');
+                if (currentUser.photoUrl) {
+                    avatar.innerHTML = `<img src="${currentUser.photoUrl}" style="width:100%;height:100%;object-fit:cover;">`;
+                } else {
+                    avatar.textContent = currentUser.firstName.charAt(0).toUpperCase();
+                }
+            } else {
+                loginBtn.style.display = 'inline-flex';
+                profileHeader.style.display = 'none';
+                greeting.textContent = 'Привет, я Artemoska!';
+            }
+        }
+
+        // Секретный контент
+        function showSecretContent() {
+            const secretSection = document.querySelector('.secret-section');
+            const secretContent = document.getElementById('secretContent');
+            const secretProject = document.getElementById('secretProject');
+            
+            if (currentUser) {
+                secretSection.classList.add('active');
+                secretContent.style.display = 'block';
+                secretProject.style.display = 'block';
+                loadAchievements();
+                loadARGSteps();
+            }
+        }
+
+        function hideSecretContent() {
+            const secretSection = document.querySelector('.secret-section');
+            const secretContent = document.getElementById('secretContent');
+            const secretProject = document.getElementById('secretProject');
+            
+            secretSection.classList.remove('active');
+            secretContent.style.display = 'none';
+            secretProject.style.display = 'none';
+        }
+
+        // Ачивки
+        function unlockAchievement(code) {
+            if (!achievements.has(code)) {
+                achievements.add(code);
+                localStorage.setItem('artemoska_achievements', JSON.stringify([...achievements]));
+                
+                const ach = getAchievementInfo(code);
+                showNotification(`🏆 Ачивка получена: ${ach.name}`);
+                
+                // Обновляем отображение
+                if (currentUser) {
+                    loadAchievements();
+                }
+                
+                return true;
+            }
+            return false;
+        }
+
+        function getAchievementInfo(code) {
+            const achievementsMap = {
+                'welcome': { name: '👋 Добро пожаловать', desc: 'Первый вход в систему', icon: '👋' },
+                'console_master': { name: '🎮 Мастер консоли', desc: 'Использовать 10 команд', icon: '🎮' },
+                'secret_finder': { name: '🔍 Искатель секретов', desc: 'Найти скрытую команду', icon: '🔍' },
+                'hacker': { name: '💻 Хакер', desc: 'Взломать систему', icon: '💻' },
+                'project_unlocker': { name: '🧪 Открыватель', desc: 'Разблокировать секретный проект', icon: '🧪' },
+                'arg_starter': { name: '🕵️‍♂️ ARG начало', desc: 'Начать ARG квест', icon: '🕵️‍♂️' },
+                'arg_completer': { name: '🏆 Мастер ARG', desc: 'Завершить ARG квест', icon: '🏆' },
+                'time_traveler': { name: '⏱️ Путешественник', desc: 'Провести 1 час на сайте', icon: '⏱️' }
+            };
+            
+            return achievementsMap[code] || { name: code, desc: 'Секретная ачивка', icon: '🎖️' };
+        }
+
+        function loadAchievements() {
+            const grid = document.getElementById('achievementsGrid');
+            if (!grid) return;
+            
+            grid.innerHTML = '';
+            
+            const allAchievements = [
+                'welcome', 'console_master', 'secret_finder', 'hacker',
+                'project_unlocker', 'arg_starter', 'arg_completer', 'time_traveler'
+            ];
+            
+            allAchievements.forEach(code => {
+                const ach = getAchievementInfo(code);
+                const unlocked = achievements.has(code);
+                
+                const card = document.createElement('div');
+                card.className = `achievement-card ${unlocked ? '' : 'achievement-locked'}`;
+                card.innerHTML = `
+                    <div class="achievement-icon">${ach.icon}</div>
+                    <h4>${ach.name}</h4>
+                    <p style="font-size: 0.8rem; color: var(--text-light);">${ach.desc}</p>
+                    <div style="margin-top: 0.5rem; font-size: 0.7rem;">
+                        ${unlocked ? '✅ Получено' : '🔒 Заблокировано'}
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // ARG Квест
+        function startARGQuest() {
+            if (argProgress === 0) {
+                argProgress = 1;
+                localStorage.setItem('artemoska_arg', argProgress.toString());
+                unlockAchievement('arg_starter');
+                showNotification('🕵️‍♂️ ARG квест начат! Проверь секретную зону.');
+            }
+            loadARGSteps();
+        }
+
+        function loadARGSteps() {
+            const container = document.getElementById('argSteps');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            const steps = [
+                { id: 1, title: 'Найти секретный ключ', desc: 'Ищи в консоли команду "secret"' },
+                { id: 2, title: 'Взломать систему', desc: 'Используй команду "hack" в консоли' },
+                { id: 3, title: 'Разблокировать проект', desc: 'Найди и разблокируй секретный проект' },
+                { id: 4, title: 'Найти пасхалку', desc: 'Ищи скрытое сообщение на странице' },
+                { id: 5, title: 'Завершить квест', desc: 'Выполни все предыдущие шаги' }
+            ];
+            
+            steps.forEach(step => {
+                const stepEl = document.createElement('div');
+                stepEl.className = `arg-step ${step.id < argProgress ? 'completed' : 
+                                         step.id === argProgress ? 'active' : ''}`;
+                stepEl.innerHTML = `
+                    <div class="step-number">${step.id}</div>
+                    <div class="step-content">
+                        <h4 style="margin-bottom: 0.5rem;">${step.title}</h4>
+                        <p style="color: var(--text-light); font-size: 0.9rem;">${step.desc}</p>
+                    </div>
+                `;
+                
+                container.appendChild(stepEl);
+            });
+        }
+
+        function updateARGProgress() {
+            argProgress++;
+            localStorage.setItem('artemoska_arg', argProgress.toString());
+            
+            if (argProgress >= 5) {
+                unlockAchievement('arg_completer');
+                showNotification('🏆 ARG квест завершён!');
+            }
+            
+            loadARGSteps();
+        }
+
+        // Секретный проект
+        function unlockSecretProject() {
+            if (currentUser) {
+                document.getElementById('secretProject').innerHTML = `
+                    <div class="project-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <i class="fas fa-star" style="color: gold; font-size: 4rem;"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>✨ Проект "МАГИЯ"</h3>
+                        <p>Секретный AI проект с интеграцией блокчейн технологий и нейросетей.</p>
+                        <div class="project-tags">
+                            <span class="project-tag">AI</span>
+                            <span class="project-tag">Blockchain</span>
+                            <span class="project-tag">Neural Networks</span>
+                            <span class="project-tag">Secret</span>
+                        </div>
+                        <div class="project-links">
+                            <button class="btn" onclick="showProjectDetails()">
+                                <i class="fas fa-eye"></i> Подробности
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                unlockAchievement('project_unlocker');
+                updateARGProgress();
+                showNotification('🎉 Секретный проект разблокирован!');
+            } else {
+                showNotification('❌ Требуется авторизация');
+            }
+        }
+
+        function showProjectDetails() {
+            alert(`Детали проекта "МАГИЯ":\n\n` +
+                  `• Искусственный интеллект для анализа кода\n` +
+                  `• Блокчейн для хранения версий\n` +
+                  `• Нейросети для генерации кода\n` +
+                  `• Засекречено до релиза`);
+        }
+
+        // Расширенная консоль
+        function toggleEnhancedConsole() {
+            const console = document.getElementById('enhancedConsole');
+            const input = document.getElementById('enhancedConsoleInput');
+            
+            if (console.classList.contains('active')) {
+                console.classList.remove('active');
+            } else {
+                console.classList.add('active');
+                setTimeout(() => input.focus(), 100);
+            }
+        }
+
+        function processEnhancedCommand() {
+            const input = document.getElementById('enhancedConsoleInput');
+            const output = document.getElementById('enhancedConsoleBody');
+            const command = input.value.trim();
+            
+            if (!command) return;
+            
+            // Выводим команду
+            const cmdLine = document.createElement('div');
+            cmdLine.innerHTML = `<span style="color: var(--green);">> ${command}</span>`;
+            output.appendChild(cmdLine);
+            
+            // Обрабатываем команду
+            const result = handleEnhancedCommand(command);
+            
+            // Выводим результат
+            const resultLine = document.createElement('div');
+            resultLine.innerHTML = result;
+            output.appendChild(resultLine);
+            
+            // Очищаем input
+            input.value = '';
+            
+            // Скроллим вниз
+            output.scrollTop = output.scrollHeight;
+            
+            // Фокус обратно на input
+            input.focus();
+        }
+
+        function handleEnhancedCommand(cmd) {
+            const parts = cmd.toLowerCase().split(' ');
+            const command = parts[0];
+            const args = parts.slice(1);
+            
+            switch(command) {
+                case 'help':
+                    return `<div style="color: var(--blue);">
+                        Доступные команды:<br>
+                        • help - показать это сообщение<br>
+                        • clear - очистить консоль<br>
+                        • whoami - информация о пользователе<br>
+                        • status - статус системы<br>
+                        • secret - показать секретный ключ<br>
+                        • hack - взломать систему<br>
+                        • arg - информация о ARG квесте<br>
+                        • achievements - список ачивок<br>
+                        • theme [dark/light] - сменить тему<br>
+                        • magic - магическая команда
+                    </div>`;
+                    
+                case 'clear':
+                    document.getElementById('enhancedConsoleBody').innerHTML = 
+                        '> [SYSTEM] Консоль очищена<br>';
+                    return '';
+                    
+                case 'whoami':
+                    if (currentUser) {
+                        return `<div style="color: var(--primary);">
+                            👤 Пользователь: ${currentUser.firstName}<br>
+                            📛 Имя: ${currentUser.firstName} ${currentUser.lastName || ''}<br>
+                            🆔 ID: ${currentUser.id}<br>
+                            🎮 Уровень: ${userLevel}<br>
+                            🏆 Ачивок: ${achievements.size}
+                        </div>`;
+                    } else {
+                        return '<div style="color: var(--red);">❌ Не авторизован</div>';
+                    }
+                    
+                case 'status':
+                    return `<div style="color: var(--info);">
+                        📊 Статус системы:<br>
+                        • Пользователей онлайн: 1<br>
+                        • Активных сессий: ${currentUser ? '1' : '0'}<br>
+                        • Время работы: ${Math.floor(performance.now() / 1000)} сек<br>
+                        • ARG прогресс: ${argProgress}/5<br>
+                        • Секретов найдено: ${achievements.size}/8
+                    </div>`;
+                    
+                case 'secret':
+                    if (currentUser) {
+                        unlockAchievement('secret_finder');
+                        return `<div style="color: var(--purple);">
+                            🔑 Секретный ключ: <strong>ARTEMOSKA_MAGIC_2025</strong><br>
+                            🎉 Ты нашёл секрет! Ачивка получена.
+                        </div>`;
+                    } else {
+                        return '<div style="color: var(--red);">❌ Требуется авторизация</div>';
+                    }
+                    
+                case 'hack':
+                    if (currentUser) {
+                        unlockAchievement('hacker');
+                        updateARGProgress();
+                        
+                        // Эффект взлома
+                        document.body.classList.add('secret-mode');
+                        setTimeout(() => {
+                            document.body.classList.remove('secret-mode');
+                        }, 3000);
+                        
+                        return `<div style="color: var(--green);">
+                            💻 Взлом системы... УСПЕШНО!<br>
+                            🔓 Получен доступ к скрытым функциям<br>
+                            🏆 Ачивка "Хакер" получена<br>
+                            🔄 ARG прогресс обновлён
+                        </div>`;
+                    } else {
+                        return '<div style="color: var(--red);">❌ Требуется авторизация</div>';
+                    }
+                    
+                case 'arg':
+                    return `<div style="color: var(--warning);">
+                        🕵️‍♂️ ARG КВЕСТ<br>
+                        Прогресс: ${argProgress}/5<br>
+                        ${argProgress >= 5 ? '✅ Завершён!' : '🚫 В процессе...'}<br>
+                        Проверь секретную зону для деталей.
+                    </div>`;
+                    
+                case 'achievements':
+                    const achList = [...achievements].map(code => {
+                        const ach = getAchievementInfo(code);
+                        return `• ${ach.icon} ${ach.name}`;
+                    }).join('<br>');
+                    
+                    return `<div style="color: var(--success);">
+                        🏆 Ваши ачивки (${achievements.size}/8):<br>
+                        ${achList || '❌ Нет ачивок'}
+                    </div>`;
+                    
+                case 'theme':
+                    if (args[0] === 'dark') {
+                        document.documentElement.style.setProperty('--light', '#0f172a');
+                        document.documentElement.style.setProperty('--text', '#e5e7eb');
+                        document.documentElement.style.setProperty('--dark', '#f1f5f9');
+                        return '<div style="color: var(--green);">🌙 Тёмная тема активирована</div>';
+                    } else if (args[0] === 'light') {
+                        document.documentElement.style.setProperty('--light', '#f9fafb');
+                        document.documentElement.style.setProperty('--text', '#374151');
+                        document.documentElement.style.setProperty('--dark', '#1f2937');
+                        return '<div style="color: var(--green);">☀️ Светлая тема активирована</div>';
+                    }
+                    return '<div style="color: var(--red);">Используй: theme [dark/light]</div>';
+                    
+                case 'magic':
+                    if (currentUser) {
+                        // Секретная магическая команда
+                        const spells = ['✨', '🔥', '💫', '🌟', '⚡', '🌠'];
+                        const randomSpell = spells[Math.floor(Math.random() * spells.length)];
+                        
+                        // Анимация
+                        for (let i = 0; i < 20; i++) {
+                            setTimeout(() => {
+                                const spell = document.createElement('div');
+                                spell.textContent = randomSpell;
+                                spell.style.position = 'fixed';
+                                spell.style.left = Math.random() * window.innerWidth + 'px';
+                                spell.style.top = Math.random() * window.innerHeight + 'px';
+                                spell.style.fontSize = '2rem';
+                                spell.style.zIndex = '9999';
+                                spell.style.pointerEvents = 'none';
+                                spell.style.animation = 'fadeIn 1s forwards';
+                                document.body.appendChild(spell);
+                                
+                                setTimeout(() => spell.remove(), 1000);
+                            }, i * 50);
+                        }
+                        
+                        return `<div style="color: var(--purple); font-size: 1.2rem;">
+                            ${randomSpell} АБРАКАДАБРА! ${randomSpell}<br>
+                            Магическое заклинание произнесено!
+                        </div>`;
+                    }
+                    return '<div style="color: var(--red);">❌ Только для избранных</div>';
+                    
+                default:
+                    return `<div style="color: var(--red);">❌ Неизвестная команда: "${command}"</div>`;
+            }
+        }
+
+        // Обработка Enter в расширенной консоли
+        document.getElementById('enhancedConsoleInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                processEnhancedCommand();
+            }
+        });
+
+        // Утилиты
+        function showNotification(message) {
+            // Создаём уведомление
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--primary);
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+                max-width: 300px;
+            `;
+            
+            notification.innerHTML = `<i class="fas fa-bell" style="margin-right: 10px;"></i> ${message}`;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Обновляем setupConsole для поддержки новых команд
+        function setupConsole() {
+            const consoleInput = document.querySelector('.console-input');
+            const consoleHistory = document.querySelector('.console-content');
+            
+            // Расширяем команды
+            const commands = {
+                ...window.commands, // Старые команды
+                login: () => {
+                    showAuthWindow();
+                    return "Открыто окно авторизации";
+                },
+                secret: () => {
+                    if (currentUser) {
+                        unlockAchievement('secret_finder');
+                        return "🔑 Секретный ключ: ARTEMOSKA_MAGIC_2025\n🎉 Ачивка получена!";
+                    }
+                    return "⛔ Требуется авторизация. Используй команду 'login'";
+                },
+                hack: () => {
+                    if (currentUser) {
+                        unlockAchievement('hacker');
+                        updateARGProgress();
+                        return "💻 Взлом выполнен! Доступ к скрытым функциям получен.\n🏆 Ачивка 'Хакер' разблокирована";
+                    }
+                    return "⛔ Требуется авторизация";
+                },
+                achievements: () => {
+                    if (achievements.size > 0) {
+                        return `🏆 Ваши ачивки (${achievements.size}/8):\n` +
+                               [...achievements].map(code => {
+                                   const ach = getAchievementInfo(code);
+                                   return `  • ${ach.icon} ${ach.name}`;
+                               }).join('\n');
+                    }
+                    return "❌ Ачивок пока нет";
+                },
+                arg: () => {
+                    return `🕵️‍♂️ ARG Квест\nПрогресс: ${argProgress}/5\n` +
+                           (argProgress >= 5 ? "✅ Завершён!" : "🚫 В процессе...");
+                }
+            };
+            
+            // Обновляем обработчик команд
+            window.commands = commands;
+        }
+
+        // Стили для уведомлений
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+
+    <!-- Yandex.RTB R-A-18551594-2 -->
+    <script>
+        window.yaContextCb.push(() => {
+            Ya.Context.AdvManager.render({
+                "blockId": "R-A-18551594-2",
+                "type": "floorAd",
+                "platform": "touch"
+            })
+        })
+    </script>
 </body>
 </html>
