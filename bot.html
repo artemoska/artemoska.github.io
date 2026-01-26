@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@artemosbot - Auth Helper</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #0088cc;
+            margin-bottom: 1rem;
+        }
+        
+        .code-box {
+            background: #f3f4f6;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            font-family: monospace;
+            font-size: 1.2rem;
+            text-align: center;
+            border: 2px dashed #0088cc;
+        }
+        
+        button {
+            background: #0088cc;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 1rem;
+            width: 100%;
+        }
+        
+        button:hover {
+            background: #0077b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 @artemosbot Auth Helper</h1>
+        <p>Эта страница помогает боту авторизовать пользователей на сайте Artemoska.</p>
+        
+        <div id="authSection">
+            <p>Введите код, который пользователь получил на сайте:</p>
+            <input type="text" id="authCode" placeholder="ABCDEF" style="
+                width: 100%;
+                padding: 1rem;
+                border: 2px solid #0088cc;
+                border-radius: 10px;
+                font-size: 1.2rem;
+                text-align: center;
+                letter-spacing: 5px;
+                margin: 1rem 0;
+            ">
+            
+            <div class="code-box">
+                Отправь пользователю команду:<br>
+                <strong>/auth <span id="codeDisplay">______</span></strong>
+            </div>
+            
+            <button onclick="verifyAuth()">✅ Подтвердить авторизацию</button>
+        </div>
+        
+        <div id="resultSection" style="display: none;">
+            <h2 style="color: #10b981;">✅ Авторизация успешна!</h2>
+            <p>Пользователь получил доступ к сайту.</p>
+            <button onclick="resetForm()">🔁 Новый код</button>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('authCode').addEventListener('input', function(e) {
+            const code = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            e.target.value = code;
+            document.getElementById('codeDisplay').textContent = code;
+        });
+        
+        function verifyAuth() {
+            const code = document.getElementById('authCode').value.trim().toUpperCase();
+            
+            if (code.length !== 6) {
+                alert('Код должен быть 6 символов');
+                return;
+            }
+            
+            // Отправляем данные на основной сайт
+            const userData = {
+                id: Date.now(),
+                first_name: 'Telegram User',
+                username: 'artemosbot_user',
+                auth_date: Math.floor(Date.now() / 1000)
+            };
+            
+            try {
+                // Пытаемся вызвать функцию на основном сайте
+                if (window.opener && window.opener.verifyTelegramAuth) {
+                    window.opener.verifyTelegramAuth(code, userData);
+                }
+                
+                // Сохраняем в localStorage для основного сайта
+                localStorage.setItem(`artemoska_auth_${code}`, JSON.stringify(userData));
+                
+                document.getElementById('authSection').style.display = 'none';
+                document.getElementById('resultSection').style.display = 'block';
+            } catch(e) {
+                alert('Ошибка: ' + e.message);
+            }
+        }
+        
+        function resetForm() {
+            document.getElementById('authCode').value = '';
+            document.getElementById('codeDisplay').textContent = '______';
+            document.getElementById('authSection').style.display = 'block';
+            document.getElementById('resultSection').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
