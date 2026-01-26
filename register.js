@@ -1,5 +1,25 @@
 // Система аутентификации Artemoska
 // Использует localStorage для хранения пользователей и EmailJS для отправки кодов
+// Переменная для тестового режима
+const TEST_MODE = true;
+
+// Переопределяем отправку email
+const originalSendEmail = emailjs.send;
+emailjs.send = async function(service, template, data) {
+    if (TEST_MODE) {
+        console.log('Тестовый режим - пропускаем отправку');
+        console.log('Данные:', { service, template, data });
+        
+        // Показываем код пользователю
+        if (data.code) {
+            alert(`Код подтверждения: ${data.code}\n(в реальной системе отправлен на ${data.to_email})`);
+        }
+        
+        return { status: 200, text: 'OK' };
+    }
+    
+    return originalSendEmail.call(this, service, template, data);
+};
 
 class AuthSystem {
     constructor() {
