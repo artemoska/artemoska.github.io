@@ -264,8 +264,8 @@
                 </div>
                 
                 <button onclick="sendVerificationCode()" id="sendCodeBtn">
-                    <i class="fas fa-paper-plane"></i> Получить код подтверждения
-                </button>
+    <i class="fas fa-paper-plane"></i> Получить код подтверждения
+</button>
                 
                 <div class="links">
                     <p>Уже есть аккаунт? <a href="#" onclick="showStep('login')">Войти</a></p>
@@ -291,18 +291,18 @@
                     <input type="text" id="code6" class="code-input" maxlength="1" pattern="[0-9]">
                 </div>
                 
-                <button onclick="verifyRegistrationCode()" id="verifyBtn">
-                    <i class="fas fa-check"></i> Подтвердить и создать аккаунт
-                </button>
-                
-                <div class="timer">
-                    <div id="timerText">Отправить код повторно через <span id="countdown">60</span> сек</div>
-                    <div id="resendContainer" style="display: none;">
-                        <span class="resend-link" onclick="resendCode()">
-                            <i class="fas fa-redo"></i> Отправить код повторно
-                        </span>
-                    </div>
-                </div>
+               <button onclick="verifyRegistrationCode()" id="verifyBtn">
+    <i class="fas fa-check"></i> Подтвердить и создать аккаунт
+</button>
+
+<div class="timer">
+    <div id="timerText">Отправить код повторно через <span id="countdown">60</span> сек</div>
+    <div id="resendContainer" style="display: none;">
+        <span onclick="resendCode()" id="resendLink" class="resend-link">
+            <i class="fas fa-redo"></i> Отправить код повторно
+        </span>
+    </div>
+</div>
                 
                 <button onclick="showStep('register')" class="back-btn">
                     <i class="fas fa-arrow-left"></i> Назад
