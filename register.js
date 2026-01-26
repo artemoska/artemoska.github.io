@@ -1,7 +1,6 @@
 import emailjs from "https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js";
 
-// Инициализация EmailJS с твоим Public Key
-emailjs.init("dqDwAfC5HAi1bp0q3");
+emailjs.init("dqDwAfC5HAi1bp0q3"); // твой Public Key
 
 const sendCodeBtn = document.getElementById("sendCodeBtn");
 const verifyBtn = document.getElementById("verifyBtn");
@@ -11,42 +10,35 @@ const message = document.getElementById("message");
 
 let generatedCode = "";
 
-sendCodeBtn.addEventListener("click", async () => {
+sendCodeBtn.onclick = async () => {
   const email = emailInput.value.trim();
-
   if (!email) {
     message.textContent = "Введите email";
     return;
   }
 
-  // Генерация 6-значного кода
   generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
 
   try {
     await emailjs.send(
-      "artemoska",               // Service ID
-      "template_8kpkiyr",        // Template ID
+      "artemoska",
+      "template_8kpkiyr",
       {
-        to_email: email,         // email пользователя
-        code: generatedCode      // 6-значный код
+        to_email: email,
+        code: generatedCode
       }
     );
     message.textContent = "Код отправлен на почту";
-  } catch (err) {
-    message.textContent = "Ошибка отправки: " + err;
+  } catch (e) {
+    console.error(e);
+    message.textContent = "Ошибка отправки (см. консоль)";
   }
-});
+};
 
-verifyBtn.addEventListener("click", () => {
-  if (!generatedCode) {
-    message.textContent = "Сначала получите код";
-    return;
-  }
-
-  if (codeInput.value.trim() === generatedCode) {
-    message.textContent = "Код верный! Регистрация успешна.";
-    // Здесь можно добавить Firebase Auth создание пользователя
+verifyBtn.onclick = () => {
+  if (codeInput.value === generatedCode) {
+    message.textContent = "Код верный";
   } else {
     message.textContent = "Неверный код";
   }
-});
+};
