@@ -2074,13 +2074,24 @@ body.secret-mode li {
         });
 
         document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                window.scrollTo({ top: targetElement.offsetTop - 100, behavior: "smooth" });
-            });
-        });
+    link.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        
+        // Если ссылка начинается с # - это якорь на странице
+        if (href.startsWith('#')) {
+            e.preventDefault();
+            const targetElement = document.querySelector(href);
+            if (targetElement) {
+                window.scrollTo({ 
+                    top: targetElement.offsetTop - 100, 
+                    behavior: "smooth" 
+                });
+            }
+        }
+        // Если это внешняя ссылка (register.html), ничего не делаем - позволим браузеру перейти
+        // Браузер сам обработает переход
+    });
+});
 
         function animateOnScroll() {
             const elements = document.querySelectorAll('.animate-on-scroll');
