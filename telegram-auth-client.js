@@ -1,7 +1,7 @@
 // Telegram авторизация для GitHub Pages
 class TelegramAuthClient {
     constructor() {
-        this.API_URL = 'https://ваш-бот.herokuapp.com'; // Или PythonAnywhere
+        const API_URL = 'https://artemoska.pythonanywhere.com';
         this.userId = this.getOrCreateUserId();
         this.authInterval = null;
     }
